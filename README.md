@@ -15,7 +15,7 @@
 
 ### Clone
 
-`git clone https://github.com/erzhtor/algebroid`
+`git clone https://github.com/vinicoder/safezone.git`
 
 ### Install dependencies using lerna
 
@@ -32,11 +32,11 @@ lerna run start
 ### Or start each project
 
 - **API backend**  
-  `npm start --prefix apps/api`
+  `yarn workspace @safezone/api start`
 - **Web frontend**  
-  `npm start --prefix apps/web`
+  `yarn workspace @safezone/web start`
 - **Mobile frontend**  
-  `npm start --prefix apps/mobile`
+  `yarn workspace @safezone/mobile start`
 
 ## Show your support
 
