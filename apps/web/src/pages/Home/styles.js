@@ -22,40 +22,13 @@ export const Container = styled.main`
     display: flex;
 
     width: 100%;
-    padding: 25px 200px 0;
+    padding: 25px 200px;
   }
 
-  .hero {
+  .flex-container-fluid {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
 
-    height: 500px;
-
-    .box-description-hero {
-      width: 440px;
-
-      h1 {
-        font-family: 'Poppins';
-        font-size: 55px;
-        font-weight: bolder;
-        line-height: 60px;
-        color: ${colorsText.secondary};
-        margin-bottom: 30px;
-      }
-
-      p {
-        font-family: 'Open sans';
-        color: ${colorsText.secondary};
-        font-size: 24px;
-        font-weight: 300;
-        margin-bottom: 30px;
-      }
-    }
-
-    img {
-      width: 420px;
-    }
+    width: 100%;
   }
 `;
 
@@ -65,8 +38,12 @@ export const Header = styled.header`
   align-items: center;
 
   width: 100%;
-  padding: 25px 200px 0;
+  padding: 25px 200px;
   overflow-x: hidden;
+
+  img {
+    pointer-events: none;
+  }
 
   nav {
     display: flex;
@@ -106,8 +83,125 @@ export const ShapedLink = styled.button`
 `;
 
 export const UserProfileButton = styled.button`
-  padding: 10px 5px;
   background: rgba(42, 30, 92, 60%);
   border-radius: 50%;
   border: none;
+  color: #fff;
+  font-size: 30px;
+  width: 40px;
+  height: 40px;
+`;
+
+export const Hero = styled.section`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 500px;
+
+  .box-description-hero {
+    width: 440px;
+
+    h1 {
+      font-family: 'Poppins';
+      font-size: 55px;
+      font-weight: bolder;
+      line-height: 60px;
+      color: ${colorsText.secondary};
+      margin-bottom: 30px;
+    }
+
+    p {
+      font-family: 'Open sans';
+      color: ${colorsText.secondary};
+      font-size: 24px;
+      font-weight: 300;
+      margin-bottom: 30px;
+    }
+  }
+
+  img {
+    width: 420px;
+  }
+`;
+
+export const MapSection = styled.section`
+  display: flex;
+  height: 90vh;
+  background: rgba(224, 222, 231, 12%);
+
+  .companies {
+    width: 40%;
+    font-family: 'Poppins';
+    padding: 30px 70px;
+
+    overflow-y: auto;
+    /* height: 700px; */
+    padding-right: 17px;
+    .header-list {
+      color: rgb(238, 66, 102);
+      strong {
+        color: ${colorsText.secondary};
+        font-size: 64px;
+      }
+    }
+  }
+  .map {
+    width: 60%;
+  }
+`;
+
+export const CompanyList = styled.div`
+  margin: 4px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+export const CompanyBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  background: #fff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  width: 100%;
+  padding: 20px 20px;
+  min-height: 150px;
+  margin: 9px 0px;
+
+  .title {
+    width: 100%;
+    margin-bottom: 10px;
+
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .tag-list {
+    width: 100%;
+    min-height: 30px;
+    ul {
+      list-style-type: none;
+    }
+  }
+
+  .updated-info {
+    width: 100%;
+    color: rgb(160, 163, 165);
+    font-size: 12px;
+    font-style: italic;
+  }
+`;
+
+export const Tag = styled.li`
+  float: left;
+  display: block;
+  background: rgb(238, 66, 102);
+  border-radius: 24px;
+  color: #fff;
+  font-weight: 600;
+  padding: 2px 20px;
+  margin-right: 5px;
+  margin-bottom: 5px;
 `;
