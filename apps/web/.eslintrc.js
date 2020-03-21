@@ -22,4 +22,7 @@ module.exports = {
     'react/jsx-filename-extension': ['warn', { extensions: ['.jsx', '.js'] }],
     'import/prefer-default-export': 'off',
   },
+  settings: {
+    'import/resolver': { node: { moduleDirectory: ['node_modules', 'src/'] } },
+  },
 };
