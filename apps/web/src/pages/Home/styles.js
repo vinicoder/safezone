@@ -10,43 +10,21 @@ const colorsText = {
   secondary: 'rgb(42, 30, 92)',
 };
 
-export const Container = styled.main`
-  display: flex;
-  flex-direction: column;
-
-  nav {
-    list-style: none;
-  }
-
-  .flex-container {
-    display: flex;
-
-    width: 100%;
-    padding: 25px 200px;
-  }
-
-  .flex-container-fluid {
-    display: flex;
-
-    width: 100%;
-  }
-`;
+export const Container = styled.main``;
 
 export const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
+  padding: 25px 0px;
   width: 100%;
-  padding: 25px 200px;
+  height: 100px;
   overflow-x: hidden;
-
   img {
     pointer-events: none;
+    width: 248px;
   }
 
   nav {
     display: flex;
+    list-style: none;
     align-items: center;
     margin-right: -15px;
     li {
@@ -92,32 +70,25 @@ export const UserProfileButton = styled.button`
   height: 40px;
 `;
 
-export const Hero = styled.section`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+export const HeroSection = styled.section`
+  padding-top: 100px;
+  padding-bottom: 100px;
 
-  height: 500px;
+  h1 {
+    font-family: 'Poppins';
+    font-size: 55px;
+    font-weight: bolder;
+    line-height: 60px;
+    color: ${colorsText.secondary};
+    margin-bottom: 30px;
+  }
 
-  .box-description-hero {
-    width: 440px;
-
-    h1 {
-      font-family: 'Poppins';
-      font-size: 55px;
-      font-weight: bolder;
-      line-height: 60px;
-      color: ${colorsText.secondary};
-      margin-bottom: 30px;
-    }
-
-    p {
-      font-family: 'Open sans';
-      color: ${colorsText.secondary};
-      font-size: 24px;
-      font-weight: 300;
-      margin-bottom: 30px;
-    }
+  p {
+    font-family: 'Open sans';
+    color: ${colorsText.secondary};
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 30px;
   }
 
   img {
@@ -136,8 +107,6 @@ export const MapSection = styled.section`
     padding: 30px 70px;
 
     overflow-y: auto;
-    /* height: 700px; */
-    padding-right: 17px;
     .header-list {
       color: rgb(238, 66, 102);
       strong {
@@ -204,4 +173,130 @@ export const Tag = styled.li`
   padding: 2px 20px;
   margin-right: 5px;
   margin-bottom: 5px;
+`;
+
+export const AboutSection = styled.section`
+  background: rgba(161, 148, 214, 8%);
+  padding-top: 100px;
+  padding-bottom: 100px;
+
+  img {
+    width: 460px;
+  }
+
+  h3 {
+    text-align: justify;
+    color: rgb(238, 66, 102);
+    font-family: 'Poppins';
+    font-size: 55.8px;
+    font-weight: bolder;
+  }
+
+  .sub-title {
+    text-align: justify;
+    color: ${colorsText.secondary};
+    font-family: 'Open sans';
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 40px;
+  }
+
+  .description {
+    text-align: justify;
+    color: ${colorsText.secondary};
+    font-family: 'Open sans';
+    font-size: 18px;
+    margin-bottom: 40px;
+  }
+  .right-column {
+  }
+`;
+
+export const FormSection = styled.section`
+  background: ${colorsText.secondary};
+  color: #fff;
+  padding-top: 100px;
+  padding-bottom: 100px;
+
+  h4 {
+    font-family: 'Poppins';
+    font-size: 55.8px;
+    font-weight: bolder;
+  }
+
+  img {
+    width: 390px;
+  }
+
+  form {
+    .form-title {
+      font-family: 'Open sans';
+      font-size: 24px;
+      font-weight: 300;
+      margin-bottom: 30px;
+    }
+
+    input[type='text'],
+    input[type='email'],
+    input[type='password'] {
+      padding: 10px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 15px;
+      background: ${colorsButton.primary};
+      font-size: 18px;
+      color: rgba(255, 255, 255, 1);
+      margin-bottom: 20px;
+
+      ::placeholder {
+        color: rgba(255, 255, 255, 9);
+      }
+    }
+
+    input[type='checkbox'] {
+      label {
+        font-size: 18px;
+        font-weight: normal !important;
+        color: rgba(255, 255, 255, 1);
+      }
+    }
+
+    select {
+      min-width: 130px;
+      min-height: 42px;
+      height: 42px;
+      line-height: 42px;
+      padding: 10px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 15px;
+      background: ${colorsButton.primary};
+      font-size: 18px;
+      color: rgba(255, 255, 255, 1);
+
+      ::placeholder {
+        color: rgba(255, 255, 255, 9);
+      }
+    }
+
+    p.remember {
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    p.terms {
+      font-size: 14px;
+      margin-top: 10px;
+    }
+  }
+`;
+
+export const Footer = styled.footer`
+  height: 64px;
+  .container,
+  .row {
+    height: 100%;
+  }
+  strong {
+    color: rgb(238, 66, 102);
+  }
 `;

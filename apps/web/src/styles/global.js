@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import 'bootstrap/scss/bootstrap-grid.scss';
 
 export default createGlobalStyle`
   *{
