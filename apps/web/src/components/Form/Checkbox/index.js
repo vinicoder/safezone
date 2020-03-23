@@ -22,24 +22,18 @@ export default function Checkbox({
   }, [fieldName, registerField]);
 
   return (
-    <>
-      {
-        <label htmlFor={randomId}>
-          {addonPosition === 'right' && label}{' '}
-          <input
-            type="checkbox"
-            ref={inputRef}
-            id={randomId}
-            className={(error ? 'has-error' : '') + className}
-            defaultValue={defaultValue}
-            {...rest}
-          />{' '}
-          {addonPosition === 'left' && label}
-        </label>
-      }
-
-      {error && <span className="error">{error}</span>}
-    </>
+    <label className="input-checked" htmlFor={randomId}>
+      {addonPosition === 'right' && label}{' '}
+      <input
+        type="checkbox"
+        ref={inputRef}
+        id={randomId}
+        className={(error ? 'has-error' : '') + className}
+        defaultValue={defaultValue}
+        {...rest}
+      />{' '}
+      {addonPosition === 'left' && label}
+    </label>
   );
 }
 

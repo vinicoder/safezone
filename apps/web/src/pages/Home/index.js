@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import Input from 'components/Form/Input';
 import Checkbox from 'components/Form/Checkbox';
 import Select from 'components/Form/Select';
+import Button from 'components/Button';
 
 import logoVertical from 'images/logo-vertical.svg';
 import heroImage from 'images/hero-image.svg';
@@ -22,7 +23,6 @@ import {
   AboutSection,
   MapSection,
   FormSection,
-  ShapedLink,
   UserProfileButton,
   CompanyList,
   CompanyBox,
@@ -73,15 +73,16 @@ function Home() {
 
               <nav>
                 <li>
-                  <ShapedLink>Sobre o projeto</ShapedLink>
+                  <Button to="/" theme="secondary">
+                    Sobre o projeto
+                  </Button>
                 </li>
 
                 <li>
-                  <ShapedLink primary strong>
+                  <Button to="/" theme="primary" fontWeight="bold">
                     Consultar Empresas
-                  </ShapedLink>
+                  </Button>
                 </li>
-
                 <li>
                   <UserProfileButton>
                     <FontAwesomeIcon icon={faUser} />
@@ -101,9 +102,13 @@ function Home() {
 
               <p>Consulte as medidas tomadas pelas empresas da sua região</p>
 
-              <ShapedLink primary strong>
-                Atualize sua empresa
-              </ShapedLink>
+              <div className="row">
+                <div className="col col-sm-7">
+                  <Button to="/" theme="rose" fontWeight="bold">
+                    Atualize sua empresa
+                  </Button>
+                </div>
+              </div>
             </div>
             <div className="col col-md-5">
               <img src={heroImage} alt="Imagem demonstrativa" srcSet="" />
@@ -144,7 +149,9 @@ function Home() {
         </div>
         <div className="map">
           <GoogleMapReact
-            // bootstrapURLKeys={{ key: null }}
+            bootstrapURLKeys={{
+              key: 'AIzaSyCmWArZHnZJjWjJGgBNNQLwgklP0Z81fg4',
+            }}
             defaultCenter={{
               lat: 59.95,
               lng: 30.33,
@@ -181,9 +188,13 @@ function Home() {
                 sunt in culpa qui officia deserunt mollit anim id est laborum.
               </p>
 
-              <ShapedLink primary strong>
-                Atualize sua empresa
-              </ShapedLink>
+              <div className="row">
+                <div className="col col-sm-7">
+                  <Button to="/" theme="rose" fontWeight="bold">
+                    Atualize sua empresa
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -235,30 +246,22 @@ function Home() {
                 <Input name="name" type="text" placeholder="Nome da Empresa" />
                 <div className="row">
                   <div className="col-12">
-                    Selecione as situações
+                    <div className="title-situations">
+                      Selecione as situações
+                    </div>
                     <Scope path="situations">
-                      <ul>
-                        <Tag>
-                          <Checkbox name="home_office" label="Home-office" />
-                        </Tag>
-                        <Tag>
-                          <Checkbox name="closed" label="Fechada" />
-                        </Tag>
-                        <Tag>
-                          <Checkbox
-                            name="reduction_employees"
-                            label="Menos colaboradores"
-                          />
-                        </Tag>
-                        <Tag>
-                          <Checkbox name="less_hours" label="Horas reduzidas" />
-                        </Tag>
-                        <Tag>
-                          <Checkbox
-                            name="vacation_time"
-                            label={`Colaboradores em "férias"`}
-                          />
-                        </Tag>
+                      <ul className="situations">
+                        <Checkbox name="home_office" label="Home-office" />
+                        <Checkbox name="closed" label="Fechada" />
+                        <Checkbox
+                          name="reduction_employees"
+                          label="Menos colaboradores"
+                        />
+                        <Checkbox name="less_hours" label="Horas reduzidas" />
+                        <Checkbox
+                          name="vacation_time"
+                          label={`Colaboradores em "férias"`}
+                        />
                       </ul>
                     </Scope>
                   </div>
@@ -282,7 +285,9 @@ function Home() {
             </div>
 
             <div className="row justify-content-md-center">
-              <ShapedLink type="submit">Enviar atualização</ShapedLink>
+              <Button type="submit" theme="rose" fontWeight="bold">
+                Enviar atualização
+              </Button>
             </div>
           </Form>
         </div>
