@@ -2,6 +2,8 @@ import styled from 'styled-components/native';
 import { Animated } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
+import layoutOptions from '~/config/layout';
+
 export const ListContainer = styled(Animated.View)`
   height: 100%;
   z-index: 2;
@@ -53,13 +55,13 @@ export const HeaderInfo = styled.View`
 `;
 
 export const HeaderSubtitle = styled.Text`
-  color: #ee4266;
+  color: ${layoutOptions.colors.secondary};
   font-size: ${props => (props.small ? '12px' : '14px')};
 `;
 
 export const HeaderTitle = styled.Text`
   font-size: ${props => (props.small ? '24px' : '30px')};
-  color: #2a1e5c;
+  color: ${layoutOptions.colors.primary};
   font-weight: bold;
 `;
 
@@ -78,5 +80,5 @@ export const ButtonChangeLocal = styled(RectButton)`
 
 export const ButtonChangeLocalText = styled.Text`
   font-size: 14px;
-  color: #2a1e5c;
+  color: ${layoutOptions.colors.primary};
 `;

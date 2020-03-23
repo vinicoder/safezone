@@ -1,6 +1,8 @@
 import React, { forwardRef } from 'react';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
+import layoutOptions from '~/config/layout';
+
 import {
   HeaderContainer,
   HeaderInfo,
@@ -33,7 +35,11 @@ export const ListHeader = forwardRef(({ title, subtitle, ...rest }, ref) => {
       </HeaderInfo>
       <HeaderActions>
         <ButtonChangeLocal>
-          <Icon name="map-marker" size={24} color="#ee4266"></Icon>
+          <Icon
+            name="map-marker"
+            size={24}
+            color={layoutOptions.colors.secondary}
+          ></Icon>
           <ButtonChangeLocalText>Alterar local</ButtonChangeLocalText>
         </ButtonChangeLocal>
       </HeaderActions>
@@ -52,7 +58,11 @@ export const ListSmallHeader = forwardRef(
           </HeaderInfo>
           <HeaderActions>
             <ButtonChangeLocal>
-              <Icon name="map-marker" size={24} color="#ee4266"></Icon>
+              <Icon
+                name="map-marker"
+                size={24}
+                color={layoutOptions.colors.secondary}
+              ></Icon>
               <ButtonChangeLocalText>Alterar local</ButtonChangeLocalText>
             </ButtonChangeLocal>
           </HeaderActions>

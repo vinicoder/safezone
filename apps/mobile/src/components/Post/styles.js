@@ -1,6 +1,8 @@
 import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
 
+import layoutOptions from '~/config/layout';
+
 export const Container = styled.View`
   width: 100%;
   background: #fff;
@@ -17,7 +19,7 @@ export const Info = styled.View`
 
 export const Title = styled.Text`
   font-size: 18px;
-  color: #2a1e5c;
+  color: ${layoutOptions.colors.primary};
   font-weight: bold;
   margin-bottom: 10px;
 `;
@@ -29,7 +31,7 @@ export const Labels = styled.View`
 `;
 
 export const Label = styled(RectButton)`
-  background: #ee4266;
+  background: ${layoutOptions.colors.secondary};
   padding: 5px 15px;
   border-radius: 13px;
   border: 0;
