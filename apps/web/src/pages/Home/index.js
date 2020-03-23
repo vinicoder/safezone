@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import GoogleMapReact from 'google-map-react';
 import { Form } from '@unform/web';
+import { Scope } from '@unform/core';
 import * as Yup from 'yup';
 
 import Input from 'components/Form/Input';
@@ -15,7 +16,6 @@ import heroImage from 'images/hero-image.svg';
 import aboutImage from 'images/about-image.svg';
 import formImage from 'images/form-image.svg';
 
-import { Scope } from '@unform/core';
 import {
   Container,
   Header,
@@ -30,7 +30,6 @@ import {
   Footer,
 } from './styles';
 
-// const AnyReactComponent = ({ text }) => <div>{text}</div>;
 const MapMarkerIcon = ({ size = '6x' }) => (
   <FontAwesomeIcon
     size={size}
@@ -63,6 +62,7 @@ function Home() {
       console.log(data);
     } catch (err) {
       const validationErrors = {};
+      console.log('err', err);
       if (err instanceof Yup.ValidationError) {
         err.inner.forEach(error => {
           validationErrors[error.path] = error.message;
@@ -220,8 +220,8 @@ function Home() {
               <img src={formImage} alt="Imagem ilustrativa no formulário" />
             </div>
           </div>
-          <Form onSubmit={handleSubmit}>
-            <div className="row justify-content-md-center mb-4">
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <div className="row justify-content-md-center mb-5">
               <div className="col col-md-5">
                 <div className="form-title">Informações do seu perfil</div>
                 <Input name="name" type="text" placeholder="Nome completo" />
@@ -236,12 +236,8 @@ function Home() {
                     />
                   </div>
                   <div className="col col-xs-6">
-                    <Select
-                      defaultValue={null}
-                      name="gender"
-                      placeholder="Gênero"
-                    >
-                      <option value={null} style={{ display: 'none' }}>
+                    <Select defaultValue="" name="gender" placeholder="Gênero">
+                      <option value="" style={{ display: 'none' }}>
                         Gênero
                       </option>
                       <option value="feminino">Feminino</option>

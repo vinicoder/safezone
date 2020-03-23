@@ -235,6 +235,9 @@ export const FormSection = styled.section`
       color: rgba(255, 255, 255, 1);
       margin-bottom: 20px;
       width: 100%;
+      &.has-error {
+        margin-bottom: 2px;
+      }
 
       ::placeholder {
         color: rgba(255, 255, 255, 9);
