@@ -1,10 +1,10 @@
 import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
 
-import layoutOptions from '~/config/layout';
+import layoutConfig from '~/config/layout';
 
 export const ButtonContainer = styled(RectButton)`
-  background: ${layoutOptions.colors.secondary};
+  background: ${props => layoutConfig.colors[props.color]};
   height: 36px;
   border-radius: 18px;
   justify-content: center;

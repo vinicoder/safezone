@@ -24,7 +24,7 @@ export const HeaderContainer = styled(Animated.View)`
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
   padding: 0 30px;
-  height: 100px;
+  height: 90px;
   width: 100%;
   flex-direction: row;
   align-items: center;
@@ -42,7 +42,7 @@ export const SmallHeaderContainer = styled.View`
 export const SmallHeaderContent = styled(Animated.View)`
   width: 100%;
   height: 64px;
-  background: #fff;
+  background: ${layoutOptions.colors.primary};
   flex-direction: row;
   align-items: center;
   padding: 0 30px;
@@ -59,9 +59,11 @@ export const HeaderSubtitle = styled.Text`
   font-size: ${props => (props.small ? '12px' : '14px')};
 `;
 
-export const HeaderTitle = styled.Text`
-  font-size: ${props => (props.small ? '24px' : '30px')};
-  color: ${layoutOptions.colors.primary};
+export const HeaderTitle = styled.Text.attrs({
+  numberOfLines: 1,
+})`
+  font-size: 24px;
+  color: ${props => (props.small ? '#FFF' : layoutOptions.colors.primary)};
   font-weight: bold;
 `;
 
@@ -70,15 +72,16 @@ export const HeaderActions = styled.View`
   align-items: center;
 `;
 
-export const ButtonChangeLocal = styled(RectButton)`
+export const ButtonLocal = styled(RectButton)`
   padding: 5px;
   padding-right: 10px;
   border-radius: 6px;
   flex-direction: row;
   align-items: center;
+  background: rgba(255, 255, 255, 0.1);
 `;
 
-export const ButtonChangeLocalText = styled.Text`
+export const ButtonLocalText = styled.Text`
   font-size: 14px;
-  color: ${layoutOptions.colors.primary};
+  color: ${props => (props.small ? '#FFF' : layoutOptions.colors.primary)};
 `;

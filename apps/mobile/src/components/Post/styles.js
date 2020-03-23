@@ -17,7 +17,9 @@ export const Info = styled.View`
   flex: 1;
 `;
 
-export const Title = styled.Text`
+export const Title = styled.Text.attrs({
+  numberOfLines: 1,
+})`
   font-size: 18px;
   color: ${layoutOptions.colors.primary};
   font-weight: bold;
@@ -46,14 +48,16 @@ export const LabelText = styled.Text`
   font-size: 12px;
 `;
 
-export const Date = styled.Text`
+export const Date = styled.Text.attrs({
+  numberOfLines: 1,
+})`
   font-style: italic;
   color: #a0a3a5;
-  font-size: 14px;
+  font-size: 12px;
 `;
 
 export const PostActions = styled.View`
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 `;
 

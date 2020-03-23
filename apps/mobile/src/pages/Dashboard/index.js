@@ -9,8 +9,10 @@ import List, {
   ListHeader,
   ListSmallHeader,
   ListContent,
+  ButtonChangeLocal,
 } from '~/components/List';
 import Post from '~/components/Post';
+import Search from '~/components/Search';
 
 import {
   Container,
@@ -23,7 +25,7 @@ import {
   HeaderLinkText,
 } from './styles';
 
-export default function Home() {
+export default function Home({ navigation }) {
   const tapRef = useRef();
   const nativeRef = useRef();
   const panRef = useRef();
@@ -139,7 +141,9 @@ export default function Home() {
       >
         <HeaderInfo>
           <HeaderTitle>Situação atual das empresas na pandemia.</HeaderTitle>
-          <HeaderButton>Atualize sua empresa</HeaderButton>
+          <HeaderButton onPress={() => navigation.navigate('User')}>
+            Atualize sua empresa
+          </HeaderButton>
           <HeaderLink>
             <HeaderLinkText>Sobre o projeto</HeaderLinkText>
           </HeaderLink>
@@ -163,6 +167,9 @@ export default function Home() {
         <ListSmallHeader
           title="Piracicaba"
           subtitle="Empresas em"
+          headerActions={
+            <ButtonChangeLocal onPress={() => alert('teste')} small />
+          }
           style={{
             transform: [
               {
@@ -199,7 +206,13 @@ export default function Home() {
                   simultaneousHandlers={[nativeRef, tapRef]}
                   shouldCancelWhenOutside={false}
                 >
-                  <ListHeader title="Piracicaba" subtitle="Empresas em" />
+                  <ListHeader
+                    title="Piracicaba"
+                    subtitle="Empresas em"
+                    headerActions={
+                      <ButtonChangeLocal onPress={() => alert('teste')} />
+                    }
+                  />
                 </PanGestureHandler>
                 <Post />
                 <Post />
@@ -211,6 +224,7 @@ export default function Home() {
           </Animated.View>
         </PanGestureHandler>
       </List>
+      <Search />
     </Container>
   );
 }
