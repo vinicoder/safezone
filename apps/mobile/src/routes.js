@@ -1,6 +1,6 @@
 import React from 'react';
 import Constants from 'expo-constants';
-import { Image, Button } from 'react-native';
+import { Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -25,8 +25,14 @@ export default () => (
       screenOptions={{
         headerTintColor: 'white',
         headerStyle: {
-          backgroundColor: 'transparent',
+          backgroundColor: '#2A1E5C',
           height: Constants.statusBarHeight + 90,
+          elevation: 0,
+          shadowColor: 'transparent',
+          shadowRadius: 0,
+          shadowOffset: {
+            height: 0,
+          },
         },
       }}
     >
