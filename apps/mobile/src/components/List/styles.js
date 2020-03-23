@@ -14,6 +14,7 @@ export const Content = styled.View`
   background: #f2f0f9;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
+  padding-bottom: 20px;
 `;
 
 export const HeaderContainer = styled(Animated.View)`
@@ -42,8 +43,9 @@ export const SmallHeaderContent = styled(Animated.View)`
   background: #fff;
   flex-direction: row;
   align-items: center;
-  box-shadow: 0 6px 12px rgba(125, 125, 125, 0.2);
   padding: 0 30px;
+  border-bottom-width: 1px;
+  border-bottom-color: rgba(125, 125, 125, 0.2);
 `;
 
 export const HeaderInfo = styled.View`

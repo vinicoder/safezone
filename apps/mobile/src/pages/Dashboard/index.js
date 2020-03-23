@@ -30,8 +30,14 @@ export default function Home() {
   const listRef = useRef();
 
   let offset = 0;
+  let scrolled = false;
   const translateY = new Animated.Value(0);
   const scrollY = new Animated.Value(0);
+
+  const animationOptions = {
+    duration: 200,
+    useNativeDriver: true,
+  };
 
   const animatedPanEvent = Animated.event(
     [
@@ -67,15 +73,35 @@ export default function Home() {
         enabled: !opened,
       });
 
-      Animated.timing(translateY, {
-        toValue: opened ? -235 : 0,
-        duration: 200,
-        useNativeDriver: true,
-      }).start(() => {
+      if (!opened) {
+        animationOptions.toValue = 0;
+        Animated.timing(scrollY, animationOptions).start();
+        listRef.current.scrollTo({ y: 0 });
+      }
+
+      animationOptions.toValue = opened ? -235 : 0;
+      Animated.timing(translateY, animationOptions).start(() => {
         offset = opened ? -235 : 0;
         translateY.setOffset(offset);
         translateY.setValue(0);
       });
+    }
+  }
+
+  function onScrollHandler({ nativeEvent }) {
+    const { y } = nativeEvent.contentOffset;
+    if (y > 50) {
+      if (!scrolled) {
+        animationOptions.toValue = 64;
+        Animated.timing(scrollY, animationOptions).start();
+        scrolled = true;
+      }
+    } else {
+      if (scrolled) {
+        animationOptions.toValue = 0;
+        Animated.timing(scrollY, animationOptions).start();
+      }
+      scrolled = false;
     }
   }
 
@@ -89,12 +115,6 @@ export default function Home() {
         enabled: true,
       });
     }
-
-    Animated.timing(scrollY, {
-      toValue: y >= 10 ? 64 : 0,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
   }
 
   return (
@@ -140,28 +160,21 @@ export default function Home() {
           ],
         }}
       >
-        <PanGestureHandler
-          onGestureEvent={animatedPanEvent}
-          onHandlerStateChange={onHandlerStateChanged}
-          simultaneousHandlers={[nativeRef, tapRef]}
-          shouldCancelWhenOutside={false}
-        >
-          <ListSmallHeader
-            title="Piracicaba"
-            subtitle="Empresas em"
-            style={{
-              transform: [
-                {
-                  translateY: scrollY.interpolate({
-                    inputRange: [0, 64],
-                    outputRange: [-64, 0],
-                    extrapolate: 'clamp',
-                  }),
-                },
-              ],
-            }}
-          />
-        </PanGestureHandler>
+        <ListSmallHeader
+          title="Piracicaba"
+          subtitle="Empresas em"
+          style={{
+            transform: [
+              {
+                translateY: scrollY.interpolate({
+                  inputRange: [0, 64],
+                  outputRange: [-64, 0],
+                  extrapolate: 'clamp',
+                }),
+              },
+            ],
+          }}
+        />
         <PanGestureHandler
           ref={panRef}
           onGestureEvent={animatedPanEvent}
@@ -178,6 +191,7 @@ export default function Home() {
                 scrollEventThrottle={40}
                 bounces={false}
                 showsVerticalScrollIndicator={false}
+                onScroll={onScrollHandler}
               >
                 <PanGestureHandler
                   onGestureEvent={animatedPanEvent}

@@ -15,7 +15,7 @@ import {
 
 export default function Post() {
   return (
-    <Container>
+    <Container elevation={1}>
       <Info>
         <Title>Empresa Lorem Ipsum</Title>
         <Labels>
