@@ -30,6 +30,15 @@ import {
   Footer,
 } from './styles';
 
+// const AnyReactComponent = ({ text }) => <div>{text}</div>;
+const MapMarkerIcon = ({ size = '6x' }) => (
+  <FontAwesomeIcon
+    size={size}
+    color="rgb(238, 66, 102)"
+    icon={faMapMarkerAlt}
+  />
+);
+
 function Home() {
   const formRef = useRef(null);
 
@@ -124,7 +133,7 @@ function Home() {
               Empresas em <br /> <strong>Piracicaba</strong>
             </span>
             <div>
-              <FontAwesomeIcon icon={faMapMarkerAlt} /> Alterar local
+              <MapMarkerIcon size="lg" /> Alterar local
             </div>
           </div>
           <CompanyList>
@@ -158,11 +167,12 @@ function Home() {
             }}
             defaultZoom={10}
           >
-            {/* <AnyReactComponent
+            <MapMarkerIcon
+              size="3x"
               lat={59.955413}
               lng={30.337844}
               text="My Marker"
-            /> */}
+            />
           </GoogleMapReact>
         </div>
       </MapSection>
