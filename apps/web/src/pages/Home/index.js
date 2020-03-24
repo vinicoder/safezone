@@ -16,6 +16,7 @@ import Footer from 'components/Layout/Footer';
 import heroImage from 'images/hero-image.svg';
 import aboutImage from 'images/about-image.svg';
 import formImage from 'images/form-image.svg';
+import maps from 'config/maps';
 import {
   Container,
   HeroSection,
@@ -129,7 +130,7 @@ function Home() {
         <div className="map">
           <GoogleMapReact
             bootstrapURLKeys={{
-              key: 'AIzaSyCmWArZHnZJjWjJGgBNNQLwgklP0Z81fg4',
+              key: maps.apiKey,
             }}
             defaultCenter={{
               lat: 59.95,
