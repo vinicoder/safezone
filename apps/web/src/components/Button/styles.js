@@ -3,6 +3,42 @@ import { Link } from 'react-router-dom';
 
 import colors from 'metrics/colors';
 
+const getThemeBackground = theme => {
+  switch (theme) {
+    case 'primary':
+      return colors.christalle;
+    case 'secondary':
+      return colors.white_smoke;
+    case 'rose':
+      return colors.french_rose;
+    case 'persian_green':
+      return colors.persian_green;
+    case 'blue_haze':
+      return colors.blue_haze;
+
+    default:
+      return colors.white_smoke;
+  }
+};
+
+const getThemeColor = theme => {
+  switch (theme) {
+    case 'primary':
+      return colors.white_smoke;
+    case 'secondary':
+      return colors.christalle;
+    case 'rose':
+      return colors.white_smoke;
+    case 'persian_green':
+      return colors.white_smoke;
+    case 'blue_haze':
+      return colors.white;
+
+    default:
+      return colors.christalle;
+  }
+};
+
 export const ButtonStyled = styled.button`
   display: block;
   padding: 5px 35px;
@@ -12,36 +48,8 @@ export const ButtonStyled = styled.button`
 
   font-weight: ${props => props.fontWeight || 'normal'};
   font-size: 16px;
-  background: ${props => {
-    switch (props.theme) {
-      case 'primary':
-        return colors.christalle;
-      case 'secondary':
-        return colors.white_smoke;
-      case 'rose':
-        return colors.french_rose;
-      case 'persian_green':
-        return colors.persian_green;
-
-      default:
-        return colors.white_smoke;
-    }
-  }};
-  color: ${props => {
-    switch (props.theme) {
-      case 'primary':
-        return colors.white_smoke;
-      case 'secondary':
-        return colors.christalle;
-      case 'rose':
-        return colors.white_smoke;
-      case 'persian_green':
-        return colors.white_smoke;
-
-      default:
-        return colors.christalle;
-    }
-  }};
+  background: ${props => getThemeBackground(props.theme)};
+  color: ${props => getThemeColor(props.theme)};
 `;
 
 export const LinkStyled = styled(Link)`
@@ -56,34 +64,6 @@ export const LinkStyled = styled(Link)`
 
   font-weight: ${props => props.fontWeight || 'normal'};
   font-size: 16px;
-  background: ${props => {
-    switch (props.theme) {
-      case 'primary':
-        return colors.christalle;
-      case 'secondary':
-        return colors.white_smoke;
-      case 'rose':
-        return colors.french_rose;
-      case 'persian_green':
-        return colors.persian_green;
-
-      default:
-        return colors.white_smoke;
-    }
-  }};
-  color: ${props => {
-    switch (props.theme) {
-      case 'primary':
-        return colors.white_smoke;
-      case 'secondary':
-        return colors.christalle;
-      case 'rose':
-        return colors.white_smoke;
-      case 'persian_green':
-        return colors.white_smoke;
-
-      default:
-        return colors.christalle;
-    }
-  }};
+  background: ${props => getThemeBackground(props.theme)};
+  color: ${props => getThemeColor(props.theme)};
 `;

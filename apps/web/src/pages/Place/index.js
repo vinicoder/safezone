@@ -3,13 +3,14 @@ import Header from 'components/Layout/Header';
 import Footer from 'components/Layout/Footer';
 import { Container } from './styles';
 
-function About() {
+function Place() {
   return (
     <Container>
       <Header />
+
       <Footer />
     </Container>
   );
 }
 
-export default About;
+export default Place;

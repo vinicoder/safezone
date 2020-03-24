@@ -4,6 +4,7 @@ const colors = {
   white: 'rgb(250, 250, 250)',
   french_rose: 'rgb(238, 66, 102)',
   persian_green: 'rgb(4, 154,153)',
+  blue_haze: 'rgb(197, 194, 211)',
 };
 
 export default colors;

@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faMapMarkerAlt, faSearch } from '@fortawesome/free-solid-svg-icons';
 import GoogleMapReact from 'google-map-react';
 import { Form } from '@unform/web';
 import { Scope } from '@unform/core';
@@ -10,12 +10,15 @@ import Input from 'components/Form/Input';
 import Checkbox from 'components/Form/Checkbox';
 import Select from 'components/Form/Select';
 import Button from 'components/Button';
+import CompanyBox from 'components/CompanyBox';
 import Header from 'components/Layout/Header';
 import Footer from 'components/Layout/Footer';
 
 import heroImage from 'images/hero-image.svg';
 import aboutImage from 'images/about-image.svg';
 import formImage from 'images/form-image.svg';
+import searchImage from 'images/search-image.svg';
+
 import maps from 'config/maps';
 import {
   Container,
@@ -24,8 +27,7 @@ import {
   MapSection,
   FormSection,
   CompanyList,
-  CompanyBox,
-  Tag,
+  SearchInput,
 } from './styles';
 
 const MapMarkerIcon = ({ size = '6x' }) => (
@@ -38,6 +40,7 @@ const MapMarkerIcon = ({ size = '6x' }) => (
 
 function Home() {
   const formRef = useRef(null);
+  const [searchPlaceMode, setSearchPlaceMode] = useState(false);
 
   async function handleSubmit(data) {
     try {
@@ -99,33 +102,62 @@ function Home() {
 
       <MapSection>
         <div className="companies">
-          <div className="description">
-            <span className="header-list">
-              Empresas em <br /> <strong>Piracicaba</strong>
-            </span>
-            <div>
-              <MapMarkerIcon size="lg" /> Alterar local
-            </div>
-          </div>
-          <CompanyList>
-            {Array(10)
-              .fill(null)
-              .map((item, index) => (
-                <CompanyBox key={`company-${index}`}>
-                  <div className="title">Empresa Lorem Ipsum Dolor{index}</div>
-                  <div className="tag-list">
-                    <ul>
-                      {['home-office', 'fechada'].map(status => (
-                        <Tag key={status}>home-office</Tag>
-                      ))}
-                    </ul>
+          {!searchPlaceMode ? (
+            <>
+              <div className="description">
+                <span className="header-list">
+                  Empresas em <br /> <strong>Piracicaba</strong>
+                </span>
+                <div>
+                  <Button
+                    style={{ padding: 0 }}
+                    onClick={() => setSearchPlaceMode(true)}
+                  >
+                    <MapMarkerIcon size="lg" /> Alterar local
+                  </Button>
+                </div>
+              </div>
+              <CompanyList>
+                {Array(10)
+                  .fill(null)
+                  .map((item, index) => (
+                    <CompanyBox key={`company-${index}`} />
+                  ))}
+              </CompanyList>
+            </>
+          ) : (
+            <>
+              <div className="mb-5">
+                <SearchInput className="mb-5">
+                  <input
+                    type="search"
+                    aria-labelledby="search-button"
+                    placeholder="Pesquise pelo local"
+                  />
+                  <div className="icon">
+                    <FontAwesomeIcon
+                      size="1x"
+                      color="rgb(255, 255, 255)"
+                      icon={faSearch}
+                    />
                   </div>
-                  <div className="updated-info">
-                    Atualizado em 18/03/2020 às 12:30
-                  </div>
-                </CompanyBox>
-              ))}
-          </CompanyList>
+                </SearchInput>
+                <img src={searchImage} alt="Imagem ilustrativa de pesquisa" />
+              </div>
+              <div className="d-flex justify-content-between align-items-center">
+                <Button
+                  theme="blue_haze"
+                  onClick={() => setSearchPlaceMode(false)}
+                  fontWeight="bold"
+                >
+                  Cancelar
+                </Button>
+                <Button theme="rose" fontWeight="bold">
+                  Selecão automática
+                </Button>
+              </div>
+            </>
+          )}
         </div>
         <div className="map">
           <GoogleMapReact

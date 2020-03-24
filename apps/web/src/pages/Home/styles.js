@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 const colorsButton = {
   primary: 'rgb(42, 30, 92)',
@@ -250,6 +251,52 @@ export const FormSection = styled.section`
     p.terms {
       font-size: 14px;
       margin-top: 10px;
+    }
+  }
+`;
+
+export const SearchInput = styled.div`
+  align-items: center;
+  display: flex;
+  width: 100%;
+  background: #fff;
+  padding: 5px 5px;
+  border-radius: 30px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+  input {
+    border: none;
+    flex: 1;
+    height: 30px;
+    margin: 0;
+    margin-left: 10px;
+    padding: 7px;
+    -webkit-appearance: textfield;
+
+    font-family: 'Poppins';
+    font-size: 20px;
+    font-weight: lighter;
+
+    &::placeholder {
+      color: rgba(42, 30, 92);
+    }
+  }
+
+  .icon {
+    background-color: rgb(238, 66, 102);
+    border-radius: 50%;
+    cursor: pointer;
+    height: 33px;
+    width: 33px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 300ms;
+
+    &:hover {
+      background-color: ${darken(0.2, 'rgb(238, 66, 102)')};
+      fill: white;
     }
   }
 `;
