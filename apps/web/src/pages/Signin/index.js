@@ -1,13 +1,18 @@
 import React from 'react';
+import { Form } from '@unform/web';
 
 import aboutImage from 'images/about-image.svg';
 import Button from 'components/Button';
 import Header from 'components/Layout/Header';
 import Footer from 'components/Layout/Footer';
+import Input from 'components/Form/Input';
 
 import { Container, FormSection, FormContainer } from './styles';
 
 function Signin() {
+  function handleSubmit(values) {
+    console.log('values', values);
+  }
   return (
     <Container>
       <Header />
@@ -19,20 +24,48 @@ function Signin() {
             </div>
             <div className="col-12 col-md-5">
               <FormContainer>
-                <h1>Acesse sua conta</h1>
-                <p>
-                  Para atualizar o cadastro de alguma empresa, é necessário
-                  estar conectado.
-                </p>
-                <Button className="mb-2" to="/entrar" theme="rose">
-                  Entrar
-                </Button>
-                <Button className="mb-2" to="/entrar" theme="secondary">
-                  Criar minha Conta
-                </Button>
-                <Button className="mb-2" to="/entrar" theme="primary">
-                  Esqueceu sua senha?
-                </Button>
+                <Form onSubmit={handleSubmit}>
+                  <h1 className="mb-2">Acesse sua conta</h1>
+                  <p className="mb-4">
+                    Para atualizar o cadastro de alguma empresa, é necessário
+                    estar conectado.
+                  </p>
+                  <Input
+                    type="email"
+                    name="email"
+                    placeholder="E-mail de acesso"
+                  />
+                  <Input
+                    type="password"
+                    name="password"
+                    placeholder="Senha de acesso"
+                  />
+                  <Button
+                    style={{ width: '100%' }}
+                    type="submit"
+                    className="mb-2"
+                    fontWeight="bold"
+                    theme="rose"
+                  >
+                    Entrar
+                  </Button>
+                  <Button
+                    className="mb-2"
+                    to="/entrar"
+                    fontWeight="bold"
+                    theme="persian_green"
+                  >
+                    Criar minha Conta
+                  </Button>
+                  <Button
+                    className="mb-2"
+                    to="/entrar"
+                    fontWeight="bold"
+                    theme="primary"
+                  >
+                    Esqueceu sua senha?
+                  </Button>
+                </Form>
               </FormContainer>
             </div>
           </div>

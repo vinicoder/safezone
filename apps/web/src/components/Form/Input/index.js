@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { useField } from '@unform/core';
+import { Container } from './styles';
 
 export default function Input({ name, label, className, ...rest }) {
   const inputRef = useRef(null);
@@ -16,7 +17,7 @@ export default function Input({ name, label, className, ...rest }) {
   }, [fieldName, registerField]);
 
   return (
-    <>
+    <Container>
       {label && <label htmlFor={name}>{label}</label>}
 
       <input
@@ -27,7 +28,7 @@ export default function Input({ name, label, className, ...rest }) {
       />
 
       {error && <span className="error">{error}</span>}
-    </>
+    </Container>
   );
 }
 

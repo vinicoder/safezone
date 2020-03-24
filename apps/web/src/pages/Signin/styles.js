@@ -12,12 +12,21 @@ export const FormSection = styled.main`
   color: #fff;
   padding-top: 100px;
   padding-bottom: 100px;
+  h1 {
+    font-family: 'Poppins';
+    font-size: 28.3px;
+    font-weight: 700;
+  }
+  p {
+    font-family: 'Poppins';
+    font-weight: 400;
+  }
 `;
 
-export const FormContainer = styled.main`
+export const FormContainer = styled.div`
   height: 100%;
   padding: 30px;
-  border-radius: 20px;
+  border-radius: 30px;
   color: ${colors.white};
   background: ${colors.christalle};
   text-align: center;

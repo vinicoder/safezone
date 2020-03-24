@@ -20,6 +20,8 @@ export const ButtonStyled = styled.button`
         return colors.white_smoke;
       case 'rose':
         return colors.french_rose;
+      case 'persian_green':
+        return colors.persian_green;
 
       default:
         return colors.white_smoke;
@@ -32,6 +34,8 @@ export const ButtonStyled = styled.button`
       case 'secondary':
         return colors.christalle;
       case 'rose':
+        return colors.white_smoke;
+      case 'persian_green':
         return colors.white_smoke;
 
       default:
@@ -60,6 +64,8 @@ export const LinkStyled = styled(Link)`
         return colors.white_smoke;
       case 'rose':
         return colors.french_rose;
+      case 'persian_green':
+        return colors.persian_green;
 
       default:
         return colors.white_smoke;
@@ -72,6 +78,8 @@ export const LinkStyled = styled(Link)`
       case 'secondary':
         return colors.christalle;
       case 'rose':
+        return colors.white_smoke;
+      case 'persian_green':
         return colors.white_smoke;
 
       default:

@@ -13,13 +13,13 @@ export default function Button({
 }) {
   if (to) {
     return (
-      <LinkStyled to={to} theme={theme} fontWeight={fontWeight} {...props}>
+      <LinkStyled {...props} to={to} theme={theme} fontWeight={fontWeight}>
         {children}
       </LinkStyled>
     );
   }
   return (
-    <ButtonStyled type={type} theme={theme} fontWeight={fontWeight} {...props}>
+    <ButtonStyled {...props} type={type} theme={theme} fontWeight={fontWeight}>
       {children}
     </ButtonStyled>
   );
