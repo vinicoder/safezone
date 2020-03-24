@@ -8,6 +8,7 @@ const { statusBarHeight } = Constants;
 const isNewIOS =
   Device.osName === 'iOS' && parseInt(Device.osVersion, 10) >= 13;
 const headerHeight = statusBarHeight + (window_height <= 600 ? 50 : 70);
+const tabBarHeight = isNewIOS ? 90 : 65;
 
 export const colors = {
   primary: '#2A1E5C',
@@ -29,10 +30,11 @@ export const navigation = {
     },
   },
   tabBar: {
+    keyboardHidesTabBar: Device.osName === 'android',
     activeTintColor: colors.secondary,
     inactiveTintColor: colors.primary,
     style: {
-      height: isNewIOS ? 90 : 65,
+      height: tabBarHeight,
       backgroundColor: 'white',
       borderTopWidth: 1,
       borderTopColor: 'rgba(155,155,155,.2)',
@@ -54,7 +56,8 @@ export const navigation = {
 };
 
 export default {
-  headerHeight: 70,
+  headerHeight,
+  tabBarHeight,
   colors,
   navigation,
 };
