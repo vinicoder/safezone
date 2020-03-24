@@ -12,50 +12,6 @@ const colorsText = {
 
 export const Container = styled.main``;
 
-export const Header = styled.header`
-  padding: 25px 0px;
-  width: 100%;
-  height: 100px;
-  overflow-x: hidden;
-  img {
-    pointer-events: none;
-    width: 248px;
-  }
-
-  nav {
-    display: flex;
-    list-style: none;
-    align-items: center;
-    margin-right: -15px;
-    li {
-      margin: 0 15px;
-    }
-  }
-
-  @media screen and (max-width: 800px) {
-    padding: 20px 50px;
-    flex-direction: column;
-
-    h2 {
-      margin-bottom: 15px;
-    }
-
-    nav {
-      margin-right: 0;
-    }
-  }
-`;
-
-export const UserProfileButton = styled.button`
-  background: rgba(42, 30, 92, 60%);
-  border-radius: 50%;
-  border: none;
-  color: #fff;
-  font-size: 30px;
-  width: 40px;
-  height: 40px;
-`;
-
 export const HeroSection = styled.section`
   padding-top: 100px;
   padding-bottom: 100px;
@@ -295,16 +251,5 @@ export const FormSection = styled.section`
       font-size: 14px;
       margin-top: 10px;
     }
-  }
-`;
-
-export const Footer = styled.footer`
-  height: 64px;
-  .container,
-  .row {
-    height: 100%;
-  }
-  strong {
-    color: rgb(238, 66, 102);
   }
 `;

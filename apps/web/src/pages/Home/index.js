@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import GoogleMapReact from 'google-map-react';
 import { Form } from '@unform/web';
 import { Scope } from '@unform/core';
@@ -10,24 +10,21 @@ import Input from 'components/Form/Input';
 import Checkbox from 'components/Form/Checkbox';
 import Select from 'components/Form/Select';
 import Button from 'components/Button';
+import Header from 'components/Layout/Header';
+import Footer from 'components/Layout/Footer';
 
-import logoVertical from 'images/logo-vertical.svg';
 import heroImage from 'images/hero-image.svg';
 import aboutImage from 'images/about-image.svg';
 import formImage from 'images/form-image.svg';
-
 import {
   Container,
-  Header,
   HeroSection,
   AboutSection,
   MapSection,
   FormSection,
-  UserProfileButton,
   CompanyList,
   CompanyBox,
   Tag,
-  Footer,
 } from './styles';
 
 const MapMarkerIcon = ({ size = '6x' }) => (
@@ -74,34 +71,7 @@ function Home() {
 
   return (
     <Container>
-      <Header>
-        <div className="container">
-          <div className="row justify-content-md-center align-items-center">
-            <div className="col col-md-10 d-flex justify-content-md-between">
-              <img src={logoVertical} alt="Logo SAFEZONE" />
-
-              <nav>
-                <li>
-                  <Button to="/" theme="secondary">
-                    Sobre o projeto
-                  </Button>
-                </li>
-
-                <li>
-                  <Button to="/" theme="primary" fontWeight="bold">
-                    Consultar Empresas
-                  </Button>
-                </li>
-                <li>
-                  <UserProfileButton>
-                    <FontAwesomeIcon icon={faUser} />
-                  </UserProfileButton>
-                </li>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </Header>
+      <Header />
 
       <HeroSection>
         <div className="container">
@@ -299,19 +269,7 @@ function Home() {
         </div>
       </FormSection>
 
-      <Footer>
-        <div className="container">
-          <div className="row justify-content-md-center align-items-center">
-            <div className="col col-md-5">
-              Ajude-nos a manter a plataforma. <strong>Faça uma doação.</strong>
-            </div>
-            <div className="col col-md-5">
-              Deseja contribuir com o projeto?{' '}
-              <strong>Acesse o repositório no GitHub</strong>
-            </div>
-          </div>
-        </div>
-      </Footer>
+      <Footer />
     </Container>
   );
 }
