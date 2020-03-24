@@ -51,7 +51,7 @@ function Signin() {
                   </Button>
                   <Button
                     className="mb-2"
-                    to="/entrar"
+                    to="/criar-conta"
                     fontWeight="bold"
                     theme="persian_green"
                   >
