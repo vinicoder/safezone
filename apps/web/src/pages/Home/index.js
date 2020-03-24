@@ -112,6 +112,7 @@ function Home() {
                   <Button
                     style={{ padding: 0 }}
                     onClick={() => setSearchPlaceMode(true)}
+                    noBackground
                   >
                     <MapMarkerIcon size="lg" /> Alterar local
                   </Button>

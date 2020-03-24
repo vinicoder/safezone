@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { darken } from 'polished';
 
 import colors from 'metrics/colors';
 
@@ -48,8 +49,15 @@ export const ButtonStyled = styled.button`
 
   font-weight: ${props => props.fontWeight || 'normal'};
   font-size: 16px;
-  background: ${props => getThemeBackground(props.theme)};
+  background: ${props =>
+    props.noBackground ? '' : getThemeBackground(props.theme)};
   color: ${props => getThemeColor(props.theme)};
+  transition: background 300ms;
+
+  &:hover {
+    background: ${props =>
+      props.noBackground ? '' : darken(0.1, getThemeBackground(props.theme))};
+  }
 `;
 
 export const LinkStyled = styled(Link)`
@@ -64,6 +72,13 @@ export const LinkStyled = styled(Link)`
 
   font-weight: ${props => props.fontWeight || 'normal'};
   font-size: 16px;
-  background: ${props => getThemeBackground(props.theme)};
+  background: ${props =>
+    props.noBackground ? '' : getThemeBackground(props.theme)};
   color: ${props => getThemeColor(props.theme)};
+  transition: background 300ms;
+
+  &:hover {
+    background: ${props =>
+      props.noBackground ? '' : darken(0.1, getThemeBackground(props.theme))};
+  }
 `;
