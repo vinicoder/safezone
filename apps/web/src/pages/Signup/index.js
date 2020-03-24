@@ -25,7 +25,7 @@ function Signup() {
             <div className="col-12 col-md-5">
               <FormContainer>
                 <Form onSubmit={handleSubmit}>
-                  <h1 className="mb-2">Criar minah conta</h1>
+                  <h1 className="mb-2">Criar minha conta</h1>
                   <p className="mb-4">Forneça seus dados corretamente.</p>
                   <Input type="text" name="name" placeholder="Nome completo" />
                   <Input
