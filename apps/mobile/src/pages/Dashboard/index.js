@@ -26,6 +26,7 @@ import {
 } from './styles';
 
 export default function Home({ navigation }) {
+  const searchRef = useRef();
   const tapRef = useRef();
   const nativeRef = useRef();
   const panRef = useRef();
@@ -77,12 +78,12 @@ export default function Home({ navigation }) {
 
       if (!opened) {
         animationOptions.toValue = 0;
-        Animated.timing(scrollY, animationOptions).start();
-        listRef.current.scrollTo({ y: 0 });
+        Animated.spring(scrollY, animationOptions).start();
+        listRef.current.scrollTo({ y: 0, animated: true });
       }
 
       animationOptions.toValue = opened ? -235 : 0;
-      Animated.timing(translateY, animationOptions).start(() => {
+      Animated.spring(translateY, animationOptions).start(() => {
         offset = opened ? -235 : 0;
         translateY.setOffset(offset);
         translateY.setValue(0);
@@ -95,13 +96,13 @@ export default function Home({ navigation }) {
     if (y > 50) {
       if (!scrolled) {
         animationOptions.toValue = 64;
-        Animated.timing(scrollY, animationOptions).start();
+        Animated.spring(scrollY, animationOptions).start();
         scrolled = true;
       }
     } else {
       if (scrolled) {
         animationOptions.toValue = 0;
-        Animated.timing(scrollY, animationOptions).start();
+        Animated.spring(scrollY, animationOptions).start();
       }
       scrolled = false;
     }
@@ -117,6 +118,24 @@ export default function Home({ navigation }) {
         enabled: true,
       });
     }
+  }
+
+  async function openSearch() {
+    if (offset < 0) {
+      await listRef.current.scrollTo({ y: 0, animated: true });
+      listRef.current.setNativeProps({
+        scrollEnabled: false,
+      });
+      panRef.current.setNativeProps({
+        enabled: true,
+      });
+      translateY.setValue(-235);
+      translateY.setOffset(0);
+      offset = 0;
+      animationOptions.toValue = 0;
+      await Animated.spring(translateY, animationOptions).start();
+    }
+    await searchRef.current.open();
   }
 
   return (
@@ -168,7 +187,7 @@ export default function Home({ navigation }) {
           title="Piracicaba"
           subtitle="Empresas em"
           headerActions={
-            <ButtonChangeLocal onPress={() => alert('teste')} small />
+            <ButtonChangeLocal onPress={() => openSearch()} small />
           }
           style={{
             transform: [
@@ -210,7 +229,7 @@ export default function Home({ navigation }) {
                     title="Piracicaba"
                     subtitle="Empresas em"
                     headerActions={
-                      <ButtonChangeLocal onPress={() => alert('teste')} />
+                      <ButtonChangeLocal onPress={() => openSearch()} />
                     }
                   />
                 </PanGestureHandler>
@@ -224,7 +243,7 @@ export default function Home({ navigation }) {
           </Animated.View>
         </PanGestureHandler>
       </List>
-      <Search />
+      <Search ref={searchRef} />
     </Container>
   );
 }

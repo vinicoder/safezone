@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { Animated } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import layoutConfig from '~/config/layout';
 
@@ -8,10 +9,28 @@ export const Container = styled.View`
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 2;
+`;
+
+export const Overlay = styled(Animated.View)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background: ${layoutConfig.colors.primary};
+`;
+
+export const Content = styled(Animated.View)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: #f2f0f9;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
-  z-index: 2;
   padding: 20px 0;
   align-items: center;
 `;
