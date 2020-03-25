@@ -117,7 +117,7 @@ function Search({}, ref) {
           }),
         }}
         pointerEvents="box-none"
-      ></Overlay>
+      />
       <Content
         style={{
           transform: [
@@ -149,7 +149,7 @@ function Search({}, ref) {
                   ref={searchInputRef}
                   onChangeText={text => setQuery(text)}
                   returnKeyType="search"
-                ></Input>
+                />
                 <ButtonSearch onPress={loadPlaces}>
                   <Icon name="search" size={16} color="#FFF" />
                 </ButtonSearch>
@@ -159,7 +159,7 @@ function Search({}, ref) {
           renderItem={({ item }) => (
             <SearchResult>
               <SearchIcon>
-                <Icon name="map-marker" size={20} color="#999"></Icon>
+                <Icon name="map-marker" size={20} color="#999" />
               </SearchIcon>
               <SearchInfo>
                 <SearchResultName>
@@ -171,7 +171,7 @@ function Search({}, ref) {
           )}
           ListFooterComponent={loading && <Loader />}
           stickyHeaderIndices={[0]}
-        ></SearchResults>
+        />
       </Content>
     </Container>
   );

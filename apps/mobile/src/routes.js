@@ -6,11 +6,11 @@ import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
 import layoutConfig from '~/config/layout';
 
+import Dashboard from '~/pages/Dashboard';
+import SignIn from '~/pages/SignIn';
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
-import Dashboard from '~/pages/Dashboard';
-import Login from '~/pages/Login';
 
 const guestStackScreen = () => (
   <Stack.Navigator screenOptions={layoutConfig.navigation.stackHeader}>
@@ -70,9 +70,9 @@ export default () => (
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Login"
+        name="SignIn"
         options={{ title: 'Acesse sua conta' }}
-        component={Login}
+        component={SignIn}
       />
     </Stack.Navigator>
   </NavigationContainer>

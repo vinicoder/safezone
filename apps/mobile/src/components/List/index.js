@@ -67,11 +67,7 @@ export const ListContent = forwardRef(({ children, ...rest }, ref) => {
 export const ButtonChangeLocal = ({ small, ...rest }) => {
   return (
     <ButtonLocal {...rest}>
-      <Icon
-        name="map-marker"
-        size={24}
-        color={layoutConfig.colors.secondary}
-      ></Icon>
+      <Icon name="map-marker" size={24} color={layoutConfig.colors.secondary} />
       <ButtonLocalText small={small}>Alterar local</ButtonLocalText>
     </ButtonLocal>
   );

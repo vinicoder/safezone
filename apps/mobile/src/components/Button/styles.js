@@ -10,6 +10,7 @@ export const ButtonContainer = styled(RectButton)`
   justify-content: center;
   align-items: center;
   padding: 0 21px;
+  flex-direction: row;
 `;
 
 export const ButtonText = styled.Text`
@@ -17,3 +18,8 @@ export const ButtonText = styled.Text`
   font-size: 16px;
   font-weight: bold;
 `;
+
+export const Loader = styled.ActivityIndicator.attrs({
+  size: 'small',
+  color: '#FFF',
+})``;

@@ -1,10 +1,15 @@
 import React from 'react';
-import { ButtonContainer, ButtonText } from './styles';
+import { ButtonContainer, ButtonText, Loader } from './styles';
 
-export default function Button({ children, color = 'secondary', ...rest }) {
+export default function Button({
+  children,
+  color = 'secondary',
+  loading,
+  ...rest
+}) {
   return (
     <ButtonContainer color={color} {...rest}>
-      <ButtonText>{children}</ButtonText>
+      {loading ? <Loader /> : <ButtonText>{children}</ButtonText>}
     </ButtonContainer>
   );
 }

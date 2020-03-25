@@ -11,7 +11,18 @@ export default function Input({ name, ...ref }) {
     registerField({
       name: fieldName,
       ref: inputRef.current,
-      path: 'value',
+      path: '_lastNativeText',
+      getValue(ref) {
+        return ref._lastNativeText || '';
+      },
+      setValue(ref, value) {
+        ref.setNativeProps({ text: value });
+        ref._lastNativeText = value;
+      },
+      clearValue(ref) {
+        ref.setNativeProps({ text: '' });
+        ref._lastNativeText = '';
+      },
     });
   }, [fieldName, registerField]);
 

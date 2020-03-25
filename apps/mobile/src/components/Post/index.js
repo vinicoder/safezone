@@ -29,11 +29,7 @@ export default function Post() {
       </Info>
       <PostActions>
         <ButtonComplaint onPress={() => alert('teste')}>
-          <Icon
-            name="flag"
-            size={22}
-            color={layoutConfig.colors.secondary}
-          ></Icon>
+          <Icon name="flag" size={22} color={layoutConfig.colors.secondary} />
         </ButtonComplaint>
       </PostActions>
     </Container>

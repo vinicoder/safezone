@@ -84,7 +84,7 @@ export default function Home({ navigation }) {
 
       animationOptions.toValue = opened ? -235 : 0;
       Animated.spring(translateY, animationOptions).start(() => {
-        offset = opened ? -220 : 0;
+        offset = opened ? -235 : 0;
         translateY.setOffset(offset);
         translateY.setValue(0);
       });

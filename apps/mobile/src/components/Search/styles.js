@@ -14,7 +14,7 @@ export const Container = styled.KeyboardAvoidingView.attrs({
   top: 0;
   left: 0;
   width: 100%;
-  height: ${windowHeight - headerHeight - tabBarHeight + 'px'};
+  height: ${`${windowHeight - headerHeight - tabBarHeight}px`};
   z-index: 2;
 `;
 

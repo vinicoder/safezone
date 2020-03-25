@@ -14,6 +14,7 @@ export const Container = styled.KeyboardAvoidingView.attrs({
 `;
 
 export const ContentScroll = styled.ScrollView.attrs({
+  bounces: false,
   centerContent: true,
   showsVerticalScrollIndicator: false,
 })`

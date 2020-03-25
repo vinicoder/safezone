@@ -47,8 +47,8 @@ export const navigation = {
   },
   stackDefaultHeader: ({ navigation }) => ({
     headerTitle: () => {},
-    headerLeft: () => <Image source={Logo}></Image>,
-    headerRight: () => <Avatar onPress={() => navigation.navigate('Login')} />,
+    headerLeft: () => <Image source={Logo} />,
+    headerRight: () => <Avatar onPress={() => navigation.navigate('SignIn')} />,
     headerLeftContainerStyle: { marginLeft: 30 },
     headerRightContainerStyle: { marginRight: 30 },
   }),
