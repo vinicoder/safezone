@@ -1,0 +1,35 @@
+import * as Yup from 'yup';
+
+import Events from '../models/Events';
+
+class EventsController {
+  async index(req, res) {
+    if (!req.userAdmin) {
+      return res.status(401).json({
+        error: "You don't have permission to access this information",
+      });
+    }
+
+    const events = await Events.findAll();
+
+    return res.json(events);
+  }
+
+  async store(req, res) {
+    const schema = Yup.object().shape({
+      description: Yup.string().required(),
+      start_date: Yup.string().required(),
+      end_date: Yup.string(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails' });
+    }
+
+    const { id, description, start_date } = await Events.create(req.body);
+
+    return res.json({ id, description, start_date });
+  }
+}
+
+export default new EventsController();
