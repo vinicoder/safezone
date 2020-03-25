@@ -7,7 +7,7 @@ function Place() {
   return (
     <Container>
       <Header />
-
+      Place
       <Footer />
     </Container>
   );

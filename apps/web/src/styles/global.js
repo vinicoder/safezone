@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import 'bootstrap/scss/bootstrap-grid.scss';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default createGlobalStyle`
   *{

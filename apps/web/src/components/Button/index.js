@@ -9,30 +9,17 @@ export default function Button({
   type,
   theme,
   fontWeight,
-  noBackground,
   ...props
 }) {
   if (to) {
     return (
-      <LinkStyled
-        {...props}
-        noBackground={noBackground}
-        to={to}
-        theme={theme}
-        fontWeight={fontWeight}
-      >
+      <LinkStyled {...props} to={to} theme={theme} fontWeight={fontWeight}>
         {children}
       </LinkStyled>
     );
   }
   return (
-    <ButtonStyled
-      {...props}
-      noBackground={noBackground}
-      type={type}
-      theme={theme}
-      fontWeight={fontWeight}
-    >
+    <ButtonStyled {...props} type={type} theme={theme} fontWeight={fontWeight}>
       {children}
     </ButtonStyled>
   );

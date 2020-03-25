@@ -6,6 +6,7 @@ import { Form } from '@unform/web';
 import { Scope } from '@unform/core';
 import * as Yup from 'yup';
 
+import InputUnstyled from 'components/Form/Input/InputUnstyled';
 import Input from 'components/Form/Input';
 import Checkbox from 'components/Form/Checkbox';
 import Select from 'components/Form/Select';
@@ -20,6 +21,8 @@ import formImage from 'images/form-image.svg';
 import searchImage from 'images/search-image.svg';
 
 import maps from 'config/maps';
+import mapsApi from 'services/maps';
+
 import {
   Container,
   HeroSection,
@@ -40,7 +43,21 @@ const MapMarkerIcon = ({ size = '6x' }) => (
 
 function Home() {
   const formRef = useRef(null);
+  const searchPlaceFormRef = useRef(null);
   const [searchPlaceMode, setSearchPlaceMode] = useState(false);
+  const [latitude, setLatitude] = useState(-22.725);
+  const [longitude, setLongitude] = useState(-47.6476);
+
+  async function getPosition() {
+    await navigator.geolocation.getCurrentPosition(
+      position => {
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
+        console.log('position', position);
+      },
+      err => console.log(err)
+    );
+  }
 
   async function handleSubmit(data) {
     try {
@@ -73,6 +90,14 @@ function Home() {
     }
   }
 
+  function handleSearchSubmit(values) {
+    // https://maps.googleapis.com/maps/api/place/
+    // findplacefromtext/json?input=mongolian%20grill&inputtype=textquery&fields=photos,formatted_address,name,opening_hours,rating&locationbias=circle:2000@47.6918452,-122.2226413&key=YOUR_API_KEY
+    mapsApi
+      .get(`place/details/json?input=${values.search}`)
+      .then(resp => console.log(resp));
+  }
+
   return (
     <Container>
       <Header />
@@ -102,7 +127,7 @@ function Home() {
 
       <MapSection>
         <div className="companies">
-          {!searchPlaceMode ? (
+          {searchPlaceMode ? (
             <>
               <div className="description">
                 <span className="header-list">
@@ -110,7 +135,7 @@ function Home() {
                 </span>
                 <div>
                   <Button
-                    style={{ padding: 0 }}
+                    style={{ padding: 0, background: 'rgba(224,222,231,12%)' }}
                     onClick={() => setSearchPlaceMode(true)}
                     noBackground
                   >
@@ -128,21 +153,25 @@ function Home() {
             </>
           ) : (
             <>
-              <div className="mb-5">
-                <SearchInput className="mb-5">
-                  <input
-                    type="search"
-                    aria-labelledby="search-button"
-                    placeholder="Pesquise pelo local"
-                  />
-                  <div className="icon">
-                    <FontAwesomeIcon
-                      size="1x"
-                      color="rgb(255, 255, 255)"
-                      icon={faSearch}
+              <div className="my-5">
+                <Form ref={searchPlaceFormRef} onSubmit={handleSearchSubmit}>
+                  <SearchInput className="mb-5">
+                    <InputUnstyled
+                      type="search"
+                      aria-labelledby="search-button"
+                      placeholder="Pesquise pelo local"
+                      name="search"
                     />
-                  </div>
-                </SearchInput>
+                    <div className="icon">
+                      <FontAwesomeIcon
+                        size="1x"
+                        color="rgb(255, 255, 255)"
+                        icon={faSearch}
+                        onClick={() => searchPlaceFormRef.current.submitForm()}
+                      />
+                    </div>
+                  </SearchInput>
+                </Form>
                 <img src={searchImage} alt="Imagem ilustrativa de pesquisa" />
               </div>
               <div className="d-flex justify-content-between align-items-center">
@@ -153,7 +182,7 @@ function Home() {
                 >
                   Cancelar
                 </Button>
-                <Button theme="rose" fontWeight="bold">
+                <Button theme="rose" fontWeight="bold" onClick={getPosition}>
                   Selecão automática
                 </Button>
               </div>
@@ -166,15 +195,15 @@ function Home() {
               key: maps.apiKey,
             }}
             defaultCenter={{
-              lat: 59.95,
-              lng: 30.33,
+              lat: latitude,
+              lng: longitude,
             }}
             defaultZoom={10}
           >
             <MapMarkerIcon
               size="3x"
-              lat={59.955413}
-              lng={30.337844}
+              lat={-22.725}
+              lng={-47.64767844}
               text="My Marker"
             />
           </GoogleMapReact>
