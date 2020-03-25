@@ -1,7 +1,8 @@
 import React, { forwardRef } from 'react';
+import PropTypes from 'prop-types';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
-import layoutConfig from '~/config/layout';
+import { colors } from '~/config/layout';
 
 import {
   HeaderContainer,
@@ -18,20 +19,20 @@ import {
   Content,
 } from './styles';
 
-function List({ children, ...rest }, ref) {
+const List = forwardRef(({ children, ...rest }, ref) => {
   return (
     <ListContainer {...rest} ref={ref}>
       {children}
     </ListContainer>
   );
-}
+});
 
 export const ListHeader = forwardRef(
   ({ title, subtitle, headerActions, ...rest }, ref) => {
     return (
       <HeaderContainer {...rest} ref={ref}>
         <HeaderInfo>
-          <HeaderSubtitle>{subtitle}</HeaderSubtitle>
+          {subtitle && <HeaderSubtitle>{subtitle}</HeaderSubtitle>}
           <HeaderTitle>{title}</HeaderTitle>
         </HeaderInfo>
         {headerActions && <HeaderActions>{headerActions}</HeaderActions>}
@@ -67,10 +68,54 @@ export const ListContent = forwardRef(({ children, ...rest }, ref) => {
 export const ButtonChangeLocal = ({ small, ...rest }) => {
   return (
     <ButtonLocal {...rest}>
-      <Icon name="map-marker" size={24} color={layoutConfig.colors.secondary} />
+      <Icon name="map-marker" size={24} color={colors.secondary} />
       <ButtonLocalText small={small}>Alterar local</ButtonLocalText>
     </ButtonLocal>
   );
 };
 
-export default forwardRef(List);
+List.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element),
+    PropTypes.element,
+  ]).isRequired,
+};
+
+ListHeader.propTypes = {
+  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string,
+  headerActions: PropTypes.element,
+};
+
+ListSmallHeader.propTypes = {
+  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string,
+  headerActions: PropTypes.element,
+};
+
+ListHeader.defaultProps = {
+  subtitle: '',
+  headerActions: PropTypes.element,
+};
+
+ListSmallHeader.defaultProps = {
+  subtitle: '',
+  headerActions: PropTypes.element,
+};
+
+ListContent.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element),
+    PropTypes.element,
+  ]).isRequired,
+};
+
+ButtonChangeLocal.propTypes = {
+  small: PropTypes.bool,
+};
+
+ButtonChangeLocal.defaultProps = {
+  small: false,
+};
+
+export default List;

@@ -2,14 +2,14 @@ import styled from 'styled-components/native';
 
 import * as Device from 'expo-device';
 
-import layoutConfig from '~/config/layout';
+import { colors } from '~/config/layout';
 import ButtonDefault from '~/components/Button';
 
 export const Container = styled.KeyboardAvoidingView.attrs({
   enabled: Device.osName === 'iOS',
   behavior: 'padding',
 })`
-  background: ${layoutConfig.colors.primary};
+  background: ${colors.primary};
   flex: 1;
 `;
 

@@ -2,12 +2,12 @@ import { Animated } from 'react-native';
 import styled from 'styled-components/native';
 import Button from '~/components/Button';
 
-import layoutConfig from '~/config/layout';
+import { colors } from '~/config/layout';
 
 import bgImage from '~/assets/bg-intro.png';
 
 export const Container = styled.View`
-  background: ${layoutConfig.colors.primary};
+  background: ${colors.primary};
   flex: 1;
 `;
 

@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
 import { Animated } from 'react-native';
 import {
   PanGestureHandler,
@@ -25,7 +26,7 @@ import {
   HeaderLinkText,
 } from './styles';
 
-export default function Home({ navigation }) {
+function Home({ navigation }) {
   const searchRef = useRef();
   const tapRef = useRef();
   const nativeRef = useRef();
@@ -247,3 +248,11 @@ export default function Home({ navigation }) {
     </Container>
   );
 }
+
+Home.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
+export default Home;

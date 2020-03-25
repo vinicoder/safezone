@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { Animated, Dimensions } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import * as Device from 'expo-device';
-import layoutConfig from '~/config/layout';
+import layoutConfig, { colors } from '~/config/layout';
 
 const { height: windowHeight } = Dimensions.get('window');
 const { headerHeight, tabBarHeight } = layoutConfig;
@@ -25,7 +25,7 @@ export const Overlay = styled(Animated.View)`
   width: 100%;
   height: 100%;
   opacity: 0;
-  background: ${layoutConfig.colors.primary};
+  background: ${colors.primary};
 `;
 
 export const Content = styled(Animated.View)`
@@ -63,7 +63,7 @@ export const InputContainer = styled.View`
 `;
 
 export const Input = styled.TextInput.attrs({
-  placeholderTextColor: layoutConfig.colors.primary,
+  placeholderTextColor: colors.primary,
 })`
   background: #fff;
   height: 42px;
@@ -71,11 +71,11 @@ export const Input = styled.TextInput.attrs({
   flex: 1;
   padding: 0 21px;
   font-size: 16px;
-  color: ${layoutConfig.colors.primary};
+  color: ${colors.primary};
 `;
 
 export const ButtonSearch = styled(RectButton)`
-  background: ${layoutConfig.colors.secondary};
+  background: ${colors.secondary};
   position: absolute;
   right: 3px;
   top: 3px;
@@ -130,7 +130,7 @@ export const SearchResultName = styled.Text.attrs({
 })`
   font-size: 18px;
   font-weight: bold;
-  color: ${layoutConfig.colors.primary};
+  color: ${colors.primary};
 `;
 
 export const SearchResultDesc = styled.Text.attrs({
@@ -141,7 +141,7 @@ export const SearchResultDesc = styled.Text.attrs({
 
 export const Loader = styled.ActivityIndicator.attrs({
   size: 'large',
-  color: layoutConfig.colors.primary,
+  color: colors.primary,
 })`
   margin-top: 20px;
 `;

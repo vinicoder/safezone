@@ -8,12 +8,12 @@ import LogoSmall from '~/assets/logo-small.png';
 import Logo from '~/assets/logo.png';
 import Avatar from '~/components/Avatar';
 
-const { height: window_height } = Dimensions.get('window');
+const { height: windowHeight } = Dimensions.get('window');
 const { statusBarHeight } = Constants;
 
 const isNewIOS =
   Device.osName === 'iOS' && parseInt(Device.osVersion, 10) >= 13;
-const headerHeight = statusBarHeight + (window_height <= 600 ? 50 : 70);
+const headerHeight = statusBarHeight + (windowHeight <= 600 ? 50 : 70);
 const tabBarHeight = isNewIOS ? 90 : 65;
 
 export const colors = {
@@ -22,7 +22,7 @@ export const colors = {
   success: '#049A99',
 };
 
-export const navigation = {
+export const navigations = {
   stackHeader: {
     headerBackTitleVisible: false,
     headerTintColor: 'white',
@@ -82,5 +82,5 @@ export default {
   headerHeight,
   tabBarHeight,
   colors,
-  navigation,
+  navigations,
 };

@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { Animated, Dimensions } from 'react-native';
 import { FontAwesome as Icon } from '@expo/vector-icons';
-import layoutConfig from '~/config/layout';
+import { colors } from '~/config/layout';
 import maps from '~/services/maps';
 
 import ImageSearch from '~/assets/search-boy.png';
@@ -32,7 +32,7 @@ import {
   Loader,
 } from './styles';
 
-function Search({}, ref) {
+function Search(props, ref) {
   const { height } = Dimensions.get('window');
   const [translateY] = useState(new Animated.Value(0));
 
@@ -43,25 +43,19 @@ function Search({}, ref) {
   const [query, setQuery] = useState('');
   const [data, setData] = useState([]);
 
-  const open = () => {
+  const open = () =>
     Animated.timing(translateY, {
       toValue: 1,
       duration: 300,
       useNativeDriver: true,
-    }).start(() => {
-      searchInputRef.current.focus();
-    });
-  };
+    }).start(() => searchInputRef.current.focus());
 
   function closeHandler() {
     Animated.timing(translateY, {
       toValue: 0,
       duration: 300,
       useNativeDriver: true,
-    }).start(() => {
-      searchInputRef.current.clear();
-      setQuery('');
-    });
+    }).start(() => searchInputRef.current.clear());
   }
 
   useImperativeHandle(ref, () => ({
@@ -76,8 +70,8 @@ function Search({}, ref) {
           types: '(cities)',
         },
       })
-      .then(({ data }) => {
-        const { predictions } = data;
+      .then(result => {
+        const { predictions } = result.data;
         setData(predictions);
       });
   }
@@ -95,15 +89,16 @@ function Search({}, ref) {
   useEffect(() => {
     setLoading(false);
     setData([]);
-    if (query && query.length > 0) {
-      setLoading(true);
-      const timer = setTimeout(async () => {
-        await loadPlaces();
-        setLoading(false);
-        if (searchTimer === 0) setSearchTimer(1000);
-      }, searchTimer);
-      return () => clearTimeout(timer);
-    }
+
+    if (!query) return () => {};
+
+    setLoading(true);
+    const timer = setTimeout(async () => {
+      await loadPlaces();
+      setLoading(false);
+      if (searchTimer === 0) setSearchTimer(1000);
+    }, searchTimer);
+    return () => clearTimeout(timer);
   }, [query]);
 
   return (
@@ -137,11 +132,7 @@ function Search({}, ref) {
           ListHeaderComponent={
             <Header>
               <ButtonReturn onPress={closeHandler}>
-                <Icon
-                  name="chevron-left"
-                  size={16}
-                  color={layoutConfig.colors.primary}
-                />
+                <Icon name="chevron-left" size={16} color={colors.primary} />
               </ButtonReturn>
               <InputContainer>
                 <Input
