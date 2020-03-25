@@ -1,7 +1,7 @@
 import React from 'react';
 import { Feather as Icon } from '@expo/vector-icons';
 
-import layoutOptions from '~/config/layout';
+import layoutConfig from '~/config/layout';
 
 import {
   Container,
@@ -32,7 +32,7 @@ export default function Post() {
           <Icon
             name="flag"
             size={22}
-            color={layoutOptions.colors.secondary}
+            color={layoutConfig.colors.secondary}
           ></Icon>
         </ButtonComplaint>
       </PostActions>

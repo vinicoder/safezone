@@ -1,6 +1,12 @@
-import { Dimensions } from 'react-native';
+import React from 'react';
+import { Dimensions, Image } from 'react-native';
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
+
+import LogoSmall from '~/assets/logo-small.png';
+
+import Logo from '~/assets/logo.png';
+import Avatar from '~/components/Avatar';
 
 const { height: window_height } = Dimensions.get('window');
 const { statusBarHeight } = Constants;
@@ -13,10 +19,12 @@ const tabBarHeight = isNewIOS ? 90 : 65;
 export const colors = {
   primary: '#2A1E5C',
   secondary: '#ee4266',
+  success: '#049A99',
 };
 
 export const navigation = {
   stackHeader: {
+    headerBackTitleVisible: false,
     headerTintColor: 'white',
     headerStyle: {
       backgroundColor: colors.primary,
@@ -28,7 +36,22 @@ export const navigation = {
         height: 0,
       },
     },
+    headerLeftContainerStyle: {
+      paddingLeft: 20,
+    },
+    headerRightContainerStyle: {
+      paddingRight: 30,
+    },
+    headerTitleAlign: 'center',
+    headerRight: () => <Image source={LogoSmall} />,
   },
+  stackDefaultHeader: ({ navigation }) => ({
+    headerTitle: () => {},
+    headerLeft: () => <Image source={Logo}></Image>,
+    headerRight: () => <Avatar onPress={() => navigation.navigate('Login')} />,
+    headerLeftContainerStyle: { marginLeft: 30 },
+    headerRightContainerStyle: { marginRight: 30 },
+  }),
   tabBar: {
     keyboardHidesTabBar: Device.osName === 'android',
     activeTintColor: colors.secondary,

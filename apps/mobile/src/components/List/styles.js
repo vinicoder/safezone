@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { Animated } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
-import layoutOptions from '~/config/layout';
+import layoutConfig from '~/config/layout';
 
 export const ListContainer = styled(Animated.View)`
   height: 100%;
@@ -42,7 +42,7 @@ export const SmallHeaderContainer = styled.View`
 export const SmallHeaderContent = styled(Animated.View)`
   width: 100%;
   height: 64px;
-  background: ${layoutOptions.colors.primary};
+  background: ${layoutConfig.colors.primary};
   flex-direction: row;
   align-items: center;
   padding: 0 30px;
@@ -55,7 +55,7 @@ export const HeaderInfo = styled.View`
 `;
 
 export const HeaderSubtitle = styled.Text`
-  color: ${layoutOptions.colors.secondary};
+  color: ${layoutConfig.colors.secondary};
   font-size: ${props => (props.small ? '12px' : '14px')};
 `;
 
@@ -63,7 +63,7 @@ export const HeaderTitle = styled.Text.attrs({
   numberOfLines: 1,
 })`
   font-size: 24px;
-  color: ${props => (props.small ? '#FFF' : layoutOptions.colors.primary)};
+  color: ${props => (props.small ? '#FFF' : layoutConfig.colors.primary)};
   font-weight: bold;
 `;
 
@@ -83,5 +83,5 @@ export const ButtonLocal = styled(RectButton)`
 
 export const ButtonLocalText = styled.Text`
   font-size: 14px;
-  color: ${props => (props.small ? '#FFF' : layoutOptions.colors.primary)};
+  color: ${props => (props.small ? '#FFF' : layoutConfig.colors.primary)};
 `;

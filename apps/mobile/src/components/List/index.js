@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
-import layoutOptions from '~/config/layout';
+import layoutConfig from '~/config/layout';
 
 import {
   HeaderContainer,
@@ -70,7 +70,7 @@ export const ButtonChangeLocal = ({ small, ...rest }) => {
       <Icon
         name="map-marker"
         size={24}
-        color={layoutOptions.colors.secondary}
+        color={layoutConfig.colors.secondary}
       ></Icon>
       <ButtonLocalText small={small}>Alterar local</ButtonLocalText>
     </ButtonLocal>

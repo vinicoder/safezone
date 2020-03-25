@@ -2,12 +2,12 @@ import { Animated } from 'react-native';
 import styled from 'styled-components/native';
 import Button from '~/components/Button';
 
-import layoutOptions from '~/config/layout';
+import layoutConfig from '~/config/layout';
 
 import bgImage from '~/assets/bg-intro.png';
 
 export const Container = styled.View`
-  background: ${layoutOptions.colors.primary};
+  background: ${layoutConfig.colors.primary};
   flex: 1;
 `;
 
@@ -15,12 +15,14 @@ export const Header = styled(Animated.View)`
   padding: 30px;
   flex-direction: row;
   position: relative;
+  height: 235px;
+  align-items: center;
 `;
 
 export const HeaderInfo = styled.View`
   justify-content: flex-start;
   align-items: flex-start;
-  width: 200px;
+  width: 210px;
   z-index: 2;
 `;
 

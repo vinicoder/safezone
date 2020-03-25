@@ -4,9 +4,9 @@ import { ButtonContainer, AvatarContainer } from './styles';
 
 import AvatarImage from '~/assets/avatar.png';
 
-export default function Avatar() {
+export default function Avatar({ ...rest }) {
   return (
-    <ButtonContainer>
+    <ButtonContainer {...rest}>
       <AvatarContainer source={AvatarImage}></AvatarContainer>
     </ButtonContainer>
   );

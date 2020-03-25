@@ -5,15 +5,15 @@ import layoutConfig from '~/config/layout';
 
 export const ButtonContainer = styled(RectButton)`
   background: ${props => layoutConfig.colors[props.color]};
-  height: 36px;
-  border-radius: 18px;
+  height: 42px;
+  border-radius: 21px;
   justify-content: center;
   align-items: center;
-  padding: 0 18px;
+  padding: 0 21px;
 `;
 
 export const ButtonText = styled.Text`
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
 `;

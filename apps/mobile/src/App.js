@@ -5,14 +5,14 @@ import layoutConfig from '~/config/layout';
 
 import Routes from './routes';
 
-export default function App() {
+export default function App({ navigation }) {
   return (
     <>
       <StatusBar
         backgroundColor={layoutConfig.colors.primary}
         barStyle="light-content"
       />
-      <Routes />
+      <Routes navigation={navigation} />
     </>
   );
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -10,25 +9,15 @@ import layoutConfig from '~/config/layout';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-import Logo from '~/assets/logo.png';
-import Avatar from './components/Avatar';
-
-const HeaderDefault = {
-  headerTitle: () => {},
-  headerLeft: () => <Image source={Logo}></Image>,
-  headerRight: () => <Avatar />,
-  headerLeftContainerStyle: { marginLeft: 30 },
-  headerRightContainerStyle: { marginRight: 30 },
-};
-
 import Dashboard from '~/pages/Dashboard';
+import Login from '~/pages/Login';
 
 const guestStackScreen = () => (
   <Stack.Navigator screenOptions={layoutConfig.navigation.stackHeader}>
     <Stack.Screen
       name="Dashboard"
       component={Dashboard}
-      options={HeaderDefault}
+      options={layoutConfig.navigation.stackDefaultHeader}
     />
   </Stack.Navigator>
 );
@@ -38,7 +27,7 @@ const userStackScreen = () => (
     <Stack.Screen
       name="Dashboard"
       component={Dashboard}
-      options={HeaderDefault}
+      options={layoutConfig.navigation.stackDefaultHeader}
     />
   </Stack.Navigator>
 );
@@ -79,6 +68,11 @@ export default () => (
         component={tabsScreen}
         headerMode="none"
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Login"
+        options={{ title: 'Acesse sua conta' }}
+        component={Login}
       />
     </Stack.Navigator>
   </NavigationContainer>
