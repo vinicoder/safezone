@@ -4,6 +4,7 @@ import * as Device from 'expo-device';
 
 import layoutConfig from '~/config/layout';
 import ButtonDefault from '~/components/Button';
+import InputField from '~/components/Form/Input';
 
 export const Container = styled.KeyboardAvoidingView.attrs({
   enabled: Device.osName === 'iOS',
@@ -34,23 +35,10 @@ export const Title = styled.Text`
 export const Desc = styled.Text`
   color: #fff;
   text-align: center;
-  margin: 10px 0;
+  margin: 10px 0 20px 0;
 `;
 
-export const Form = styled.View`
-  margin-top: 10px;
-`;
-
-export const Input = styled.TextInput.attrs({
-  placeholderTextColor: '#FFFFFF',
-})`
-  border-radius: 21px;
-  border-width: 1px;
-  border-color: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
-  color: #fff;
-  height: 42px;
-  padding: 0 20px;
+export const Input = styled(InputField)`
   margin-bottom: 10px;
 `;
 

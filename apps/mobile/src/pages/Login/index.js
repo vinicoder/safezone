@@ -1,4 +1,5 @@
 import React from 'react';
+import { Form } from '@unform/mobile';
 
 import {
   Container,
@@ -6,7 +7,7 @@ import {
   ContentScroll,
   Title,
   Desc,
-  Form,
+  //Form,
   Input,
   Button,
 } from './styles';
@@ -22,8 +23,17 @@ export default function Login() {
             conectado.
           </Desc>
           <Form>
-            <Input placeholder="E-mail de acesso"></Input>
-            <Input placeholder="Senha de acesso"></Input>
+            <Input
+              name="email"
+              textContentType="emailAddress"
+              placeholder="E-mail de acesso"
+            ></Input>
+            <Input
+              name="password"
+              textContentType="password"
+              secureTextEntry={true}
+              placeholder="Senha de acesso"
+            ></Input>
             <Button>Entrar</Button>
             <Button color="success">Criar minha conta</Button>
             <Button color="primary">Esqueceu sua senha?</Button>
