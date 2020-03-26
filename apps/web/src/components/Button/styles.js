@@ -57,6 +57,8 @@ export const ButtonStyled = styled.button`
   &:hover {
     background: ${props =>
       props.noBackground ? '' : darken(0.1, getThemeBackground(props.theme))};
+    color: ${props =>
+      props.noBackground ? '' : darken(0.1, getThemeColor(props.theme))};
   }
 `;
 
@@ -80,5 +82,7 @@ export const LinkStyled = styled(Link)`
   &:hover {
     background: ${props =>
       props.noBackground ? '' : darken(0.1, getThemeBackground(props.theme))};
+    color: ${props =>
+      props.noBackground ? '' : darken(0.1, getThemeColor(props.theme))};
   }
 `;

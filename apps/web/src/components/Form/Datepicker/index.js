@@ -1,7 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
-import ReactDatePicker from 'react-datepicker';
+import ReactDatePicker, { registerLocale } from 'react-datepicker';
 import { useField } from '@unform/core';
 import 'react-datepicker/dist/react-datepicker.css';
+import ptBR from 'date-fns/locale/pt-BR'; // the locale you want
+
+registerLocale('pt-BR', ptBR);
 
 const DatePicker = ({ name, ...rest }) => {
   const datepickerRef = useRef(null);

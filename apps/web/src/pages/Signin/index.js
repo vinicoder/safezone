@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form } from '@unform/web';
+// import { Form } from '@unform/web';
 import { useDispatch, useSelector } from 'react-redux';
 
 import aboutImage from 'images/about-image.svg';
@@ -7,6 +7,7 @@ import Button from 'components/Button';
 import Header from 'components/Layout/Header';
 import Footer from 'components/Layout/Footer';
 import Input from 'components/Form/Input';
+import Form from 'components/Form/StyledForm';
 
 import { signInRequest } from 'store/modules/auth/actions';
 

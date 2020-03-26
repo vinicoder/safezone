@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Form } from '@unform/web';
 
 import aboutImage from 'images/about-image.svg';
 import Button from 'components/Button';
 import Header from 'components/Layout/Header';
 import Footer from 'components/Layout/Footer';
+import StyledForm from 'components/Form/StyledForm';
 import Input from 'components/Form/Input';
 
 import { Container, FormSection, FormContainer } from './styles';
@@ -32,7 +32,7 @@ function RecoverPassword() {
             </div>
             <div className="col-12 col-md-5">
               <FormContainer>
-                <Form onSubmit={handleSubmit}>
+                <StyledForm onSubmit={handleSubmit}>
                   <h1 className="mb-2">Recuperação de conta</h1>
                   <p className="mb-4">
                     Recupere sua conta usando seu e-mail de acesso.
@@ -60,7 +60,7 @@ function RecoverPassword() {
                   >
                     Lembrou sua senha?
                   </Button>
-                </Form>
+                </StyledForm>
               </FormContainer>
             </div>
           </div>

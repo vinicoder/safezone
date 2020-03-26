@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import colors from 'metrics/colors';
 
 export const Container = styled.div`
-  input[type='text'],
+  /* input[type='text'],
   input[type='email'],
   input[type='password'] {
     padding: 10px 20px;
@@ -20,5 +20,5 @@ export const Container = styled.div`
     ::placeholder {
       color: rgba(255, 255, 255, 9);
     }
-  }
+  } */
 `;

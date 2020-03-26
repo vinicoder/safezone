@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useField } from '@unform/core';
 
+import { Container } from './styles';
+
 export default function Select({ name, label, ...rest }) {
   const inputRef = useRef(null);
 
@@ -14,7 +16,7 @@ export default function Select({ name, label, ...rest }) {
     });
   }, [fieldName, registerField]);
   return (
-    <>
+    <Container>
       {label && <label htmlFor={fieldName}>{label}</label>}
 
       <select
@@ -25,6 +27,6 @@ export default function Select({ name, label, ...rest }) {
       />
 
       {error && <span style={{ color: '#f00' }}>{error}</span>}
-    </>
+    </Container>
   );
 }

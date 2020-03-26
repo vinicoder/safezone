@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form } from '@unform/web';
+// import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -8,7 +8,10 @@ import heroImage from 'images/hero-image.svg';
 import Button from 'components/Button';
 import Header from 'components/Layout/Header';
 import Footer from 'components/Layout/Footer';
+import { Form } from 'components/Form/StyledForm/styles';
 import Input from 'components/Form/Input';
+import Datepicker from 'components/Form/Datepicker';
+import ReactSelect from 'components/Form/ReactSelect';
 
 import {
   Container,
@@ -18,6 +21,12 @@ import {
 } from './styles';
 
 const SweetAle = withReactContent(Swal);
+
+const genderOptions = [
+  { value: 'feminino', label: 'Feminino' },
+  { value: 'masculino', label: 'Masculino' },
+  { value: 'outro', label: 'Outro' },
+];
 
 function Signup() {
   async function handleSubmit(data) {
@@ -117,7 +126,7 @@ function Signup() {
             </div>
             <div className="col-12 col-md-5">
               <FormContainer>
-                <Form onSubmit={handleSubmit}>
+                <Form className="my-form" onSubmit={handleSubmit}>
                   <h1 className="mb-2">Criar minha conta</h1>
                   <p className="mb-4">Forneça seus dados corretamente.</p>
                   <Input type="text" name="name" placeholder="Nome completo" />
@@ -131,13 +140,18 @@ function Signup() {
                     name="password"
                     placeholder="Senha de acesso"
                   />
-                  <Input
-                    type="text"
+                  <Datepicker
                     name="birthday"
-                    placeholder="Data de nascimento"
+                    locale="pt-BR"
+                    placeholderText="Data de nascimento"
                   />
-                  <Input type="text" name="gender" placeholder="Gênero" />
-
+                  <ReactSelect
+                    defaultValue=""
+                    name="gender"
+                    placeholder="Gênero"
+                    open
+                    options={genderOptions}
+                  />
                   <p className="mb-3">
                     Ao clicar em &quot;Criar minha conta&quot; você concordará
                     com os <strong>termos de uso</strong> da plataforma.
