@@ -19,6 +19,10 @@ export const Form = styled(Unform)`
       margin-bottom: 2px;
     }
 
+    + .error {
+      margin-bottom: 5px;
+    }
+
     ::placeholder {
       color: rgba(255, 255, 255, 9);
     }
@@ -34,7 +38,10 @@ export const Form = styled(Unform)`
     border-radius: 15px;
     background: ${colors.christalle};
     color: rgba(255, 255, 255, 1);
-    margin-bottom: 15px;
+
+    &.has-error {
+      margin-bottom: 2px;
+    }
 
     &.react-select__control--is-focused {
       border: 1px solid rgba(255, 255, 255, 0.6);

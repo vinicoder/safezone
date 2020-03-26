@@ -1,5 +1,4 @@
-import React from 'react';
-// import { Form } from '@unform/web';
+import React, { useRef } from 'react';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -29,6 +28,8 @@ const genderOptions = [
 ];
 
 function Signup() {
+  const formRef = useRef(null);
+
   async function handleSubmit(data) {
     try {
       let accepted = false;
@@ -87,19 +88,20 @@ function Signup() {
         showConfirmButton: false,
       });
 
-      console.log('accepted', accepted);
-
       if (accepted) {
         const schema = Yup.object().shape({
-          name: Yup.string().required(),
+          name: Yup.string().required('Por favor, digite o seu nome'),
           email: Yup.string()
-            .email()
-            .required(),
+            .email('Por favor, digite um e-mail válido')
+            .required('Por favor, digite o seu email'),
           password: Yup.string()
-            .min(6)
-            .required(),
-          birthday: Yup.string().required(),
-          gender: Yup.string().required(),
+            .min(6, 'Por favor, digite uma senha 6 caracts.')
+            .required('Por favor, digite uma senha segura'),
+          birthday: Yup.date()
+            .max(new Date(), 'Você não pode ter nascimento no futuro!')
+            .required('Por favor, informe sua data de nasc.')
+            .typeError('Por favor, informe uma data válida'),
+          gender: Yup.string().required('Por favor, informe seu genero'),
         });
         await schema.validate(data, {
           abortEarly: false,
@@ -108,9 +110,13 @@ function Signup() {
         console.log(data);
       }
     } catch (err) {
+      const validationErrors = {};
+      console.log('err', err);
       if (err instanceof Yup.ValidationError) {
-        // Validation failed
-        console.log(err);
+        err.inner.forEach(error => {
+          validationErrors[error.path] = error.message;
+        });
+        formRef.current.setErrors(validationErrors);
       }
     }
   }
@@ -126,7 +132,7 @@ function Signup() {
             </div>
             <div className="col-12 col-md-5">
               <FormContainer>
-                <Form className="my-form" onSubmit={handleSubmit}>
+                <Form ref={formRef} onSubmit={handleSubmit}>
                   <h1 className="mb-2">Criar minha conta</h1>
                   <p className="mb-4">Forneça seus dados corretamente.</p>
                   <Input type="text" name="name" placeholder="Nome completo" />
@@ -143,16 +149,17 @@ function Signup() {
                   <Datepicker
                     name="birthday"
                     locale="pt-BR"
+                    maxDate={new Date()}
                     placeholderText="Data de nascimento"
                   />
                   <ReactSelect
-                    defaultValue=""
+                    defaultValue={null}
                     name="gender"
                     placeholder="Gênero"
-                    open
                     options={genderOptions}
                   />
-                  <p className="mb-3">
+
+                  <p className="my-3">
                     Ao clicar em &quot;Criar minha conta&quot; você concordará
                     com os <strong>termos de uso</strong> da plataforma.
                   </p>

@@ -6,6 +6,9 @@ export const Container = styled.footer`
   .row {
     height: 100%;
   }
+  a {
+    text-decoration: none;
+  }
   strong {
     color: rgb(238, 66, 102);
   }

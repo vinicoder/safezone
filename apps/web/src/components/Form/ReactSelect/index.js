@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import ReactSelect from 'react-select';
 import { useField } from '@unform/core';
 
-const Select = ({ name, ...rest }) => {
+const Select = ({ name, className = '', ...rest }) => {
   const selectRef = useRef(null);
   const { fieldName, defaultValue, registerField, error } = useField(name);
   useEffect(() => {
@@ -26,12 +26,17 @@ const Select = ({ name, ...rest }) => {
     });
   }, [fieldName, registerField, rest.isMulti]);
   return (
-    <ReactSelect
-      defaultValue={defaultValue}
-      ref={selectRef}
-      classNamePrefix="react-select"
-      {...rest}
-    />
+    <>
+      <ReactSelect
+        defaultValue={defaultValue}
+        ref={selectRef}
+        className={(error ? 'has-error ' : '') + className}
+        classNamePrefix="react-select"
+        {...rest}
+      />
+
+      {error && <span className="error">{error}</span>}
+    </>
   );
 };
 export default Select;
