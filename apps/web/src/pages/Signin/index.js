@@ -1,5 +1,5 @@
-import React from 'react';
-// import { Form } from '@unform/web';
+import React, { useRef } from 'react';
+import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 
 import aboutImage from 'images/about-image.svg';
@@ -7,20 +7,44 @@ import Button from 'components/Button';
 import Header from 'components/Layout/Header';
 import Footer from 'components/Layout/Footer';
 import Input from 'components/Form/Input';
-import Form from 'components/Form/StyledForm';
+import StyledForm from 'components/Form/StyledForm';
 
 import { signInRequest } from 'store/modules/auth/actions';
 
 import { Container, FormSection, FormContainer } from './styles';
 
 function Signin() {
+  const formRef = useRef(null);
   const dispatch = useDispatch();
   const loading = useSelector(state => state.auth.loading);
 
-  function handleSubmit(values) {
+  async function handleSubmit(values) {
     console.log('values', values);
 
-    dispatch(signInRequest(values.email, values.password));
+    try {
+      const schema = Yup.object().shape({
+        email: Yup.string()
+          .email('Por favor, digite seu e-mail corretamente')
+          .required('Por favor, digite o seu email'),
+        password: Yup.string().required('Por favor, digite sua senha'),
+      });
+      await schema.validate(values, {
+        abortEarly: false,
+      });
+      // Validation passed
+      console.log(values);
+
+      dispatch(signInRequest(values.email, values.password));
+    } catch (err) {
+      const validationErrors = {};
+      console.log('err', err);
+      if (err instanceof Yup.ValidationError) {
+        err.inner.forEach(error => {
+          validationErrors[error.path] = error.message;
+        });
+        formRef.current.setErrors(validationErrors);
+      }
+    }
   }
 
   return (
@@ -34,7 +58,7 @@ function Signin() {
             </div>
             <div className="col-12 col-md-5">
               <FormContainer>
-                <Form onSubmit={handleSubmit}>
+                <StyledForm ref={formRef} onSubmit={handleSubmit}>
                   <h1 className="mb-2">Acesse sua conta</h1>
                   <p className="mb-4">
                     Para atualizar o cadastro de alguma empresa, é necessário
@@ -53,7 +77,7 @@ function Signin() {
                   <Button
                     style={{ width: '100%' }}
                     type="submit"
-                    className="mb-2"
+                    className="my-2"
                     fontWeight="bold"
                     theme="rose"
                     disabled={loading}
@@ -76,7 +100,7 @@ function Signin() {
                   >
                     Esqueceu sua senha?
                   </Button>
-                </Form>
+                </StyledForm>
               </FormContainer>
             </div>
           </div>
