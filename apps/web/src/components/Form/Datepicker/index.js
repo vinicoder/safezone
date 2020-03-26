@@ -6,7 +6,7 @@ import ptBR from 'date-fns/locale/pt-BR'; // the locale you want
 
 registerLocale('pt-BR', ptBR);
 
-const DatePicker = ({ name, className, ...rest }) => {
+const DatePicker = ({ name, className = '', ...rest }) => {
   const datepickerRef = useRef(null);
   const { fieldName, registerField, defaultValue, error } = useField(name);
   const [date, setDate] = useState(defaultValue || null);
