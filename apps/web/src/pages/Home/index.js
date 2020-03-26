@@ -9,11 +9,13 @@ import * as Yup from 'yup';
 import InputUnstyled from 'components/Form/Input/InputUnstyled';
 import Input from 'components/Form/Input';
 import Checkbox from 'components/Form/Checkbox';
-import Select from 'components/Form/Select';
+import StyledForm from 'components/Form/StyledForm';
 import Button from 'components/Button';
 import CompanyBox from 'components/CompanyBox';
 import Header from 'components/Layout/Header';
 import Footer from 'components/Layout/Footer';
+import Datepicker from 'components/Form/Datepicker';
+import ReactSelect from 'components/Form/ReactSelect';
 
 import heroImage from 'images/hero-image.svg';
 import aboutImage from 'images/about-image.svg';
@@ -41,6 +43,12 @@ const MapMarkerIcon = ({ size = '6x' }) => (
   />
 );
 
+const genderOptions = [
+  { value: 'feminino', label: 'Feminino' },
+  { value: 'masculino', label: 'Masculino' },
+  { value: 'outro', label: 'Outro' },
+];
+
 function Home() {
   const formRef = useRef(null);
   const searchPlaceFormRef = useRef(null);
@@ -65,13 +73,21 @@ function Home() {
       formRef.current.setErrors({});
 
       const schema = Yup.object().shape({
-        name: Yup.string().required(),
+        company_name: Yup.string().required(
+          'Por favor, digite o nome da empresa'
+        ),
+        name: Yup.string().required('Por favor, digite o seu nome'),
         email: Yup.string()
-          .email()
-          .required(),
+          .email('Por favor, digite um e-mail válido')
+          .required('Por favor, digite o seu email'),
         password: Yup.string()
-          .min(6)
-          .required(),
+          .min(6, 'Por favor, digite uma senha 6 caracts.')
+          .required('Por favor, digite uma senha segura'),
+        birthday: Yup.date()
+          .max(new Date(), 'Você não pode ter nascimento no futuro!')
+          .required('Por favor, informe sua data de nasc.')
+          .typeError('Por favor, informe uma data válida'),
+        gender: Yup.string().required('Por favor, informe seu genero'),
       });
       await schema.validate(data, {
         abortEarly: false,
@@ -253,7 +269,7 @@ function Home() {
               <img src={formImage} alt="Imagem ilustrativa no formulário" />
             </div>
           </div>
-          <Form ref={formRef} onSubmit={handleSubmit}>
+          <StyledForm ref={formRef} onSubmit={handleSubmit}>
             <div className="row justify-content-md-center mb-5">
               <div className="col col-md-5">
                 <div className="form-title">Informações do seu perfil</div>
@@ -262,28 +278,31 @@ function Home() {
                 <Input name="password" type="password" placeholder="Senha" />
                 <div className="row">
                   <div className="col col-xs-6">
-                    <Input
-                      name="text"
-                      type="text"
-                      placeholder="Data de nascimento"
+                    <Datepicker
+                      name="birthday"
+                      locale="pt-BR"
+                      maxDate={new Date()}
+                      placeholderText="Data de nascimento"
                     />
                   </div>
                   <div className="col col-xs-6">
-                    <Select defaultValue="" name="gender" placeholder="Gênero">
-                      <option value="" style={{ display: 'none' }}>
-                        Gênero
-                      </option>
-                      <option value="feminino">Feminino</option>
-                      <option value="masculino">Masculino</option>
-                      <option value="outro">Outro</option>
-                    </Select>
+                    <ReactSelect
+                      defaultValue={null}
+                      name="gender"
+                      placeholder="Gênero"
+                      options={genderOptions}
+                    />
                   </div>
                 </div>
               </div>
               <div className="col col-md-5">
                 <div className="form-title">Informações da empresa</div>
-                <Input name="name" type="text" placeholder="Nome da Empresa" />
-                <div className="row">
+                <Input
+                  name="company_name"
+                  type="text"
+                  placeholder="Nome da Empresa"
+                />
+                <div className="row mt-2">
                   <div className="col-12">
                     <div className="title-situations">
                       Selecione as situações
@@ -328,7 +347,7 @@ function Home() {
                 Enviar atualização
               </Button>
             </div>
-          </Form>
+          </StyledForm>
         </div>
       </FormSection>
 

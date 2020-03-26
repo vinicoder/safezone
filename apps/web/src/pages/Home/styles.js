@@ -181,7 +181,7 @@ export const FormSection = styled.section`
       display: inline;
     }
 
-    input[type='text'],
+    /* input[type='text'],
     input[type='email'],
     input[type='password'] {
       padding: 10px 20px;
@@ -199,7 +199,7 @@ export const FormSection = styled.section`
       ::placeholder {
         color: rgba(255, 255, 255, 9);
       }
-    }
+    } */
 
     label.input-checked {
       padding-top: 5px;
@@ -218,7 +218,7 @@ export const FormSection = styled.section`
       border-radius: 24px;
     }
 
-    select {
+    /* select {
       min-width: 130px;
       min-height: 42px;
       height: 42px;
@@ -234,7 +234,7 @@ export const FormSection = styled.section`
       ::placeholder {
         color: rgba(255, 255, 255, 9);
       }
-    }
+    } */
 
     .title-situations {
       font-weight: bold;

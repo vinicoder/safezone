@@ -38,7 +38,7 @@ export const Form = styled(Unform)`
     border-radius: 15px;
     background: ${colors.christalle};
     color: rgba(255, 255, 255, 1);
-
+    height: 40px;
     &.has-error {
       margin-bottom: 2px;
     }
@@ -75,7 +75,9 @@ export const Form = styled(Unform)`
   .react-select__option--is-selected {
     background: ${darken(0.1, colors.christalle)};
   }
-
+  .react-select__value-container {
+    height: 40px;
+  }
   .react-select-container {
     background: ${colors.christalle};
     color: rgba(255, 255, 255, 1);
