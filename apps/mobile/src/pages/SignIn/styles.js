@@ -1,25 +1,27 @@
 import styled from 'styled-components/native';
-
 import * as Device from 'expo-device';
 
-import { colors } from '~/config/layout';
+import layoutConfig, { colors } from '~/config/layout';
 import ButtonDefault from '~/components/Button';
 
 export const Container = styled.KeyboardAvoidingView.attrs({
   enabled: Device.osName === 'iOS',
   behavior: 'padding',
+  keyboardVerticalOffset: layoutConfig.headerHeight,
 })`
   background: ${colors.primary};
   flex: 1;
 `;
 
 export const ContentScroll = styled.ScrollView.attrs({
-  bounces: false,
   centerContent: true,
+  keyboardShouldPersistTaps: 'always',
   showsVerticalScrollIndicator: false,
-})`
-  flex: 1;
-`;
+  contentContainerStyle: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+})``;
 
 export const Content = styled.View`
   padding: 30px;
