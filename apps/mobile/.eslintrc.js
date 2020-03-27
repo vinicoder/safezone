@@ -26,6 +26,7 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'no-param-reassign': 'off',
     'no-underscore-dangle': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
   settings: {
     'import/resolver': {

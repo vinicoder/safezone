@@ -1,5 +1,6 @@
 import React from 'react';
 import { Dimensions, Image } from 'react-native';
+import { Appearance } from 'react-native-appearance';
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 
@@ -15,6 +16,8 @@ const isNewIOS =
   Device.osName === 'iOS' && parseInt(Device.osVersion, 10) >= 13;
 const headerHeight = statusBarHeight + (windowHeight <= 600 ? 50 : 70);
 const tabBarHeight = isNewIOS ? 90 : 65;
+
+export const theme = Appearance.getColorScheme();
 
 export const colors = {
   primary: '#2A1E5C',

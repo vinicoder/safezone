@@ -1,9 +1,11 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from '@unform/mobile';
+import { subYears } from 'date-fns';
 import * as Yup from 'yup';
 
 import Input from '~/components/Form/Input';
+import DatePicker from '~/components/Form/DatePicker';
 
 import {
   Container,
@@ -14,7 +16,7 @@ import {
   Button,
 } from '~/components/Form/styles';
 
-function SignIn({ navigation }) {
+function SignUp({ navigation }) {
   const [loading, setLoading] = useState(false);
 
   const formRef = useRef(null);
@@ -53,12 +55,38 @@ function SignIn({ navigation }) {
     <Container pointerEvents={loading ? 'none' : 'auto'}>
       <ContentScroll>
         <Content>
-          <Title>Acesse sua conta</Title>
-          <Desc>
-            Para atualizar o cadastro de alguma empresa, é necessário estar
-            conectado.
-          </Desc>
+          <Title>Criar minha conta</Title>
+          <Desc>Forneça seus dados corretamente.</Desc>
           <Form ref={formRef} onSubmit={handleSubmit}>
+            <Input
+              name="name"
+              placeholder="Nome completo"
+              autoCorrect={false}
+              autoCompleteType="name"
+              returnKeyType="next"
+              onSubmitEditing={() =>
+                formRef.current.getFieldRef('birthday').focus()
+              }
+            />
+            <DatePicker
+              name="birthday"
+              placeholder="Data de nascimento"
+              display="spinner"
+              minimumDate={subYears(new Date(), 100)}
+              maximumDate={subYears(new Date(), 16)}
+              onSubmitEditing={() =>
+                formRef.current.getFieldRef('gender').focus()
+              }
+            />
+            <Input
+              name="gender"
+              placeholder="Gênero"
+              autoCorrect={false}
+              returnKeyType="next"
+              onSubmitEditing={() =>
+                formRef.current.getFieldRef('email').focus()
+              }
+            />
             <Input
               name="email"
               autoCorrect={false}
@@ -84,18 +112,18 @@ function SignIn({ navigation }) {
               onSubmitEditing={() => formRef.current.submitForm()}
             />
             <Button
+              color="success"
               onPress={() => formRef.current.submitForm()}
               loading={loading}
             >
-              Entrar
-            </Button>
-            <Button
-              color="success"
-              onPress={() => navigation.navigate('SignUp')}
-            >
               Criar minha conta
             </Button>
-            <Button color="primary">Esqueceu sua senha?</Button>
+            <Button
+              color="primary"
+              onPress={() => navigation.navigate('SignIn')}
+            >
+              Já tenho conta
+            </Button>
           </Form>
         </Content>
       </ContentScroll>
@@ -103,10 +131,10 @@ function SignIn({ navigation }) {
   );
 }
 
-SignIn.propTypes = {
+SignUp.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-export default SignIn;
+export default SignUp;

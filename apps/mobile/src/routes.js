@@ -9,6 +9,7 @@ import { navigations } from '~/config/layout';
 
 import Dashboard from '~/pages/Dashboard';
 import SignIn from '~/pages/SignIn';
+import SignUp from '~/pages/SignUp';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -75,6 +76,11 @@ export default () => (
         name="SignIn"
         options={{ title: 'Acesse sua conta' }}
         component={SignIn}
+      />
+      <Stack.Screen
+        name="SignUp"
+        options={{ title: 'Criar conta' }}
+        component={SignUp}
       />
     </Stack.Navigator>
   </NavigationContainer>
