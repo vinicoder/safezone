@@ -220,8 +220,9 @@ export const FormSection = styled.section`
 `;
 
 export const SearchInput = styled.div`
-  align-items: center;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   background: #fff;
   padding: 5px 5px;
@@ -240,12 +241,12 @@ export const SearchInput = styled.div`
   input[type='search'] {
     border: none;
     height: 30px;
-    width: 88%;
+    width: 85%;
     margin: 0;
     margin-left: 10px;
     padding: 7px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
+    -webkit-appearance: textfield;
+    outline-offset: -2px;
 
     font-family: 'Poppins';
     font-size: 20px;
@@ -257,25 +258,30 @@ export const SearchInput = styled.div`
   }
 
   .icon {
-    background-color: rgb(238, 66, 102);
-    border-radius: 50%;
-    cursor: pointer;
-    height: 33px;
-    width: 33px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    transition: background 300ms;
 
-    margin: 0;
-    padding: 10px 10px;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
+    width: 15%;
 
-    &:hover {
-      background-color: ${darken(0.2, 'rgb(238, 66, 102)')};
-      fill: white;
+    svg {
+      cursor: pointer;
+      border-radius: 50%;
+      background-color: rgb(238, 66, 102);
+      height: 33px;
+      width: 33px;
+      transition: background 300ms;
+
+      margin: 0;
+      padding: 10px 10px;
+      font-size: 100%;
+      font: inherit;
+      vertical-align: baseline;
+
+      &:hover {
+        background-color: ${darken(0.2, 'rgb(238, 66, 102)')};
+        fill: white;
+      }
     }
   }
 `;
