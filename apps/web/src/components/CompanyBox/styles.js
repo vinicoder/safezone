@@ -11,6 +11,7 @@ export const Container = styled.div`
   min-height: 150px;
   margin: 9px 0px;
   border-radius: 10px;
+  cursor: pointer;
 
   .title {
     font-family: 'Poppins';

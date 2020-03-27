@@ -1,6 +1,8 @@
 import React, { useRef } from 'react';
 import { Scope } from '@unform/core';
 import * as Yup from 'yup';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 import Header from 'components/Layout/Header';
 import Footer from 'components/Layout/Footer';
@@ -11,7 +13,16 @@ import Input from 'components/Form/Input';
 import Checkbox from 'components/Form/Checkbox';
 import formImage from 'images/form-image.svg';
 
-import { Container, PlaceSection, Title, Count, Tag } from './styles';
+import {
+  Container,
+  PlaceSection,
+  Title,
+  Count,
+  Tag,
+  DenunciationContainer,
+} from './styles';
+
+const SweetAle = withReactContent(Swal);
 
 function Place() {
   const formRef = useRef(null);
@@ -41,6 +52,50 @@ function Place() {
         formRef.current.setErrors(validationErrors);
       }
     }
+  }
+
+  async function handleClickCompanyState(company) {
+    let accepted = false;
+
+    await SweetAle.fire({
+      width: '50%',
+      padding: '3em',
+      html: (
+        <DenunciationContainer>
+          <h1>Denunciar</h1>
+          <p className="subtitle">
+            Se você não concorda com essa atualização, confirme sua solicitação.
+          </p>
+        </DenunciationContainer>
+      ),
+      footer: (
+        <>
+          <Button
+            fontWeight="bold"
+            onClick={() => SweetAle.close()}
+            style={{ marginRight: 10 }}
+          >
+            Cancelar
+          </Button>
+          <Button
+            theme="rose"
+            fontWeight="bold"
+            onClick={() => {
+              accepted = true;
+              SweetAle.close();
+            }}
+            style={{ marginLeft: 10 }}
+          >
+            Denunciar
+          </Button>
+        </>
+      ),
+      showCloseButton: true,
+      showCancelButton: false,
+      showConfirmButton: false,
+    });
+
+    console.log('accepted', accepted);
   }
 
   return (
@@ -114,7 +169,12 @@ function Place() {
                 <h4>Últimas atualizações</h4>
 
                 {/* List */}
-                <CompanyBox key={`company-${1}`} />
+                <CompanyBox
+                  key={`company-${1}`}
+                  onClick={() =>
+                    handleClickCompanyState({ id: 1, name: 'company' })
+                  }
+                />
                 <CompanyBox key={`company-${2}`} />
                 <CompanyBox key={`company-${3}`} />
                 <CompanyBox key={`company-${4}`} />

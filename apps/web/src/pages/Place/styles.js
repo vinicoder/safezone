@@ -113,3 +113,30 @@ export const Tag = styled.li`
   margin-right: 5px;
   margin-bottom: 5px;
 `;
+
+export const DenunciationContainer = styled.div`
+  text-align: center;
+  color: ${colors.christalle};
+
+  h1 {
+    font-family: 'Poppins';
+    font-size: 30px;
+    font-weight: 600;
+  }
+
+  .subtitle {
+    font-family: 'Poppins';
+    font-size: 17px;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  p {
+    font-family: 'Poppins';
+    font-size: 16px;
+    font-weight: 300;
+    text-align: initial;
+    margin-bottom: 10px;
+  }
+`;
