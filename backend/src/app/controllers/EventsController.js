@@ -30,6 +30,32 @@ class EventsController {
 
     return res.json({ id, description, start_date });
   }
+
+  async update(req, res) {
+    const schema = Yup.object().shape({
+      end_date: Yup.string().required(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails' });
+    }
+
+    const { id } = req.params;
+
+    const { end_date } = req.body;
+
+    const event = await Events.findByPk(id);
+
+    if (!event) {
+      return res.status(400).json({ error: 'Event does not exists' });
+    }
+
+    event.end_date = end_date;
+
+    await event.save();
+
+    return res.json(event);
+  }
 }
 
 export default new EventsController();

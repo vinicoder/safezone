@@ -6,6 +6,7 @@ import CompanyController from './app/controllers/CompanyController';
 import CompanyAdressController from './app/controllers/CompanyAddressController';
 import EventsController from './app/controllers/EventsController';
 import CompanyEventsController from './app/controllers/CompanyEventsController';
+import LabelsController from './app/controllers/LabelsController';
 
 import authMiddleweare from './app/middlewares/auth';
 
@@ -27,8 +28,14 @@ routes.post('/companies/:id', CompanyAdressController.store);
 
 routes.get('/events', EventsController.index);
 routes.post('/events', EventsController.store);
+routes.put('/events/:id', EventsController.update);
 
 routes.get('/events/:id', CompanyEventsController.show);
 routes.post('/events/associate', CompanyEventsController.store);
+
+routes.get('/labels', LabelsController.index);
+routes.post('/labels', LabelsController.store);
+routes.put('/labels/:id', LabelsController.update);
+routes.delete('/labels/:id', LabelsController.delete);
 
 export default routes;
