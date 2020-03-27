@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch } from 'react-router-dom';
+import { BrowserRouter, Switch, Redirect } from 'react-router-dom';
 
 import Home from 'pages/Home';
 import About from 'pages/About';
@@ -18,7 +18,9 @@ export default function Routes() {
         <Route path="/entrar" component={Signin} />
         <Route path="/criar-conta" component={Signup} />
         <Route path="/recuperar-conta" component={RecoverPassword} />
-        <Route path="/place" component={Place} />
+        <Route path="/empresa" component={Place} />
+
+        <Route component={() => <Redirect to="/" />} />
       </Switch>
     </BrowserRouter>
   );

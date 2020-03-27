@@ -1,11 +1,6 @@
 import styled from 'styled-components';
 import { darken } from 'polished';
 
-const colorsButton = {
-  primary: 'rgb(42, 30, 92)',
-  secondary: 'rgb(249, 249, 249)',
-};
-
 const colorsText = {
   primary: 'rgb(250, 250, 250)',
   secondary: 'rgb(42, 30, 92)',

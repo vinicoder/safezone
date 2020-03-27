@@ -4,15 +4,19 @@ import colors from 'metrics/colors';
 import { darken } from 'polished';
 
 export const Form = styled(Unform)`
+  font-family: 'Open sans';
+  font-weight: 300;
   input[type='text'],
   input[type='email'],
   input[type='password'] {
+    font-family: 'Open sans';
+    font-weight: 300;
     padding: 10px 20px;
     border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 15px;
     background: ${colors.christalle};
     font-size: 16px;
-    color: rgba(255, 255, 255, 1);
+    color: rgba(255, 255, 255);
     margin-bottom: 15px;
     width: 100%;
     &.has-error {
@@ -24,7 +28,7 @@ export const Form = styled(Unform)`
     }
 
     ::placeholder {
-      color: rgba(255, 255, 255, 9);
+      color: rgba(255, 255, 255, 1);
     }
   }
 

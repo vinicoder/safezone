@@ -13,11 +13,11 @@ export const Container = styled.div`
   border-radius: 10px;
 
   .title {
+    font-family: 'Poppins';
+    font-size: 1.5em;
+    font-weight: 500;
     width: 100%;
     margin-bottom: 10px;
-
-    font-size: 24px;
-    font-weight: bold;
   }
 
   .tag-list {

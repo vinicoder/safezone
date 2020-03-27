@@ -143,7 +143,7 @@ function Home() {
 
       <MapSection>
         <div className="companies">
-          {searchPlaceMode ? (
+          {!searchPlaceMode ? (
             <>
               <div className="description">
                 <span className="header-list">
