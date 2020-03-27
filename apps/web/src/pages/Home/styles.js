@@ -11,7 +11,9 @@ const colorsText = {
   secondary: 'rgb(42, 30, 92)',
 };
 
-export const Container = styled.main``;
+export const Container = styled.main`
+  width: 100%;
+`;
 
 export const HeroSection = styled.section`
   padding-top: 100px;
@@ -181,26 +183,6 @@ export const FormSection = styled.section`
       display: inline;
     }
 
-    /* input[type='text'],
-    input[type='email'],
-    input[type='password'] {
-      padding: 10px 20px;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      border-radius: 15px;
-      background: ${colorsButton.primary};
-      font-size: 18px;
-      color: rgba(255, 255, 255, 1);
-      margin-bottom: 20px;
-      width: 100%;
-      &.has-error {
-        margin-bottom: 2px;
-      }
-
-      ::placeholder {
-        color: rgba(255, 255, 255, 9);
-      }
-    } */
-
     label.input-checked {
       padding-top: 5px;
       padding-bottom: 5px;
@@ -217,24 +199,6 @@ export const FormSection = styled.section`
       background: rgb(238, 66, 102);
       border-radius: 24px;
     }
-
-    /* select {
-      min-width: 130px;
-      min-height: 42px;
-      height: 42px;
-      line-height: 42px;
-      padding: 10px 20px;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      border-radius: 15px;
-      background: ${colorsButton.primary};
-      font-size: 18px;
-      color: rgba(255, 255, 255, 1);
-      width: 100%;
-
-      ::placeholder {
-        color: rgba(255, 255, 255, 9);
-      }
-    } */
 
     .title-situations {
       font-weight: bold;
@@ -265,14 +229,23 @@ export const SearchInput = styled.div`
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
-  input {
+  input[type='search']::-webkit-search-cancel-button,
+  input[type='search']::-webkit-search-decoration,
+  input[type='search']::-webkit-search-results-button,
+  input[type='search']::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
+  input[type='search'] {
     border: none;
-    flex: 1;
     height: 30px;
+    width: 88%;
     margin: 0;
     margin-left: 10px;
     padding: 7px;
-    -webkit-appearance: textfield;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 
     font-family: 'Poppins';
     font-size: 20px;
@@ -293,6 +266,12 @@ export const SearchInput = styled.div`
     justify-content: center;
     align-items: center;
     transition: background 300ms;
+
+    margin: 0;
+    padding: 10px 10px;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 
     &:hover {
       background-color: ${darken(0.2, 'rgb(238, 66, 102)')};
