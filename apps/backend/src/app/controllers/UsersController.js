@@ -45,7 +45,12 @@ class UsersController {
       });
     }
 
-    const users = await Users.findAll();
+    const users = await Users.findAll({
+      include: {
+        model: Genders,
+        as: 'gender',
+      },
+    });
 
     return res.json(users);
   }
@@ -54,9 +59,7 @@ class UsersController {
     const schema = Yup.object().shape({
       name: Yup.string(),
       email: Yup.string().email(),
-      gender_id: Yup.number()
-        .min(1)
-        .max(1),
+      gender_id: Yup.string(),
       birth_date: Yup.date(),
       oldPassword: Yup.string().min(6),
       password: Yup.string()
