@@ -6,7 +6,8 @@
   "author": "SafeZone Team",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "start": "NODE_ENV=production nodemon src/server.js "
   },
   "private": false,
   "dependencies": {

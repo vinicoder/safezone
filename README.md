@@ -32,7 +32,7 @@ lerna run start
 ### Or start each project
 
 - **API backend**  
-  `yarn workspace @safezone/api start`
+  `yarn workspace @safezone/backend start`
 - **Web frontend**  
   `yarn workspace @safezone/web start`
 - **Mobile frontend**  
