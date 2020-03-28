@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "@safezone/backend",
   "version": "1.0.0",
   "description": "SafeZone - Jobs done safe",
   "main": "index.js",
