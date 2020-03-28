@@ -1,14 +1,9 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt, faSearch } from '@fortawesome/free-solid-svg-icons';
-import GoogleMapReact from 'google-map-react';
 import { Form } from '@unform/web';
 import { Scope } from '@unform/core';
 import * as Yup from 'yup';
-// import useSWR from 'swr';
-import useSupercluster from 'use-supercluster';
 
 import InputUnstyled from 'components/Form/Input/InputUnstyled';
 import Input from 'components/Form/Input';
@@ -26,9 +21,8 @@ import aboutImage from 'images/about-image.svg';
 import formImage from 'images/form-image.svg';
 import searchImage from 'images/search-image.svg';
 
-import mapsConfig from 'config/maps';
 import mapsApi from 'services/maps';
-import BRAZIL_COORDINATES from 'consts/BRAZIL_COORDINATES.json';
+import Gmaps from 'components/Gmaps';
 import {
   Container,
   HeroSection,
@@ -54,8 +48,6 @@ const MapMarkerIcon = ({ size = '6x', color }) => (
   />
 );
 
-const Marker = ({ children }) => children;
-
 const genderOptions = [
   { value: 'feminino', label: 'Feminino' },
   { value: 'masculino', label: 'Masculino' },
@@ -73,41 +65,7 @@ function Home() {
   const [loadingAutoPosition, setLoadingAutoPosition] = useState(false);
 
   // Map setup
-  const mapRef = useRef();
-  const mapsRef = useRef();
-  const [bounds, setBounds] = useState(null);
-  const [zoom, setZoom] = useState(4);
-
-  // const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=PIRACICABA&key=AIzaSyCmWArZHnZJjWjJGgBNNQLwgklP0Z81fg4&types=(cities)&language=pt-BR`;
-  // const fetcher = fetchUrl => fetch(fetchUrl).then(response => response.json());
-  // const { data, error } = useSWR(url, fetcher);
-  // const companies = data && !error ? data.predictions : [];
-
-  const points = [].map(company => ({
-    type: 'Feature',
-    properties: {
-      id: company.id,
-      cluster: false,
-      companyId: company.id,
-      category: company.category,
-      description: company.description,
-      place_id: company.place_id,
-    },
-    geometry: {
-      type: 'Point',
-      coordinates: [
-        parseFloat(company.location.longitude),
-        parseFloat(company.location.latitude),
-      ],
-    },
-  }));
-
-  const { clusters, supercluster } = useSupercluster({
-    points,
-    bounds,
-    zoom,
-    options: { radius: 75, maxZoom: 20 },
-  });
+  const gmapRef = useRef();
 
   function handleSelectCity(city) {
     setSelectedCity(city);
@@ -118,12 +76,13 @@ function Home() {
   }
 
   function codeLatLng(lat, lng) {
-    const geocoder = new mapsRef.current.Geocoder();
+    const mapsRef = gmapRef.current.getInstanceMaps();
+    const geocoder = new mapsRef.Geocoder();
 
-    const latlng = new mapsRef.current.LatLng(lat, lng);
+    const latlng = new mapsRef.LatLng(lat, lng);
 
     geocoder.geocode({ latLng: latlng }, (results, status) => {
-      if (status === mapsRef.current.GeocoderStatus.OK) {
+      if (status === mapsRef.GeocoderStatus.OK) {
         if (results[1]) {
           // find city name
           const foundCity = results.find(result =>
@@ -154,10 +113,12 @@ function Home() {
   }
 
   function setPositionMap(lati, long) {
-    mapRef.current.setZoom(12);
+    const mapRef = gmapRef.current.getInstanceMap();
+    const mapsRef = gmapRef.current.getInstanceMaps();
+    mapRef.setZoom(12);
 
-    const posToSet = new mapsRef.current.LatLng(lati, long);
-    mapRef.current.setCenter(posToSet);
+    const posToSet = new mapsRef.LatLng(lati, long);
+    mapRef.setCenter(posToSet);
   }
 
   function getPosition() {
@@ -387,80 +348,7 @@ function Home() {
           )}
         </div>
         <div className="map">
-          <GoogleMapReact
-            yesIWantToUseGoogleMapApiInternals
-            onGoogleApiLoaded={({ map, maps }) => {
-              mapRef.current = map;
-              mapsRef.current = maps;
-            }}
-            bootstrapURLKeys={{
-              key: mapsConfig.apiKey,
-              language: mapsConfig.language,
-            }}
-            defaultCenter={BRAZIL_COORDINATES}
-            defaultZoom={zoom}
-            onChange={({ zoom, bounds }) => {
-              setZoom(zoom);
-              setBounds([
-                bounds.nw.lng,
-                bounds.se.lat,
-                bounds.se.lng,
-                bounds.nw.lat,
-              ]);
-            }}
-          >
-            {clusters.map(cluster => {
-              const [longitude, latitude] = cluster.geometry.coordinates;
-              const {
-                cluster: isCluster,
-                point_count: pointCount,
-              } = cluster.properties;
-
-              if (isCluster) {
-                return (
-                  <Marker
-                    key={`cluster-${cluster.id}`}
-                    lat={latitude}
-                    lng={longitude}
-                  >
-                    <div
-                      className="cluster-marker"
-                      style={{
-                        width: `${10 + (pointCount / points.length) * 20}px`,
-                        height: `${10 + (pointCount / points.length) * 20}px`,
-                      }}
-                      onClick={() => {
-                        const expansionZoom = Math.min(
-                          supercluster.getClusterExpansionZoom(cluster.id),
-                          20
-                        );
-                        mapRef.current.setZoom(expansionZoom);
-                        mapRef.current.panTo({ lat: latitude, lng: longitude });
-                      }}
-                    >
-                      {pointCount}
-                    </div>
-                  </Marker>
-                );
-              }
-
-              return (
-                <Marker
-                  key={`company-${cluster.properties.companyId}`}
-                  lat={latitude}
-                  lng={longitude}
-                >
-                  <button
-                    type="button"
-                    className="company-marker"
-                    onClick={() => console.log(cluster)}
-                  >
-                    <MapMarkerIcon size="2x" />
-                  </button>
-                </Marker>
-              );
-            })}
-          </GoogleMapReact>
+          <Gmaps ref={gmapRef} city={selectedCity} />
         </div>
       </MapSection>
 
