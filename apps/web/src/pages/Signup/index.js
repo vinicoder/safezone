@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { useDispatch, useSelector } from 'react-redux';
 
 import heroImage from 'images/hero-image.svg';
 import Button from 'components/Button';
@@ -12,6 +13,7 @@ import Input from 'components/Form/Input';
 import Datepicker from 'components/Form/Datepicker';
 import ReactSelect from 'components/Form/ReactSelect';
 
+import { signUpRequest } from 'store/modules/auth/actions';
 import {
   Container,
   FormSection,
@@ -21,14 +23,18 @@ import {
 
 const SweetAle = withReactContent(Swal);
 
-const genderOptions = [
-  { value: 'feminino', label: 'Feminino' },
-  { value: 'masculino', label: 'Masculino' },
-  { value: 'outro', label: 'Outro' },
-];
-
 function Signup() {
   const formRef = useRef(null);
+  const dispatch = useDispatch();
+  const loading = useSelector(state => state.auth.loading);
+  const gendersLoading = useSelector(state => state.genders.loading);
+  const genders = useSelector(state =>
+    state.genders.data.map(gender => ({
+      ...gender,
+      value: gender.id,
+      label: gender.description,
+    }))
+  );
 
   async function handleSubmit(data) {
     try {
@@ -101,13 +107,21 @@ function Signup() {
             .max(new Date(), 'Você não pode ter nascimento no futuro!')
             .required('Por favor, informe sua data de nasc.')
             .typeError('Por favor, informe uma data válida'),
-          gender: Yup.string().required('Por favor, informe seu genero'),
+          gender: Yup.number().required('Por favor, informe seu genero'),
         });
         await schema.validate(data, {
           abortEarly: false,
         });
         // Validation passed
-        console.log(data);
+        dispatch(
+          signUpRequest(
+            data.name,
+            data.email,
+            data.password,
+            data.birthday,
+            data.gender
+          )
+        );
       }
     } catch (err) {
       const validationErrors = {};
@@ -147,6 +161,7 @@ function Signup() {
                     placeholder="Senha de acesso"
                   />
                   <Datepicker
+                    dateFormat="dd/MM/yyyy"
                     name="birthday"
                     locale="pt-BR"
                     maxDate={new Date()}
@@ -156,7 +171,8 @@ function Signup() {
                     defaultValue={null}
                     name="gender"
                     placeholder="Gênero"
-                    options={genderOptions}
+                    options={genders}
+                    loading={gendersLoading}
                   />
 
                   <p className="my-3">
@@ -167,12 +183,12 @@ function Signup() {
                   <Button
                     type="submit"
                     className="mb-2"
-                    // to="/entrar"
                     fontWeight="bold"
                     theme="persian_green"
                     style={{ width: '100%' }}
+                    disabled={loading}
                   >
-                    Criar minha Conta
+                    {loading ? 'Criando sua conta...' : 'Criar minha Conta'}
                   </Button>
                   <Button
                     className="mb-2"
