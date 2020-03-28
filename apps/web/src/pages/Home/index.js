@@ -69,6 +69,8 @@ function Home() {
   const [cities, setCities] = useState([]);
   const [wasSearched, setWasSearched] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [selectedCity, setSelectedCity] = useState(null);
+  const [loadingAutoPosition, setLoadingAutoPosition] = useState(false);
 
   // Map setup
   const mapRef = useRef();
@@ -109,7 +111,53 @@ function Home() {
     options: { radius: 75, maxZoom: 20 },
   });
 
+  function handleSelectCity(city) {
+    setSelectedCity(city);
+    setSearchPlaceMode(false);
+    setCities([]);
+    setWasSearched(false);
+    setLoading(false);
+  }
+
+  function codeLatLng(lat, lng) {
+    const geocoder = new mapsRef.current.Geocoder();
+
+    const latlng = new mapsRef.current.LatLng(lat, lng);
+
+    geocoder.geocode({ latLng: latlng }, (results, status) => {
+      if (status === mapsRef.current.GeocoderStatus.OK) {
+        if (results[1]) {
+          // find city name
+          const foundCity = results.find(result =>
+            result.types.includes('locality')
+          );
+
+          handleSelectCity({
+            ...foundCity,
+            description: foundCity.address_components[0].long_name,
+            name: foundCity.address_components[0].short_name,
+            place_id: foundCity.place_id,
+            reference: foundCity.place_id,
+            types: foundCity.types,
+          });
+
+          // city data
+          console.log('foundCity', foundCity);
+          setLoadingAutoPosition(false);
+        } else {
+          console.warn('No results found');
+          setLoadingAutoPosition(false);
+        }
+      } else {
+        setLoadingAutoPosition(false);
+        alert(`Geocoder failed due to: ${status}`);
+      }
+    });
+  }
+
   function getPosition() {
+    setLoadingAutoPosition(true);
+
     navigator.geolocation.getCurrentPosition(
       position => {
         setLatitude(position.coords.latitude);
@@ -123,8 +171,12 @@ function Home() {
         );
 
         mapRef.current.setCenter(posToSet);
+        codeLatLng(position.coords.latitude, position.coords.longitude);
       },
-      err => console.log(err)
+      err => {
+        setLoadingAutoPosition(false);
+        console.log(err);
+      }
     );
   }
 
@@ -268,7 +320,10 @@ function Home() {
                 <SearchResults>
                   {!loading &&
                     cities.map(city => (
-                      <SearchResult key={city.place_id}>
+                      <SearchResult
+                        key={city.place_id}
+                        onClick={() => handleSelectCity(city)}
+                      >
                         <SearchIcon>
                           <MapMarkerIcon size="2x" color="#999" />
                         </SearchIcon>
@@ -284,20 +339,30 @@ function Home() {
                     ))}
                 </SearchResults>
               </div>
-              <div className="d-flex justify-content-between align-items-center">
+              <div className="d-flex justify-content-around align-items-center">
+                {selectedCity && (
+                  <Button
+                    theme="blue_haze"
+                    onClick={() => {
+                      setSearchPlaceMode(false);
+                      setCities([]);
+                      setWasSearched(false);
+                    }}
+                    fontWeight="bold"
+                  >
+                    Cancelar
+                  </Button>
+                )}
                 <Button
-                  theme="blue_haze"
-                  onClick={() => {
-                    setSearchPlaceMode(false);
-                    setCities([]);
-                    setWasSearched(false);
-                  }}
+                  disabled={loadingAutoPosition}
+                  className=" ld-ext-left"
+                  theme="rose"
                   fontWeight="bold"
+                  onClick={getPosition}
                 >
-                  Cancelar
-                </Button>
-                <Button theme="rose" fontWeight="bold" onClick={getPosition}>
-                  Selecão automática
+                  {loadingAutoPosition
+                    ? 'Localizando...'
+                    : 'Selecão automática'}
                 </Button>
               </div>
             </>
