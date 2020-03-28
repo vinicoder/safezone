@@ -114,7 +114,6 @@ const Gmaps = forwardRef(({ city }, ref) => {
               lng={longitude}
             >
               <ClusterMarker
-                className="cluster-marker"
                 style={{
                   width: `${10 + (pointCount / points.length) * 20}px`,
                   height: `${10 + (pointCount / points.length) * 20}px`,
@@ -140,11 +139,7 @@ const Gmaps = forwardRef(({ city }, ref) => {
             lat={latitude}
             lng={longitude}
           >
-            <CompanyMarker
-              type="button"
-              className="company-marker"
-              onClick={() => console.log(cluster)}
-            >
+            <CompanyMarker type="button" onClick={() => console.log(cluster)}>
               <MapMarkerIcon size="2x" />
             </CompanyMarker>
           </Marker>
