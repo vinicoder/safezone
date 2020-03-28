@@ -17,12 +17,15 @@ const routes = new Router();
 routes.post('/users', UsersController.store);
 routes.post('/sessions', SessionController.store);
 
+routes.get('/companies', CompanyController.index);
+routes.get('/labels', LabelsController.index);
+routes.get('/genders', GendersController.index);
+
 routes.use(authMiddleweare);
 
 routes.get('/users', UsersController.index);
 routes.put('/users', UsersController.update);
 
-routes.get('/companies', CompanyController.index);
 routes.post('/companies', CompanyController.store);
 
 routes.get('/companies/:id', CompanyAdressController.index);
@@ -35,12 +38,10 @@ routes.put('/events/:id', EventsController.update);
 routes.get('/events/:id', CompanyEventsController.show);
 routes.post('/events/associate', CompanyEventsController.store);
 
-routes.get('/labels', LabelsController.index);
 routes.post('/labels', LabelsController.store);
 routes.put('/labels/:id', LabelsController.update);
 routes.delete('/labels/:id', LabelsController.delete);
 
-routes.get('/genders', GendersController.index);
 routes.post('/genders', GendersController.store);
 routes.put('/genders/:id', GendersController.update);
 routes.delete('/genders/:id', GendersController.delete);
