@@ -27,4 +27,14 @@ export default createGlobalStyle`
   button {
     cursor: pointer;
   }
+
+  .switch-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .switch-wrapper > div {
+    position: absolute;
+    width: 100%;
+  }
 `;
