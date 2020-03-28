@@ -224,7 +224,12 @@ function Home() {
     mapsApi
       .get(`place/autocomplete/json?input=${values.search}&types=(cities)`)
       .then(({ data }) => {
-        setCities(data.predictions);
+        setCities(
+          data.predictions.map(predic => ({
+            ...predic,
+            name: predic.structured_formatting.main_text,
+          }))
+        );
         setWasSearched(true);
         setLoading(false);
       });
@@ -275,7 +280,8 @@ function Home() {
             <>
               <div className="description">
                 <span className="header-list">
-                  Empresas em <br /> <strong>Piracicaba</strong>
+                  Empresas em <br />{' '}
+                  <strong>{selectedCity && selectedCity.name}</strong>
                 </span>
                 <div>
                   <Button
