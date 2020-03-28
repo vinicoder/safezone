@@ -8,6 +8,7 @@ import { Form } from '@unform/web';
 import { Scope } from '@unform/core';
 import * as Yup from 'yup';
 // import useSWR from 'swr';
+import useSupercluster from 'use-supercluster';
 
 import InputUnstyled from 'components/Form/Input/InputUnstyled';
 import Input from 'components/Form/Input';
@@ -25,10 +26,9 @@ import aboutImage from 'images/about-image.svg';
 import formImage from 'images/form-image.svg';
 import searchImage from 'images/search-image.svg';
 
-import maps from 'config/maps';
+import mapsConfig from 'config/maps';
 import mapsApi from 'services/maps';
-
-import useSupercluster from 'use-supercluster';
+import BRAZIL_COORDINATES from 'consts/BRAZIL_COORDINATES.json';
 import {
   Container,
   HeroSection,
@@ -75,8 +75,6 @@ function Home() {
   // Map setup
   const mapRef = useRef();
   const mapsRef = useRef();
-  const [latitude, setLatitude] = useState(-10.3333333);
-  const [longitude, setLongitude] = useState(-53.2);
   const [bounds, setBounds] = useState(null);
   const [zoom, setZoom] = useState(4);
 
@@ -167,8 +165,6 @@ function Home() {
 
     navigator.geolocation.getCurrentPosition(
       position => {
-        setLatitude(position.coords.latitude);
-        setLongitude(position.coords.longitude);
         setPositionMap(position.coords.latitude, position.coords.longitude);
         codeLatLng(position.coords.latitude, position.coords.longitude);
       },
@@ -398,13 +394,10 @@ function Home() {
               mapsRef.current = maps;
             }}
             bootstrapURLKeys={{
-              key: maps.apiKey,
-              language: maps.language,
+              key: mapsConfig.apiKey,
+              language: mapsConfig.language,
             }}
-            defaultCenter={{
-              lat: latitude,
-              lng: longitude,
-            }}
+            defaultCenter={BRAZIL_COORDINATES}
             defaultZoom={zoom}
             onChange={({ zoom, bounds }) => {
               setZoom(zoom);
