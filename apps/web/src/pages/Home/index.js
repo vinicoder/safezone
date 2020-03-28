@@ -75,10 +75,10 @@ function Home() {
   // Map setup
   const mapRef = useRef();
   const mapsRef = useRef();
-  const [latitude, setLatitude] = useState(-22.725);
-  const [longitude, setLongitude] = useState(-47.6476);
+  const [latitude, setLatitude] = useState(-10.3333333);
+  const [longitude, setLongitude] = useState(-53.2);
   const [bounds, setBounds] = useState(null);
-  const [zoom, setZoom] = useState(10);
+  const [zoom, setZoom] = useState(4);
 
   // const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=PIRACICABA&key=AIzaSyCmWArZHnZJjWjJGgBNNQLwgklP0Z81fg4&types=(cities)&language=pt-BR`;
   // const fetcher = fetchUrl => fetch(fetchUrl).then(response => response.json());
@@ -155,6 +155,13 @@ function Home() {
     });
   }
 
+  function setPositionMap(lati, long) {
+    mapRef.current.setZoom(12);
+
+    const posToSet = new mapsRef.current.LatLng(lati, long);
+    mapRef.current.setCenter(posToSet);
+  }
+
   function getPosition() {
     setLoadingAutoPosition(true);
 
@@ -162,15 +169,7 @@ function Home() {
       position => {
         setLatitude(position.coords.latitude);
         setLongitude(position.coords.longitude);
-
-        mapRef.current.setZoom(10);
-
-        const posToSet = new mapsRef.current.LatLng(
-          position.coords.latitude,
-          position.coords.longitude
-        );
-
-        mapRef.current.setCenter(posToSet);
+        setPositionMap(position.coords.latitude, position.coords.longitude);
         codeLatLng(position.coords.latitude, position.coords.longitude);
       },
       err => {
@@ -328,7 +327,24 @@ function Home() {
                     cities.map(city => (
                       <SearchResult
                         key={city.place_id}
-                        onClick={() => handleSelectCity(city)}
+                        onClick={() => {
+                          handleSelectCity(city);
+
+                          mapsApi
+                            .get(`place/details/json`, {
+                              params: {
+                                place_id: city.place_id,
+                              },
+                            })
+                            .then(({ data }) => {
+                              console.log('data.result', data.result);
+
+                              setPositionMap(
+                                data.result.geometry.location.lat,
+                                data.result.geometry.location.lng
+                              );
+                            });
+                        }}
                       >
                         <SearchIcon>
                           <MapMarkerIcon size="2x" color="#999" />
@@ -389,7 +405,7 @@ function Home() {
               lat: latitude,
               lng: longitude,
             }}
-            defaultZoom={10}
+            defaultZoom={zoom}
             onChange={({ zoom, bounds }) => {
               setZoom(zoom);
               setBounds([
