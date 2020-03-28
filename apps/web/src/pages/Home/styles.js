@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { darken } from 'polished';
+import colors from 'metrics/colors';
 
 const colorsText = {
   primary: 'rgb(250, 250, 250)',
@@ -57,6 +58,25 @@ export const MapSection = styled.section`
   }
   .map {
     width: 60%;
+  }
+
+  .cluster-marker {
+    color: #fff;
+    background: ${colors.christalle};
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .company-marker {
+    background: none;
+    border: none;
+  }
+
+  .company-marker img {
+    width: 25px;
   }
 `;
 
@@ -279,4 +299,64 @@ export const SearchInput = styled.div`
       }
     }
   }
+`;
+
+export const SearchMessage = styled.div`
+  padding: 10px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 16px;
+`;
+
+export const SearchResults = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 5px;
+`;
+
+export const SearchResult = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  border-top-width: 1px;
+  border-top-color: rgba(155, 155, 155, 0.1);
+  padding: 10px 5px;
+  border-radius: 10px;
+  transition: background-color 300ms;
+
+  &:hover {
+    background: rgba(155, 155, 155, 0.1);
+    cursor: pointer;
+  }
+`;
+
+export const SearchIcon = styled.div`
+  display: flex;
+  width: 42px;
+  height: 42px;
+  border-radius: 21px;
+  background: rgba(0, 0, 0, 0.05);
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+`;
+
+export const SearchInfo = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+`;
+
+export const SearchResultName = styled.div`
+  display: flex;
+  font-size: 18px;
+  font-weight: bold;
+  color: ${colors.christalle};
+`;
+
+export const SearchResultDesc = styled.div`
+  display: flex;
+  color: rgba(0, 0, 0, 0.5);
 `;

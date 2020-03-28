@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt, faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -5,6 +7,7 @@ import GoogleMapReact from 'google-map-react';
 import { Form } from '@unform/web';
 import { Scope } from '@unform/core';
 import * as Yup from 'yup';
+// import useSWR from 'swr';
 
 import InputUnstyled from 'components/Form/Input/InputUnstyled';
 import Input from 'components/Form/Input';
@@ -25,6 +28,7 @@ import searchImage from 'images/search-image.svg';
 import maps from 'config/maps';
 import mapsApi from 'services/maps';
 
+import useSupercluster from 'use-supercluster';
 import {
   Container,
   HeroSection,
@@ -33,15 +37,24 @@ import {
   FormSection,
   CompanyList,
   SearchInput,
+  SearchResults,
+  SearchResult,
+  SearchIcon,
+  SearchInfo,
+  SearchResultDesc,
+  SearchResultName,
+  SearchMessage,
 } from './styles';
 
-const MapMarkerIcon = ({ size = '6x' }) => (
+const MapMarkerIcon = ({ size = '6x', color }) => (
   <FontAwesomeIcon
     size={size}
-    color="rgb(238, 66, 102)"
+    color={color || 'rgb(238, 66, 102)'}
     icon={faMapMarkerAlt}
   />
 );
+
+const Marker = ({ children }) => children;
 
 const genderOptions = [
   { value: 'feminino', label: 'Feminino' },
@@ -52,16 +65,64 @@ const genderOptions = [
 function Home() {
   const formRef = useRef(null);
   const searchPlaceFormRef = useRef(null);
-  const [searchPlaceMode, setSearchPlaceMode] = useState(false);
+  const [searchPlaceMode, setSearchPlaceMode] = useState(true);
+  const [cities, setCities] = useState([]);
+  const [wasSearched, setWasSearched] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // Map setup
+  const mapRef = useRef();
+  const mapsRef = useRef();
   const [latitude, setLatitude] = useState(-22.725);
   const [longitude, setLongitude] = useState(-47.6476);
+  const [bounds, setBounds] = useState(null);
+  const [zoom, setZoom] = useState(10);
 
-  async function getPosition() {
-    await navigator.geolocation.getCurrentPosition(
+  // const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=PIRACICABA&key=AIzaSyCmWArZHnZJjWjJGgBNNQLwgklP0Z81fg4&types=(cities)&language=pt-BR`;
+  // const fetcher = fetchUrl => fetch(fetchUrl).then(response => response.json());
+  // const { data, error } = useSWR(url, fetcher);
+  // const companies = data && !error ? data.predictions : [];
+
+  const points = [].map(company => ({
+    type: 'Feature',
+    properties: {
+      id: company.id,
+      cluster: false,
+      companyId: company.id,
+      category: company.category,
+      description: company.description,
+      place_id: company.place_id,
+    },
+    geometry: {
+      type: 'Point',
+      coordinates: [
+        parseFloat(company.location.longitude),
+        parseFloat(company.location.latitude),
+      ],
+    },
+  }));
+
+  const { clusters, supercluster } = useSupercluster({
+    points,
+    bounds,
+    zoom,
+    options: { radius: 75, maxZoom: 20 },
+  });
+
+  function getPosition() {
+    navigator.geolocation.getCurrentPosition(
       position => {
         setLatitude(position.coords.latitude);
         setLongitude(position.coords.longitude);
-        console.log('position', position);
+
+        mapRef.current.setZoom(10);
+
+        const posToSet = new mapsRef.current.LatLng(
+          position.coords.latitude,
+          position.coords.longitude
+        );
+
+        mapRef.current.setCenter(posToSet);
       },
       err => console.log(err)
     );
@@ -107,11 +168,26 @@ function Home() {
   }
 
   function handleSearchSubmit(values) {
-    // https://maps.googleapis.com/maps/api/place/
-    // findplacefromtext/json?input=mongolian%20grill&inputtype=textquery&fields=photos,formatted_address,name,opening_hours,rating&locationbias=circle:2000@47.6918452,-122.2226413&key=YOUR_API_KEY
+    setLoading(true);
     mapsApi
-      .get(`place/details/json?input=${values.search}`)
-      .then(resp => console.log(resp));
+      .get(`place/autocomplete/json?input=${values.search}&types=(cities)`)
+      .then(({ data }) => {
+        setCities(data.predictions);
+        setWasSearched(true);
+        setLoading(false);
+      });
+  }
+
+  function emptyComponent() {
+    if (loading) return <SearchMessage>Carregando...</SearchMessage>;
+
+    if (cities.length) return null;
+
+    if (wasSearched && cities.length === 0) {
+      return <SearchMessage>Nenhum resultado encontrado.</SearchMessage>;
+    }
+
+    return <img src={searchImage} alt="Imagem ilustrativa de pesquisa" />;
   }
 
   return (
@@ -169,7 +245,7 @@ function Home() {
             </>
           ) : (
             <>
-              <div className="my-5">
+              <div className="my-5" style={{ height: 450 }}>
                 <Form ref={searchPlaceFormRef} onSubmit={handleSearchSubmit}>
                   <SearchInput className="mb-5">
                     <InputUnstyled
@@ -188,12 +264,34 @@ function Home() {
                     </div>
                   </SearchInput>
                 </Form>
-                <img src={searchImage} alt="Imagem ilustrativa de pesquisa" />
+                {emptyComponent()}
+                <SearchResults>
+                  {!loading &&
+                    cities.map(city => (
+                      <SearchResult key={city.place_id}>
+                        <SearchIcon>
+                          <MapMarkerIcon size="2x" color="#999" />
+                        </SearchIcon>
+                        <SearchInfo>
+                          <SearchResultName>
+                            {city.structured_formatting.main_text}
+                          </SearchResultName>
+                          <SearchResultDesc>
+                            {city.description}
+                          </SearchResultDesc>
+                        </SearchInfo>
+                      </SearchResult>
+                    ))}
+                </SearchResults>
               </div>
               <div className="d-flex justify-content-between align-items-center">
                 <Button
                   theme="blue_haze"
-                  onClick={() => setSearchPlaceMode(false)}
+                  onClick={() => {
+                    setSearchPlaceMode(false);
+                    setCities([]);
+                    setWasSearched(false);
+                  }}
                   fontWeight="bold"
                 >
                   Cancelar
@@ -207,21 +305,81 @@ function Home() {
         </div>
         <div className="map">
           <GoogleMapReact
+            yesIWantToUseGoogleMapApiInternals
+            onGoogleApiLoaded={({ map, maps }) => {
+              mapRef.current = map;
+              mapsRef.current = maps;
+            }}
             bootstrapURLKeys={{
               key: maps.apiKey,
+              language: maps.language,
             }}
             defaultCenter={{
               lat: latitude,
               lng: longitude,
             }}
             defaultZoom={10}
+            onChange={({ zoom, bounds }) => {
+              setZoom(zoom);
+              setBounds([
+                bounds.nw.lng,
+                bounds.se.lat,
+                bounds.se.lng,
+                bounds.nw.lat,
+              ]);
+            }}
           >
-            <MapMarkerIcon
-              size="3x"
-              lat={-22.725}
-              lng={-47.64767844}
-              text="My Marker"
-            />
+            {clusters.map(cluster => {
+              const [longitude, latitude] = cluster.geometry.coordinates;
+              const {
+                cluster: isCluster,
+                point_count: pointCount,
+              } = cluster.properties;
+
+              if (isCluster) {
+                return (
+                  <Marker
+                    key={`cluster-${cluster.id}`}
+                    lat={latitude}
+                    lng={longitude}
+                  >
+                    <div
+                      className="cluster-marker"
+                      style={{
+                        width: `${10 + (pointCount / points.length) * 20}px`,
+                        height: `${10 + (pointCount / points.length) * 20}px`,
+                      }}
+                      onClick={() => {
+                        const expansionZoom = Math.min(
+                          supercluster.getClusterExpansionZoom(cluster.id),
+                          20
+                        );
+                        mapRef.current.setZoom(expansionZoom);
+                        mapRef.current.panTo({ lat: latitude, lng: longitude });
+                      }}
+                    >
+                      {pointCount}
+                    </div>
+                  </Marker>
+                );
+              }
+
+              return (
+                <Marker
+                  key={`company-${cluster.properties.companyId}`}
+                  lat={latitude}
+                  lng={longitude}
+                >
+                  <button
+                    type="button"
+                    className="company-marker"
+                    onClick={() => console.log(cluster)}
+                  >
+                    <MapMarkerIcon size="2x" />
+                  </button>
+                </Marker>
+              );
+            })}
           </GoogleMapReact>
         </div>
       </MapSection>

@@ -9,6 +9,7 @@ maps.interceptors.request.use(config => {
   config.params = config.params || {};
   config.params.key = mapsConfig.apiKey;
   config.params.language = mapsConfig.language;
+
   return config;
 });
 
