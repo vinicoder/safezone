@@ -85,7 +85,6 @@ function DatePicker({ name, placeholder, onSubmitEditing, ...rest }) {
 
   const Picker = () => (
     <DateTimePicker
-      textColor="#000"
       value={date}
       is24Hour
       onChange={onChangeHandler}

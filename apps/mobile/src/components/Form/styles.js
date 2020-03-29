@@ -54,7 +54,7 @@ export const ModalPickerOverlay = styled.TouchableOpacity.attrs({
 `;
 
 export const ModalPickerContent = styled.View`
-  background: ${theme === 'dark' ? colors.primary : 'white'};
+  background: ${theme === 'dark' ? '#222' : 'white'};
 `;
 
 export const ModalPickerBar = styled.View`

@@ -23,6 +23,8 @@ import {
   ModalPickerButton,
 } from './styles';
 
+import { theme } from '~/config/layout';
+
 const styles = StyleSheet.create({
   inputField: { opacity: 0 },
   androidPicker: { color: '#FFF', margin: 0 - 6 },
@@ -94,8 +96,13 @@ function Select({ name, items, placeholder, onSubmitEditing, ...rest }) {
       onValueChange={onChangeHandler}
       style={Device.osName !== 'iOS' && styles.androidPicker}
     >
-      {listItems.map((option, key) => (
-        <Picker.Item label={option.label} value={option.value} key={key} />
+      {listItems.map(option => (
+        <Picker.Item
+          label={option.label}
+          value={option.value}
+          key={option.value}
+          color={theme === 'dark' && 'white'}
+        />
       ))}
     </Picker>
   );
