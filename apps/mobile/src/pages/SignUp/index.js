@@ -32,6 +32,9 @@ function SignUp({ navigation }) {
         birthday: Yup.date()
           .required('Data de nascimento obrigatória')
           .typeError('Data de nascimento obrigatória'),
+        gender: Yup.number()
+          .required('Selecione um gênero')
+          .typeError('Selecione um gênero'),
       });
 
       await schema.validate(data, {
@@ -85,11 +88,11 @@ function SignUp({ navigation }) {
 
             <Select
               name="gender"
-              placeholder="Gênero"
+              placeholder={{ label: 'Gênero', value: 0 }}
               items={[
-                { label: 'Masculino', value: 'masculino', key: 0 },
-                { label: 'Feminino', value: 'feminino', key: 1 },
-                { label: 'Outros', value: 'outros', key: 2 },
+                { label: 'Masculino', value: 1 },
+                { label: 'Feminino', value: 2 },
+                { label: 'Outros', value: 3 },
               ]}
               onSubmitEditing={() =>
                 formRef.current.getFieldRef('email').focus()

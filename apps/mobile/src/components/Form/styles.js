@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import * as Device from 'expo-device';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import layoutConfig, { theme, colors } from '~/config/layout';
 import ButtonDefault from '~/components/Button';
 
@@ -36,12 +35,6 @@ export const InputReadonly = styled.TouchableOpacity.attrs({
 export const InputText = styled.Text`
   color: #fff;
   font-size: 16px;
-`;
-
-export const Picker = styled(DateTimePicker).attrs({
-  textColor: theme === 'dark' ? colors.primary : 'white',
-})`
-  width: 100%;
 `;
 
 export const ModalPicker = styled.Modal.attrs({

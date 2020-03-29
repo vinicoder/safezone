@@ -1,104 +1,163 @@
-import React, { useEffect, useRef } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  Keyboard,
+  TouchableOpacity,
+  View,
+  Picker,
+  StyleSheet,
+} from 'react-native';
+import * as Device from 'expo-device';
 import PropTypes from 'prop-types';
 import { useField } from '@unform/core';
 
-import RNPickerSelect from 'react-native-picker-select';
-import { InputContainer, ErrorMessage } from './styles';
+import {
+  InputContainer,
+  InputField,
+  InputReadonly,
+  InputText,
+  ModalPicker,
+  ModalPickerOverlay,
+  ModalPickerContent,
+  ErrorMessage,
+  ModalPickerBar,
+  ModalPickerButton,
+} from './styles';
 
 const styles = StyleSheet.create({
-  placeholder: {
-    color: '#FFFFFF',
-    fontSize: 16,
-  },
-  viewContainer: {
-    margin: 0,
-    color: '#FFF',
-    borderRadius: 21,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.5)',
-    height: 42,
-    paddingLeft: 20,
-    paddingRight: 20,
-    justifyContent: 'center',
-  },
-  inputIOS: {
-    fontSize: 16,
-    color: '#FFFFFF',
-    height: 42,
-  },
-  inputAndroid: {
-    fontSize: 16,
-    color: '#FFFFFF',
-    height: 42,
-    marginLeft: -6,
-    marginRight: -6,
-  },
+  inputField: { opacity: 0 },
+  androidPicker: { color: '#FFF', margin: 0 - 6 },
+  inputReadonly: { position: 'absolute', width: '100%' },
 });
 
-function Select({ name, placeholder, onSubmitEditing, ...rest }) {
-  const selectRef = useRef(null);
-  const { fieldName, registerField, defaultValue, error } = useField(name);
+function Select({ name, items, placeholder, onSubmitEditing, ...rest }) {
+  const inputRef = useRef(null);
+  const pickerRef = useRef(null);
+  const { fieldName, registerField, defaultValue = '', error } = useField(name);
+
+  const [pickerValue, setPickerValue] = useState(null);
+  const [listItems, setListItems] = useState(items);
+  const [show, setShow] = useState(false);
+  const [readonly, setReadonly] = useState(null);
 
   useEffect(() => {
     registerField({
       name: fieldName,
-      ref: selectRef.current,
-      path: 'inputRef._lastNativeText',
+      ref: inputRef.current,
+      path: '_lastNativeText',
       getValue(ref) {
-        return ref.inputRef._lastNativeText || '';
+        return ref._lastNativeText || '';
       },
       setValue(ref, value) {
-        ref.inputRef.setNativeProps({ text: value });
-        ref.inputRef._lastNativeText = value;
+        ref.setNativeProps({ text: value });
+        ref._lastNativeText = value;
       },
       clearValue(ref) {
-        ref.inputRef.setNativeProps({ text: '' });
-        ref.inputRef._lastNativeText = '';
+        ref.setNativeProps({ text: '' });
+        ref._lastNativeText = '';
       },
     });
   }, [fieldName, registerField]);
 
-  function onLoadInput() {
-    selectRef.current.focus = () => selectRef.current.togglePicker(true);
+  useEffect(() => {
+    if (placeholder) {
+      setListItems([placeholder, ...items]);
+    }
+  }, []);
+
+  function setValue(value) {
+    setPickerValue(value);
+    inputRef.current._lastNativeText = value;
+    const [currentItem] = listItems.filter(obj => obj.value === value);
+    setReadonly(currentItem.label);
   }
 
-  function onChanged(value) {
-    selectRef.current.inputRef.setNativeProps({ text: value });
-    selectRef.current.inputRef._lastNativeText = value;
+  function onLoadInput() {
+    if (defaultValue) {
+      setValue(defaultValue);
+    }
+    inputRef.current.focus = () => Device.osName === 'iOS' && setShow(true);
   }
+
+  function onChangeHandler(value) {
+    setValue(value);
+    setShow(false);
+    if (onSubmitEditing) {
+      setTimeout(onSubmitEditing, 100);
+    }
+  }
+
+  const SelectPicker = () => (
+    <Picker
+      ref={pickerRef}
+      {...rest}
+      selectedValue={pickerValue}
+      onValueChange={onChangeHandler}
+      style={Device.osName !== 'iOS' && styles.androidPicker}
+    >
+      {listItems.map((option, key) => (
+        <Picker.Item label={option.label} value={option.value} key={key} />
+      ))}
+    </Picker>
+  );
+
+  useEffect(() => {
+    if (show) {
+      Keyboard.dismiss();
+    }
+  }, [show]);
 
   return (
-    <InputContainer>
-      <RNPickerSelect
-        ref={selectRef}
-        value={defaultValue}
-        error={error}
-        doneText="Pronto"
-        placeholder={{
-          label: placeholder,
-          key: 0,
-          value: 0,
-        }}
-        onValueChange={onChanged}
-        style={styles}
-        textInputProps={{ onLayout: onLoadInput }}
-        onClose={() => onSubmitEditing && setTimeout(onSubmitEditing, 25)}
-        {...rest}
-      />
-      {error && <ErrorMessage>{error}</ErrorMessage>}
-    </InputContainer>
+    <>
+      <InputContainer>
+        <TouchableOpacity onPress={() => setShow(true)} activeOpacity={1}>
+          <View pointerEvents={Device.osName === 'iOS' ? 'none' : 'auto'}>
+            <InputField
+              ref={inputRef}
+              defaultValue={defaultValue.toString()}
+              error={error}
+              style={styles.inputField}
+              onLayout={onLoadInput}
+            />
+            <InputReadonly style={styles.inputReadonly} error={error}>
+              {Device.osName === 'iOS' ? (
+                <InputText>{readonly || placeholder.label}</InputText>
+              ) : (
+                <SelectPicker />
+              )}
+            </InputReadonly>
+          </View>
+        </TouchableOpacity>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+      </InputContainer>
+      {Device.osName === 'iOS' && (
+        <ModalPicker visible={show}>
+          <ModalPickerOverlay onPress={() => setShow(false)} />
+          <ModalPickerContent>
+            <ModalPickerBar>
+              <ModalPickerButton
+                onPress={() => setShow(false)}
+                title="Pronto"
+              />
+            </ModalPickerBar>
+            <SelectPicker />
+          </ModalPickerContent>
+        </ModalPicker>
+      )}
+    </>
   );
 }
 
 Select.propTypes = {
   name: PropTypes.string.isRequired,
-  placeholder: PropTypes.string,
+  items: PropTypes.arrayOf(PropTypes.object),
+  placeholder: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  ),
   onSubmitEditing: PropTypes.func,
 };
-
 Select.defaultProps = {
-  placeholder: 'Selecione um item...',
+  placeholder: {},
+  items: [],
   onSubmitEditing: false,
 };
 

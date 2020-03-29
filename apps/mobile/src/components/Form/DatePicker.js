@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Keyboard, TouchableOpacity, View } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Device from 'expo-device';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
@@ -10,7 +11,6 @@ import {
   InputField,
   InputReadonly,
   InputText,
-  Picker,
   ModalPicker,
   ModalPickerOverlay,
   ModalPickerContent,
@@ -83,8 +83,9 @@ function DatePicker({ name, placeholder, onSubmitEditing, ...rest }) {
     }
   }, [show]);
 
-  const DTPicker = () => (
-    <Picker
+  const Picker = () => (
+    <DateTimePicker
+      textColor="#000"
       value={date}
       is24Hour
       onChange={onChangeHandler}
@@ -125,11 +126,11 @@ function DatePicker({ name, placeholder, onSubmitEditing, ...rest }) {
                 title="Pronto"
               />
             </ModalPickerBar>
-            <DTPicker />
+            <Picker />
           </ModalPickerContent>
         </ModalPicker>
       ) : (
-        show && <DTPicker />
+        show && <Picker />
       )}
     </>
   );
