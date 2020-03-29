@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 
 import Input from '~/components/Form/Input';
 import DatePicker from '~/components/Form/DatePicker';
+import Select from '~/components/Form/Select';
 
 import {
   Container,
@@ -81,15 +82,20 @@ function SignUp({ navigation }) {
                 formRef.current.getFieldRef('gender').focus()
               }
             />
-            <Input
+
+            <Select
               name="gender"
               placeholder="Gênero"
-              autoCorrect={false}
-              returnKeyType="next"
+              items={[
+                { label: 'Masculino', value: 'masculino', key: 0 },
+                { label: 'Feminino', value: 'feminino', key: 1 },
+                { label: 'Outros', value: 'outros', key: 2 },
+              ]}
               onSubmitEditing={() =>
                 formRef.current.getFieldRef('email').focus()
               }
             />
+
             <Input
               name="email"
               autoCorrect={false}
