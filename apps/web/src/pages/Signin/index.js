@@ -94,7 +94,7 @@ function Signin() {
                   </Button>
                   <Button
                     className="mb-2"
-                    to="/recuperar-conta"
+                    to="/recuperar-senha"
                     fontWeight="bold"
                     theme="primary"
                   >

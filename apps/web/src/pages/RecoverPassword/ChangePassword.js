@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import * as Yup from 'yup';
+import { useLocation } from 'react-router-dom';
 
 import aboutImage from 'images/about-image.svg';
 import Button from 'components/Button';
@@ -12,34 +13,34 @@ import api from 'services/api';
 import { toast } from 'react-toastify';
 import { Container, FormSection, FormContainer } from './styles';
 
-function RecoverPassword() {
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
+function ChangePassword() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
   const formRef = useRef(null);
+  const query = useQuery();
 
   async function handleSubmit(data) {
     setLoading(true);
     try {
       const schema = Yup.object().shape({
-        email: Yup.string()
-          .email('Por favor, digite um e-mail válido')
-          .required('Por favor, digite o seu email'),
+        password: Yup.string()
+          .min(6, 'Por favor, digite uma senha 6 caracts.')
+          .required('Por favor, digite uma senha segura'),
       });
       await schema.validate(data, {
         abortEarly: false,
       });
       // Validation passed
-      await api.post('/passwords', {
-        ...data,
-        redirect: `${process.env.REACT_APP_PUBLIC_URL}/resetar-senha`,
-      });
+      await api.put(`/passwords/${query.get('token')}`, data);
       const msg = (
         <div>
-          <strong>Encontramos seu email!</strong>
+          <strong>Sua senha foi alterada com sucesso!</strong>
           <br />
-          <span>
-            Por favor, verifique sua caixa de entrada para trocar a sua senha
-          </span>
+          <span>Vá para a página de login para acessar sua conta</span>
         </div>
       );
       setSuccess(msg);
@@ -55,8 +56,10 @@ function RecoverPassword() {
       } else {
         toast.error(
           <div>
-            <strong>Tem certeza que seu e-mail está correto?</strong>{' '}
-            <span>Por favor, verifique o email e tente novamente.</span>
+            <strong>Houve um problema com o token</strong>{' '}
+            <span>
+              Por favor, use o link no email recebido e tente novamente.
+            </span>
           </div>
         );
       }
@@ -78,35 +81,33 @@ function RecoverPassword() {
               <FormContainer>
                 <StyledForm ref={formRef} onSubmit={handleSubmit}>
                   <h1 className="mb-2">Recuperação de conta</h1>
-                  <p className="mb-4">
-                    Recupere sua conta usando seu e-mail de acesso.
-                  </p>
+                  <p className="mb-4">Coloque sua nova senha de acesso</p>
                   <Input
-                    type="email"
-                    name="email"
-                    placeholder="E-mail de acesso"
+                    type="password"
+                    name="password"
+                    placeholder="Nova senha de acesso"
                   />
-                  {success || (
-                    <>
-                      <Button
-                        style={{ width: '100%' }}
-                        type="submit"
-                        className="my-2"
-                        fontWeight="bold"
-                        theme="rose"
-                        disabled={loading}
-                      >
-                        {loading ? 'Enviando...' : 'Recuperar'}
-                      </Button>
-                      <Button
-                        className="mb-2"
-                        to="/entrar"
-                        fontWeight="bold"
-                        theme="primary"
-                      >
-                        Lembrou sua senha?
-                      </Button>
-                    </>
+                  {success}
+                  {!success ? (
+                    <Button
+                      style={{ width: '100%' }}
+                      type="submit"
+                      className="my-2"
+                      fontWeight="bold"
+                      theme="rose"
+                      disabled={loading}
+                    >
+                      {loading ? 'Enviando...' : 'Alterar senha'}
+                    </Button>
+                  ) : (
+                    <Button
+                      className="mb-2"
+                      to="/entrar"
+                      fontWeight="bold"
+                      theme="primary"
+                    >
+                      Acessar sua conta
+                    </Button>
                   )}
                 </StyledForm>
               </FormContainer>
@@ -119,4 +120,4 @@ function RecoverPassword() {
   );
 }
 
-export default RecoverPassword;
+export default ChangePassword;
