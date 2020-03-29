@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Keyboard, TouchableOpacity, View } from 'react-native';
 import * as Device from 'expo-device';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
@@ -73,11 +73,13 @@ function DatePicker({ name, placeholder, onSubmitEditing, ...rest }) {
   }
 
   useEffect(() => {
-    if (show) {
+    if (!show && lastDate && lastDate !== date) {
+      onSubmitEditing();
       setLastDate(date);
     }
-    if (!show && lastDate && Device.osName === 'iOS') {
-      onSubmitEditing();
+    if (show) {
+      setLastDate(date);
+      Keyboard.dismiss();
     }
   }, [show]);
 

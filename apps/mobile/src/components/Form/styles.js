@@ -45,7 +45,7 @@ export const Picker = styled(DateTimePicker).attrs({
 `;
 
 export const ModalPicker = styled.Modal.attrs({
-  animationType: 'fade',
+  animationType: 'slide',
   transparent: true,
 })`
   flex: 1;
@@ -57,7 +57,6 @@ export const ModalPicker = styled.Modal.attrs({
 export const ModalPickerOverlay = styled.TouchableOpacity.attrs({
   activeOpacity: 1,
 })`
-  background: rgba(0, 0, 0, 0.5);
   flex: 1;
 `;
 
