@@ -28,6 +28,9 @@ function SignUp({ navigation }) {
           .email('Digite um e-mail válido')
           .required('E-mail obrigatório'),
         password: Yup.string().required('Senha obrigatória'),
+        birthday: Yup.date()
+          .required('Data de nascimento obrigatória')
+          .typeError('Data de nascimento obrigatória'),
       });
 
       await schema.validate(data, {
