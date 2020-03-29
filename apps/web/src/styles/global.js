@@ -42,16 +42,15 @@ export default createGlobalStyle`
     font-family: 'Open Sans';
     .Toastify__toast--error{
       background: #c0392b;
+      border-radius: 6px;
     }
     .Toastify__toast--success{
       background: #27ae60;
+      border-radius: 6px;
     }
     .Toastify__toast--warning{
       background: #f1c40f;
-      /* color: #273148;
-      .Toastify__close-button {
-        color: #273148;
-      } */
+      border-radius: 6px;
     }
   }
 `;
