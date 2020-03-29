@@ -6,6 +6,7 @@ import Home from 'pages/Home';
 import About from 'pages/About';
 import Signin from 'pages/Signin';
 import Signup from 'pages/Signup';
+import Signout from 'pages/Signout';
 import RecoverPassword from 'pages/RecoverPassword';
 import Place from 'pages/Place';
 import Route from './Route';
@@ -24,6 +25,7 @@ export default function Routes() {
       <Route path="/criar-conta" component={Signup} />
       <Route path="/recuperar-conta" component={RecoverPassword} />
       <Route path="/empresa" component={Place} />
+      <Route path="/logout" component={Signout} />
 
       <Route component={() => <Redirect to="/" />} />
     </AnimatedSwitch>

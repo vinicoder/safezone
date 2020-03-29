@@ -1,15 +1,13 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
-
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import Button from 'components/Button';
 import logoVertical from 'images/logo-vertical.svg';
-
-import { Container, UserProfileButton } from './styles';
+import { Container } from './styles';
 
 export default function Header() {
+  const signed = useSelector(state => state.auth.signed);
   return (
     <Container>
       <div className="container">
@@ -32,11 +30,15 @@ export default function Header() {
                 </Button>
               </li>
               <li>
-                <Link to="/entrar">
-                  <UserProfileButton>
-                    <FontAwesomeIcon icon={faUser} />
-                  </UserProfileButton>
-                </Link>
+                {signed ? (
+                  <Button to="/logout" theme="secondary">
+                    Logout
+                  </Button>
+                ) : (
+                  <Button to="/entrar" theme="secondary">
+                    Entrar
+                  </Button>
+                )}
               </li>
             </nav>
           </div>
