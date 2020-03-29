@@ -1,17 +1,14 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useField } from '@unform/core';
+import CheckboxShaped from './styles';
 
-export default function Checkbox({
-  name,
-  label,
-  addonPosition,
-  className,
-  ...rest
-}) {
+export default function Checkbox({ name, label, className, ...rest }) {
+  const [checked, setChecked] = useState(false);
   const inputRef = useRef(null);
-  const { fieldName, defaultValue = '', registerField, error } = useField(name);
-  const randomId = Math.random() + name;
+  const { fieldName, defaultValue = false, registerField, error } = useField(
+    name
+  );
 
   useEffect(() => {
     registerField({
@@ -21,30 +18,30 @@ export default function Checkbox({
     });
   }, [fieldName, registerField]);
 
+  const handleCheckboxChange = event => {
+    setChecked(event.target.checked);
+  };
+
   return (
-    <label className="input-checked" htmlFor={randomId}>
-      {addonPosition === 'right' && label}{' '}
-      <input
-        type="checkbox"
-        ref={inputRef}
-        id={randomId}
-        className={(error ? 'has-error' : '') + className}
-        defaultValue={defaultValue}
-        {...rest}
-      />{' '}
-      {addonPosition === 'left' && label}
-    </label>
+    <CheckboxShaped
+      ref={inputRef}
+      className={(error ? 'has-error' : '') + className}
+      defaultValue={defaultValue}
+      checked={checked}
+      onChange={handleCheckboxChange}
+      {...rest}
+    >
+      <span style={{ marginLeft: 5 }}>{label}</span>
+    </CheckboxShaped>
   );
 }
 
 Checkbox.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   label: PropTypes.string.isRequired,
-  addonPosition: PropTypes.string,
   className: PropTypes.string,
 };
 
 Checkbox.defaultProps = {
-  addonPosition: 'left',
   className: '',
 };

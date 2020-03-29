@@ -49,27 +49,6 @@ export const PlaceSection = styled.section`
         margin-bottom: 5%;
       }
 
-      .situations {
-        display: inline;
-      }
-
-      label.input-checked {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        font-size: 1em;
-        font-weight: normal;
-        color: rgba(255, 255, 255, 1);
-        user-select: none;
-
-        display: inline-block;
-
-        padding: 2px 20px;
-        margin-right: 5px;
-        margin-bottom: 5px;
-        background: rgb(238, 66, 102);
-        border-radius: 24px;
-      }
-
       .title-situations {
         font-weight: bold;
         font-size: 1em;

@@ -27,7 +27,7 @@ export default function Header() {
               </li>
 
               <li>
-                <Button to="/" theme="primary" fontWeight="bold">
+                <Button theme="primary" fontWeight="bold">
                   Consultar Empresas
                 </Button>
               </li>

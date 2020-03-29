@@ -4,6 +4,7 @@ import { faMapMarkerAlt, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Form } from '@unform/web';
 import { Scope } from '@unform/core';
 import * as Yup from 'yup';
+import { useSelector } from 'react-redux';
 
 import InputUnstyled from 'components/Form/Input/InputUnstyled';
 import Input from 'components/Form/Input';
@@ -48,12 +49,6 @@ const MapMarkerIcon = ({ size = '6x', color }) => (
   />
 );
 
-const genderOptions = [
-  { value: 'feminino', label: 'Feminino' },
-  { value: 'masculino', label: 'Masculino' },
-  { value: 'outro', label: 'Outro' },
-];
-
 function Home() {
   const formRef = useRef(null);
   const searchPlaceFormRef = useRef(null);
@@ -63,6 +58,23 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [selectedCity, setSelectedCity] = useState(null);
   const [loadingAutoPosition, setLoadingAutoPosition] = useState(false);
+  const gendersLoading = useSelector(state => state.genders.loading);
+  const genders = useSelector(state =>
+    state.genders.data.map(gender => ({
+      ...gender,
+      value: gender.id,
+      label: gender.description,
+    }))
+  );
+
+  const labelsLoading = useSelector(state => state.labels.loading);
+  const labels = useSelector(state =>
+    state.labels.data.map(label => ({
+      ...label,
+      value: label.id,
+      label: label.description,
+    }))
+  );
 
   // Map setup
   const gmapRef = useRef();
@@ -231,7 +243,7 @@ function Home() {
       </HeroSection>
 
       <MapSection>
-        <div className="companies">
+        <div id="mapsection" className="companies">
           {!searchPlaceMode ? (
             <>
               <div className="description">
@@ -405,6 +417,7 @@ function Home() {
                 <div className="row">
                   <div className="col col-xs-6">
                     <Datepicker
+                      dateFormat="dd/MM/yyyy"
                       name="birthday"
                       locale="pt-BR"
                       maxDate={new Date()}
@@ -416,7 +429,8 @@ function Home() {
                       defaultValue={null}
                       name="gender"
                       placeholder="Gênero"
-                      options={genderOptions}
+                      loading={gendersLoading}
+                      options={genders}
                     />
                   </div>
                 </div>
@@ -435,17 +449,14 @@ function Home() {
                     </div>
                     <Scope path="situations">
                       <ul className="situations">
-                        <Checkbox name="home_office" label="Home-office" />
-                        <Checkbox name="closed" label="Fechada" />
-                        <Checkbox
-                          name="reduction_employees"
-                          label="Menos colaboradores"
-                        />
-                        <Checkbox name="less_hours" label="Horas reduzidas" />
-                        <Checkbox
-                          name="vacation_time"
-                          label={`Colaboradores em "férias"`}
-                        />
+                        {labelsLoading && 'Carregando dados...'}
+                        {labels.map(lb => (
+                          <Checkbox
+                            key={lb.id}
+                            name={`checkbox-${lb.id}`}
+                            label={lb.description}
+                          />
+                        ))}
                       </ul>
                     </Scope>
                   </div>
