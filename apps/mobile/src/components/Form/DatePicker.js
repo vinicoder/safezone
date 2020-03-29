@@ -21,17 +21,12 @@ import {
 
 function DatePicker({ name, placeholder, onSubmitEditing, ...rest }) {
   const inputRef = useRef(null);
-  const { fieldName, registerField, defaultValue, error } = useField(name);
+  const { fieldName, registerField, defaultValue = '', error } = useField(name);
 
   const [date, setDate] = useState(new Date());
-  const [lastDate, setLastDate] = useState();
   const [show, setShow] = useState(false);
-  const [dateReadonly, setDateReadonly] = useState(defaultValue);
-
-  if (defaultValue) {
-    setDate(new Date(defaultValue));
-    setDateReadonly(format(defaultValue, 'dd/LL/yyyy'));
-  }
+  const [readonly, setReadonly] = useState(null);
+  const [lastDate, setLastDate] = useState(null);
 
   useEffect(() => {
     registerField({
@@ -52,7 +47,16 @@ function DatePicker({ name, placeholder, onSubmitEditing, ...rest }) {
     });
   }, [fieldName, registerField]);
 
-  function handleFocus() {
+  function setValue(value) {
+    setDate(value);
+    inputRef.current._lastNativeText = value;
+    setReadonly(format(value, 'dd/LL/yyyy'));
+  }
+
+  function onLoadInput() {
+    if (defaultValue) {
+      setValue(new Date(defaultValue));
+    }
     inputRef.current.focus = () => setShow(true);
   }
 
@@ -64,8 +68,7 @@ function DatePicker({ name, placeholder, onSubmitEditing, ...rest }) {
       }
     }
     if (changedDate) {
-      setDate(changedDate);
-      setDateReadonly(format(changedDate, 'dd/LL/yyyy'));
+      setValue(changedDate);
     }
   }
 
@@ -97,13 +100,14 @@ function DatePicker({ name, placeholder, onSubmitEditing, ...rest }) {
               ref={inputRef}
               defaultValue={defaultValue}
               error={error}
-              placeholder={placeholder}
-              editable={false}
               style={{ opacity: 0 }}
-              onLayout={handleFocus}
+              onLayout={onLoadInput}
             />
-            <InputReadonly style={{ position: 'absolute', width: '100%' }}>
-              <InputText>{dateReadonly || placeholder}</InputText>
+            <InputReadonly
+              style={{ position: 'absolute', width: '100%' }}
+              error={error}
+            >
+              <InputText>{readonly || placeholder}</InputText>
             </InputReadonly>
           </View>
         </TouchableOpacity>
