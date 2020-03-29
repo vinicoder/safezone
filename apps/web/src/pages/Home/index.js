@@ -87,7 +87,7 @@ function Home() {
     setLoading(false);
   }
 
-  function codeLatLng(lat, lng) {
+  function getCityByGeoCoordinates(lat, lng) {
     const mapsRef = gmapRef.current.getInstanceMaps();
     const geocoder = new mapsRef.Geocoder();
 
@@ -96,7 +96,7 @@ function Home() {
     geocoder.geocode({ latLng: latlng }, (results, status) => {
       if (status === mapsRef.GeocoderStatus.OK) {
         if (results[1]) {
-          // find city name
+          // find city type
           const foundCity = results.find(result =>
             result.types.includes('locality')
           );
@@ -110,8 +110,6 @@ function Home() {
             types: foundCity.types,
           });
 
-          // city data
-          console.log('foundCity', foundCity);
           setLoadingAutoPosition(false);
         } else {
           console.warn('No results found');
@@ -139,7 +137,10 @@ function Home() {
     navigator.geolocation.getCurrentPosition(
       position => {
         setPositionMap(position.coords.latitude, position.coords.longitude);
-        codeLatLng(position.coords.latitude, position.coords.longitude);
+        getCityByGeoCoordinates(
+          position.coords.latitude,
+          position.coords.longitude
+        );
       },
       err => {
         setLoadingAutoPosition(false);
@@ -333,6 +334,7 @@ function Home() {
               <div className="d-flex justify-content-around align-items-center">
                 {selectedCity && (
                   <Button
+                    disabled={loadingAutoPosition}
                     theme="blue_haze"
                     onClick={() => {
                       setSearchPlaceMode(false);
