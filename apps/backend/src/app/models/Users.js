@@ -11,6 +11,8 @@ class Users extends Model {
         password: Sequelize.VIRTUAL,
         password_hash: Sequelize.STRING,
         birth_date: Sequelize.DATE,
+        token: Sequelize.STRING,
+        token_created_at: Sequelize.DATE,
       },
       {
         sequelize,

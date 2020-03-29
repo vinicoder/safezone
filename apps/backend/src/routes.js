@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import UsersController from './app/controllers/UsersController';
 import SessionController from './app/controllers/SessionController';
+import ForgotPasswordController from './app/controllers/ForgotPasswordController';
 import CompanyController from './app/controllers/CompanyController';
 import CompanyAdressController from './app/controllers/CompanyAddressController';
 import EventsController from './app/controllers/EventsController';
@@ -16,6 +17,8 @@ const routes = new Router();
 
 routes.post('/users', UsersController.store);
 routes.post('/sessions', SessionController.store);
+routes.post('/passwords', ForgotPasswordController.store);
+routes.put('/passwords/:token', ForgotPasswordController.update);
 
 routes.get('/companies', CompanyController.index);
 routes.get('/labels', LabelsController.index);
