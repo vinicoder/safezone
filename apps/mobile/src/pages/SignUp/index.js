@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { Text } from 'react-native';
 import PropTypes from 'prop-types';
 import { Form } from '@unform/mobile';
 import { subYears } from 'date-fns';
@@ -7,6 +8,8 @@ import * as Yup from 'yup';
 import Input from '~/components/Form/Input';
 import DatePicker from '~/components/Form/DatePicker';
 import Select from '~/components/Form/Select';
+
+import Modal from '~/components/Modal';
 
 import {
   Container,
@@ -19,12 +22,16 @@ import {
 
 function SignUp({ navigation }) {
   const [loading, setLoading] = useState(false);
+  const modalRef = useRef(null);
 
   const formRef = useRef(null);
 
   async function handleSubmit(data) {
     try {
+      modalRef.current.open();
+
       const schema = Yup.object().shape({
+        name: Yup.string().required('Nome é obrigatório'),
         email: Yup.string()
           .email('Digite um e-mail válido')
           .required('E-mail obrigatório'),
@@ -42,8 +49,6 @@ function SignUp({ navigation }) {
       });
 
       formRef.current.setErrors({});
-
-      setLoading(true);
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errorMessages = {};
@@ -123,6 +128,7 @@ function SignUp({ navigation }) {
               returnKeyType="send"
               onSubmitEditing={() => formRef.current.submitForm()}
             />
+
             <Button
               color="success"
               onPress={() => formRef.current.submitForm()}
@@ -139,6 +145,67 @@ function SignUp({ navigation }) {
           </Form>
         </Content>
       </ContentScroll>
+      <Modal
+        ref={modalRef}
+        title="Termos de Uso"
+        subtitle="Leia atentamente os termos"
+        onConfirm={() => setLoading(false)}
+        onCancel={() => setLoading(false)}
+      >
+        <Text>
+          <Text style={{ marginBottom: 10 }}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
+          </Text>
+          <Text style={{ marginBottom: 10 }}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur.
+          </Text>
+          <Text style={{ marginBottom: 10 }}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
+          </Text>
+          <Text style={{ marginBottom: 10 }}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur.
+          </Text>
+          <Text style={{ marginBottom: 10 }}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
+          </Text>
+          <Text style={{ marginBottom: 10 }}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur.
+          </Text>
+        </Text>
+      </Modal>
     </Container>
   );
 }

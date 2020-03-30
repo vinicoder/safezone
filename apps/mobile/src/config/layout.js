@@ -23,6 +23,8 @@ export const colors = {
   primary: '#2A1E5C',
   secondary: '#ee4266',
   success: '#049A99',
+  info: '#E2E2E2',
+  white: '#FFFFFF',
 };
 
 export const navigations = {
@@ -82,6 +84,7 @@ export const navigations = {
 };
 
 export default {
+  windowHeight,
   headerHeight,
   tabBarHeight,
   colors,
