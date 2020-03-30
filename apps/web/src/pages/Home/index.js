@@ -432,22 +432,22 @@ function Home() {
         <FormSection>
           <div className="container">
             <div className="row justify-content-md-center">
-              <div className="col col-md-5">
+              <div className="col col-md-5 col-sm-12">
                 <h4>Atualize sua empresa</h4>
               </div>
-              <div className="col col-md-5">
+              <div className="col col-md-5 col-sm-12">
                 <img src={formImage} alt="Imagem ilustrativa no formulário" />
               </div>
             </div>
             <StyledForm ref={formRef} onSubmit={handleSubmit}>
               <div className="row justify-content-md-center mb-5">
-                <div className="col col-md-5">
+                <div className="col col-md-5 col-sm-12">
                   <div className="form-title">Informações do seu perfil</div>
                   <Input name="name" type="text" placeholder="Nome completo" />
                   <Input name="email" type="email" placeholder="E-mail" />
                   <Input name="password" type="password" placeholder="Senha" />
                   <div className="row">
-                    <div className="col col-xs-6">
+                    <div className="col col-sm-12 col-md-6">
                       <Datepicker
                         dateFormat="dd/MM/yyyy"
                         name="birthday"
@@ -456,7 +456,7 @@ function Home() {
                         placeholderText="Data de nascimento"
                       />
                     </div>
-                    <div className="col col-xs-6">
+                    <div className="col col-sm-12 col-md-6">
                       <ReactSelect
                         defaultValue={null}
                         name="gender"

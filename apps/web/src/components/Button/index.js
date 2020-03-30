@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Textfit } from 'react-textfit';
 
 import { ButtonStyled, LinkStyled } from './styles';
 
@@ -14,13 +15,13 @@ export default function Button({
   if (to) {
     return (
       <LinkStyled {...props} to={to} theme={theme} fontWeight={fontWeight}>
-        {children}
+        <Textfit mode="single">{children}</Textfit>
       </LinkStyled>
     );
   }
   return (
     <ButtonStyled {...props} type={type} theme={theme} fontWeight={fontWeight}>
-      {children}
+      <Textfit mode="single">{children}</Textfit>
     </ButtonStyled>
   );
 }
