@@ -27,6 +27,12 @@ function Input({ name, ...rest }) {
     });
   }, [fieldName, registerField]);
 
+  useEffect(() => {
+    if (defaultValue) {
+      inputRef.current._lastNativeText = defaultValue;
+    }
+  }, []);
+
   return (
     <InputContainer>
       <InputField

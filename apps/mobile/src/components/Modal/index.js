@@ -46,6 +46,7 @@ function Modal({ title, subtitle, children, onConfirm, onCancel }, ref) {
   }));
 
   function handleConfirm() {
+    close();
     if (onConfirm) onConfirm();
   }
 

@@ -28,14 +28,14 @@ function SignUp({ navigation }) {
 
   async function handleSubmit(data) {
     try {
-      modalRef.current.open();
-
       const schema = Yup.object().shape({
         name: Yup.string().required('Nome é obrigatório'),
         email: Yup.string()
           .email('Digite um e-mail válido')
           .required('E-mail obrigatório'),
-        password: Yup.string().required('Senha obrigatória'),
+        password: Yup.string()
+          .min(6, 'Mínimo de 6 caracteres')
+          .required('Senha obrigatória'),
         birthday: Yup.date()
           .required('Data de nascimento obrigatória')
           .typeError('Data de nascimento obrigatória'),
@@ -49,6 +49,8 @@ function SignUp({ navigation }) {
       });
 
       formRef.current.setErrors({});
+
+      modalRef.current.open();
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errorMessages = {};
@@ -149,7 +151,7 @@ function SignUp({ navigation }) {
         ref={modalRef}
         title="Termos de Uso"
         subtitle="Leia atentamente os termos"
-        onConfirm={() => setLoading(false)}
+        onConfirm={() => navigation.navigate('Profile')}
         onCancel={() => setLoading(false)}
       >
         <Text>
