@@ -11,6 +11,7 @@ export const Label = styled.label`
   margin: 5px 5px 0 0;
   display: inline-block;
   user-select: none;
+  cursor: pointer;
 `;
 
 const CheckboxContainer = styled.div`

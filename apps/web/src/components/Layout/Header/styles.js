@@ -3,8 +3,9 @@ import styled from 'styled-components';
 export const Container = styled.header`
   padding: 25px 0px;
   width: 100%;
-  height: 100px;
-  overflow-x: hidden;
+  min-height: 100px;
+  overflow: hidden;
+
   img {
     pointer-events: none;
     width: 248px;
@@ -12,11 +13,16 @@ export const Container = styled.header`
 
   nav {
     display: flex;
-    list-style: none;
     align-items: center;
     margin-right: -15px;
+
+    list-style: none;
     li {
       margin: 0 15px;
+    }
+
+    @media (max-width: 575.98px) {
+      flex-direction: column !important;
     }
   }
 

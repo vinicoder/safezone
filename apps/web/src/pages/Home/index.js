@@ -5,6 +5,7 @@ import { Form } from '@unform/web';
 import { Scope } from '@unform/core';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
+import { Element, scroller } from 'react-scroll';
 
 import InputUnstyled from 'components/Form/Input/InputUnstyled';
 import Input from 'components/Form/Input';
@@ -230,7 +231,17 @@ function Home() {
 
               <div className="row">
                 <div className="col col-sm-7">
-                  <Button to="/" theme="rose" fontWeight="bold">
+                  <Button
+                    fontWeight="bold"
+                    theme="rose"
+                    onClick={() =>
+                      scroller.scrollTo('scroll-to-form', {
+                        duration: 800,
+                        delay: 0,
+                        smooth: 'easeInOutQuart',
+                      })
+                    }
+                  >
                     Atualize sua empresa
                   </Button>
                 </div>
@@ -243,128 +254,136 @@ function Home() {
         </div>
       </HeroSection>
 
-      <MapSection>
-        <div id="mapsection" className="companies">
-          {!searchPlaceMode ? (
-            <>
-              <div className="description">
-                <span className="header-list">
-                  Empresas em <br />{' '}
-                  <strong>{selectedCity && selectedCity.name}</strong>
-                </span>
-                <div>
-                  <Button
-                    style={{ padding: 0, background: 'rgba(224,222,231,12%)' }}
-                    onClick={() => setSearchPlaceMode(true)}
-                    noBackground
-                  >
-                    <MapMarkerIcon size="lg" /> Alterar local
-                  </Button>
+      <Element name="scroll-to-map">
+        <MapSection>
+          <div id="mapsection" className="companies">
+            {!searchPlaceMode ? (
+              <>
+                <div className="description">
+                  <span className="header-list">
+                    Empresas em <br />{' '}
+                    <strong>{selectedCity && selectedCity.name}</strong>
+                  </span>
+                  <div>
+                    <Button
+                      style={{
+                        padding: 0,
+                        background: 'rgba(224,222,231,12%)',
+                      }}
+                      onClick={() => setSearchPlaceMode(true)}
+                      noBackground
+                    >
+                      <MapMarkerIcon size="lg" /> Alterar local
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              <CompanyList>
-                {Array(10)
-                  .fill(null)
-                  .map((item, index) => (
-                    <CompanyBox key={`company-${index}`} />
-                  ))}
-              </CompanyList>
-            </>
-          ) : (
-            <>
-              <div className="my-5" style={{ height: 450 }}>
-                <Form ref={searchPlaceFormRef} onSubmit={handleSearchSubmit}>
-                  <SearchInput className="mb-5">
-                    <InputUnstyled
-                      type="search"
-                      aria-labelledby="search-button"
-                      placeholder="Pesquise pelo local"
-                      name="search"
-                    />
-                    <div className="icon">
-                      <FontAwesomeIcon
-                        size="1x"
-                        color="rgb(255, 255, 255)"
-                        icon={faSearch}
-                        onClick={() => searchPlaceFormRef.current.submitForm()}
-                      />
-                    </div>
-                  </SearchInput>
-                </Form>
-                {emptyComponent()}
-                <SearchResults>
-                  {!loading &&
-                    cities.map(city => (
-                      <SearchResult
-                        key={city.place_id}
-                        onClick={() => {
-                          handleSelectCity(city);
-
-                          mapsApi
-                            .get(`place/details/json`, {
-                              params: {
-                                place_id: city.place_id,
-                              },
-                            })
-                            .then(({ data }) => {
-                              console.log('data.result', data.result);
-
-                              setPositionMap(
-                                data.result.geometry.location.lat,
-                                data.result.geometry.location.lng
-                              );
-                            });
-                        }}
-                      >
-                        <SearchIcon>
-                          <MapMarkerIcon size="2x" color="#999" />
-                        </SearchIcon>
-                        <SearchInfo>
-                          <SearchResultName>
-                            {city.structured_formatting.main_text}
-                          </SearchResultName>
-                          <SearchResultDesc>
-                            {city.description}
-                          </SearchResultDesc>
-                        </SearchInfo>
-                      </SearchResult>
+                <CompanyList>
+                  {Array(10)
+                    .fill(null)
+                    .map((item, index) => (
+                      <CompanyBox key={`company-${index}`} />
                     ))}
-                </SearchResults>
-              </div>
-              <div className="d-flex justify-content-around align-items-center">
-                {selectedCity && (
+                </CompanyList>
+              </>
+            ) : (
+              <>
+                <div className="my-5" style={{ height: 450 }}>
+                  <Form ref={searchPlaceFormRef} onSubmit={handleSearchSubmit}>
+                    <SearchInput className="mb-5">
+                      <InputUnstyled
+                        type="search"
+                        aria-labelledby="search-button"
+                        placeholder="Pesquise pelo local"
+                        name="search"
+                      />
+                      <div className="icon">
+                        <FontAwesomeIcon
+                          size="1x"
+                          color="rgb(255, 255, 255)"
+                          icon={faSearch}
+                          onClick={() =>
+                            searchPlaceFormRef.current.submitForm()
+                          }
+                        />
+                      </div>
+                    </SearchInput>
+                  </Form>
+                  {emptyComponent()}
+                  <SearchResults>
+                    {!loading &&
+                      cities.map(city => (
+                        <SearchResult
+                          key={city.place_id}
+                          onClick={() => {
+                            handleSelectCity(city);
+
+                            mapsApi
+                              .get(`place/details/json`, {
+                                params: {
+                                  place_id: city.place_id,
+                                },
+                              })
+                              .then(({ data }) => {
+                                console.log('data.result', data.result);
+
+                                setPositionMap(
+                                  data.result.geometry.location.lat,
+                                  data.result.geometry.location.lng
+                                );
+                              });
+                          }}
+                        >
+                          <SearchIcon>
+                            <MapMarkerIcon size="2x" color="#999" />
+                          </SearchIcon>
+                          <SearchInfo>
+                            <SearchResultName>
+                              {city.structured_formatting.main_text}
+                            </SearchResultName>
+                            <SearchResultDesc>
+                              {city.description}
+                            </SearchResultDesc>
+                          </SearchInfo>
+                        </SearchResult>
+                      ))}
+                  </SearchResults>
+                </div>
+                <div className="d-flex justify-content-around align-items-center">
+                  {selectedCity && (
+                    <Button
+                      disabled={loadingAutoPosition}
+                      theme="blue_haze"
+                      onClick={() => {
+                        setSearchPlaceMode(false);
+                        setCities([]);
+                        setWasSearched(false);
+                      }}
+                      fontWeight="bold"
+                    >
+                      Cancelar
+                    </Button>
+                  )}
                   <Button
                     disabled={loadingAutoPosition}
-                    theme="blue_haze"
-                    onClick={() => {
-                      setSearchPlaceMode(false);
-                      setCities([]);
-                      setWasSearched(false);
-                    }}
+                    className=" ld-ext-left"
+                    theme="rose"
                     fontWeight="bold"
+                    onClick={getPosition}
                   >
-                    Cancelar
+                    {loadingAutoPosition
+                      ? 'Localizando...'
+                      : 'Selecão automática'}
                   </Button>
-                )}
-                <Button
-                  disabled={loadingAutoPosition}
-                  className=" ld-ext-left"
-                  theme="rose"
-                  fontWeight="bold"
-                  onClick={getPosition}
-                >
-                  {loadingAutoPosition
-                    ? 'Localizando...'
-                    : 'Selecão automática'}
-                </Button>
-              </div>
-            </>
-          )}
-        </div>
-        <div className="map">
-          <Gmaps ref={gmapRef} city={selectedCity} />
-        </div>
-      </MapSection>
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="map">
+            <Gmaps ref={gmapRef} city={selectedCity} />
+          </div>
+        </MapSection>
+      </Element>
 
       <AboutSection>
         <div className="container">
@@ -389,7 +408,17 @@ function Home() {
 
               <div className="row">
                 <div className="col col-sm-7">
-                  <Button to="/" theme="rose" fontWeight="bold">
+                  <Button
+                    theme="rose"
+                    fontWeight="bold"
+                    onClick={() =>
+                      scroller.scrollTo('scroll-to-form', {
+                        duration: 800,
+                        delay: 0,
+                        smooth: 'easeInOutQuart',
+                      })
+                    }
+                  >
                     Atualize sua empresa
                   </Button>
                 </div>
@@ -399,96 +428,98 @@ function Home() {
         </div>
       </AboutSection>
 
-      <FormSection>
-        <div className="container">
-          <div className="row justify-content-md-center">
-            <div className="col col-md-5">
-              <h4>Atualize sua empresa</h4>
-            </div>
-            <div className="col col-md-5">
-              <img src={formImage} alt="Imagem ilustrativa no formulário" />
-            </div>
-          </div>
-          <StyledForm ref={formRef} onSubmit={handleSubmit}>
-            <div className="row justify-content-md-center mb-5">
-              <div className="col col-md-5">
-                <div className="form-title">Informações do seu perfil</div>
-                <Input name="name" type="text" placeholder="Nome completo" />
-                <Input name="email" type="email" placeholder="E-mail" />
-                <Input name="password" type="password" placeholder="Senha" />
-                <div className="row">
-                  <div className="col col-xs-6">
-                    <Datepicker
-                      dateFormat="dd/MM/yyyy"
-                      name="birthday"
-                      locale="pt-BR"
-                      maxDate={new Date()}
-                      placeholderText="Data de nascimento"
-                    />
-                  </div>
-                  <div className="col col-xs-6">
-                    <ReactSelect
-                      defaultValue={null}
-                      name="gender"
-                      placeholder="Gênero"
-                      loading={gendersLoading}
-                      options={genders}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="col col-md-5">
-                <div className="form-title">Informações da empresa</div>
-                <Input
-                  name="company_name"
-                  type="text"
-                  placeholder="Nome da Empresa"
-                />
-                <div className="row mt-2">
-                  <div className="col-12">
-                    <div className="title-situations">
-                      Selecione as situações
-                    </div>
-                    <Scope path="situations">
-                      <ul className="situations">
-                        {labelsLoading && 'Carregando dados...'}
-                        {labels.map(lb => (
-                          <Checkbox
-                            key={lb.id}
-                            name={`checkbox-${lb.id}`}
-                            label={lb.description}
-                          />
-                        ))}
-                      </ul>
-                    </Scope>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-12">
-                    <p className="remember">
-                      Lembre-se: é muito importante de que as informações
-                      enviadas sejam verídicas.
-                    </p>
-                  </div>
-                  <div className="col-12">
-                    <p className="terms">
-                      Ao clicar em &quot;Enviar atualização&quot; você estará
-                      criando a sua conta e concordará com os termos de uso da
-                      plataforma.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+      <Element name="scroll-to-form">
+        <FormSection>
+          <div className="container">
             <div className="row justify-content-md-center">
-              <Button type="submit" theme="rose" fontWeight="bold">
-                Enviar atualização
-              </Button>
+              <div className="col col-md-5">
+                <h4>Atualize sua empresa</h4>
+              </div>
+              <div className="col col-md-5">
+                <img src={formImage} alt="Imagem ilustrativa no formulário" />
+              </div>
             </div>
-          </StyledForm>
-        </div>
-      </FormSection>
+            <StyledForm ref={formRef} onSubmit={handleSubmit}>
+              <div className="row justify-content-md-center mb-5">
+                <div className="col col-md-5">
+                  <div className="form-title">Informações do seu perfil</div>
+                  <Input name="name" type="text" placeholder="Nome completo" />
+                  <Input name="email" type="email" placeholder="E-mail" />
+                  <Input name="password" type="password" placeholder="Senha" />
+                  <div className="row">
+                    <div className="col col-xs-6">
+                      <Datepicker
+                        dateFormat="dd/MM/yyyy"
+                        name="birthday"
+                        locale="pt-BR"
+                        maxDate={new Date()}
+                        placeholderText="Data de nascimento"
+                      />
+                    </div>
+                    <div className="col col-xs-6">
+                      <ReactSelect
+                        defaultValue={null}
+                        name="gender"
+                        placeholder="Gênero"
+                        loading={gendersLoading}
+                        options={genders}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="col col-md-5">
+                  <div className="form-title">Informações da empresa</div>
+                  <Input
+                    name="company_name"
+                    type="text"
+                    placeholder="Nome da Empresa"
+                  />
+                  <div className="row mt-2">
+                    <div className="col-12">
+                      <div className="title-situations">
+                        Selecione as situações
+                      </div>
+                      <Scope path="situations">
+                        <ul className="situations">
+                          {labelsLoading && 'Carregando dados...'}
+                          {labels.map(lb => (
+                            <Checkbox
+                              key={lb.id}
+                              name={`checkbox-${lb.id}`}
+                              label={lb.description}
+                            />
+                          ))}
+                        </ul>
+                      </Scope>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12">
+                      <p className="remember">
+                        Lembre-se: é muito importante de que as informações
+                        enviadas sejam verídicas.
+                      </p>
+                    </div>
+                    <div className="col-12">
+                      <p className="terms">
+                        Ao clicar em &quot;Enviar atualização&quot; você estará
+                        criando a sua conta e concordará com os termos de uso da
+                        plataforma.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="row justify-content-md-center">
+                <Button type="submit" theme="rose" fontWeight="bold">
+                  Enviar atualização
+                </Button>
+              </div>
+            </StyledForm>
+          </div>
+        </FormSection>
+      </Element>
 
       <Footer />
     </Container>

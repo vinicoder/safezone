@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { scroller } from 'react-scroll';
 
 import Button from 'components/Button';
 import logoVertical from 'images/logo-vertical.svg';
@@ -25,7 +26,17 @@ export default function Header() {
               </li>
 
               <li>
-                <Button theme="primary" fontWeight="bold">
+                <Button
+                  theme="primary"
+                  fontWeight="bold"
+                  onClick={() =>
+                    scroller.scrollTo('scroll-to-map', {
+                      duration: 800,
+                      delay: 0,
+                      smooth: 'easeInOutQuart',
+                    })
+                  }
+                >
                   Consultar Empresas
                 </Button>
               </li>
