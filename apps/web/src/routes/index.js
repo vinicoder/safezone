@@ -26,7 +26,7 @@ export default function Routes() {
       <Route path="/criar-conta" component={Signup} />
       <Route path="/recuperar-senha" component={RecoverPassword} />
       <Route path="/resetar-senha" component={ChangePassword} />
-      <Route path="/empresa" component={Place} />
+      <Route path="/empresa" component={Place} isPrivate />
       <Route path="/logout" component={Signout} />
 
       <Route component={() => <Redirect to="/" />} />
