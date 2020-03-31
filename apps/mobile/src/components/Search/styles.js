@@ -5,7 +5,7 @@ import * as Device from 'expo-device';
 import layoutConfig, { colors } from '~/config/layout';
 
 const { height: windowHeight } = Dimensions.get('window');
-const { headerHeight, tabBarHeight } = layoutConfig;
+const { headerHeight } = layoutConfig;
 
 export const Container = styled.KeyboardAvoidingView.attrs({
   enabled: Device.osName === 'iOS',
@@ -14,7 +14,7 @@ export const Container = styled.KeyboardAvoidingView.attrs({
   top: 0;
   left: 0;
   width: 100%;
-  height: ${`${windowHeight - headerHeight - tabBarHeight}px`};
+  height: ${`${windowHeight - headerHeight}px`};
   z-index: 2;
 `;
 
@@ -103,7 +103,7 @@ export const SearchResults = styled.FlatList.attrs({
   padding: 0 15px;
 `;
 
-export const SearchResult = styled.View`
+export const SearchResult = styled.TouchableOpacity`
   width: 100%;
   border-top-width: 1px;
   border-top-color: rgba(155, 155, 155, 0.1);

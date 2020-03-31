@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Animated } from 'react-native';
 import {
@@ -27,6 +27,8 @@ import {
 } from './styles';
 
 function Home({ navigation }) {
+  const [city, setCity] = useState('Piracicaba');
+
   const searchRef = useRef();
   const tapRef = useRef();
   const nativeRef = useRef();
@@ -55,6 +57,10 @@ function Home({ navigation }) {
       useNativeDriver: true,
     }
   );
+
+  function handlePressItem({ name }) {
+    setCity(name);
+  }
 
   function onHandlerStateChanged({ nativeEvent }) {
     if (nativeEvent.oldState === State.ACTIVE) {
@@ -161,7 +167,7 @@ function Home({ navigation }) {
       >
         <HeaderInfo>
           <HeaderTitle>Situação atual das empresas na pandemia.</HeaderTitle>
-          <HeaderButton onPress={() => navigation.navigate('User')}>
+          <HeaderButton onPress={() => navigation.navigate('CompanyUpdate')}>
             Atualize sua empresa
           </HeaderButton>
           <HeaderLink>
@@ -185,7 +191,7 @@ function Home({ navigation }) {
         }}
       >
         <ListSmallHeader
-          title="Piracicaba"
+          title={city}
           subtitle="Empresas em"
           headerActions={
             <ButtonChangeLocal onPress={() => openSearch()} small />
@@ -227,7 +233,7 @@ function Home({ navigation }) {
                   shouldCancelWhenOutside={false}
                 >
                   <ListHeader
-                    title="Piracicaba"
+                    title={city}
                     subtitle="Empresas em"
                     headerActions={
                       <ButtonChangeLocal onPress={() => openSearch()} />
@@ -244,7 +250,12 @@ function Home({ navigation }) {
           </Animated.View>
         </PanGestureHandler>
       </List>
-      <Search ref={searchRef} />
+      <Search
+        ref={searchRef}
+        placeholder="Pesquisar cidades"
+        filter="(cities)"
+        onPressItem={handlePressItem}
+      />
     </Container>
   );
 }

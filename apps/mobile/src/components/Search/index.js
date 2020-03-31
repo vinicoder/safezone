@@ -32,7 +32,7 @@ import {
   Loader,
 } from './styles';
 
-function Search(props, ref) {
+function City({ placeholder, filter, onPressItem }, ref) {
   const { height } = Dimensions.get('window');
   const [translateY] = useState(new Animated.Value(0));
 
@@ -50,16 +50,21 @@ function Search(props, ref) {
       useNativeDriver: true,
     }).start(() => searchInputRef.current.focus());
 
-  function closeHandler() {
+  function close() {
     Animated.timing(translateY, {
       toValue: 0,
       duration: 300,
       useNativeDriver: true,
-    }).start(() => searchInputRef.current.clear());
+    }).start(() => {
+      searchInputRef.current.clear();
+      setQuery('');
+      setData([]);
+    });
   }
 
   useImperativeHandle(ref, () => ({
     open,
+    close,
   }));
 
   async function loadPlaces() {
@@ -67,13 +72,35 @@ function Search(props, ref) {
       .get('/place/autocomplete/json', {
         params: {
           input: query,
-          types: '(cities)',
+          types: filter,
+          origin: '-12.085643,-52.627011',
+          location: '-12.085643,-52.627011',
+          radius: 2446000,
+          strictbounds: true,
         },
       })
-      .then(result => {
-        const { predictions } = result.data;
+      .then(({ data }) => {
+        const { predictions } = data;
         setData(predictions);
       });
+  }
+
+  async function handleItem({ place_id }) {
+    await maps
+      .get('/place/details/json', {
+        params: {
+          place_id,
+          fields: 'name,geometry',
+        },
+      })
+      .then(({ data }) => {
+        const { result } = data;
+        const { name, geometry } = result;
+        const { location } = geometry;
+        onPressItem({ place_id, name, location });
+      });
+
+    await close();
   }
 
   function emptyComponent() {
@@ -131,12 +158,12 @@ function Search(props, ref) {
           ListEmptyComponent={emptyComponent}
           ListHeaderComponent={
             <Header>
-              <ButtonReturn onPress={closeHandler}>
+              <ButtonReturn onPress={close}>
                 <Icon name="chevron-left" size={16} color={colors.primary} />
               </ButtonReturn>
               <InputContainer>
                 <Input
-                  placeholder="Pesquisar cidades"
+                  placeholder={placeholder}
                   ref={searchInputRef}
                   onChangeText={text => setQuery(text)}
                   returnKeyType="search"
@@ -148,7 +175,7 @@ function Search(props, ref) {
             </Header>
           }
           renderItem={({ item }) => (
-            <SearchResult>
+            <SearchResult onPress={() => handleItem(item)}>
               <SearchIcon>
                 <Icon name="map-marker" size={20} color="#999" />
               </SearchIcon>
@@ -168,4 +195,4 @@ function Search(props, ref) {
   );
 }
 
-export default forwardRef(Search);
+export default forwardRef(City);
