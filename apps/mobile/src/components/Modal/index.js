@@ -21,7 +21,10 @@ import {
   Button,
 } from './styles';
 
-function Modal({ title, subtitle, children, onConfirm, onCancel }, ref) {
+function Modal(
+  { title, subtitle, children, onConfirm, onCancel, cancelText, confirmText },
+  ref
+) {
   const [visible, setVisible] = useState(false);
 
   const [translateY] = useState(new Animated.Value(0));
@@ -102,10 +105,10 @@ function Modal({ title, subtitle, children, onConfirm, onCancel }, ref) {
         </Body>
         <Footer>
           <Button color="info" textColor="primary" onPress={handleCancel}>
-            Cancelar
+            {cancelText || 'Cancelar'}
           </Button>
           <Button color="secondary" onPress={handleConfirm}>
-            Confirmar
+            {confirmText || 'Confirmar'}
           </Button>
         </Footer>
       </Container>

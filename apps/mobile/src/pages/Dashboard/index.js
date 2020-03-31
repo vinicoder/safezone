@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Animated } from 'react-native';
+import { Animated, Text } from 'react-native';
 import {
   PanGestureHandler,
   NativeViewGestureHandler,
@@ -14,6 +14,7 @@ import List, {
 } from '~/components/List';
 import Post from '~/components/Post';
 import Search from '~/components/Search';
+import Modal from '~/components/Modal';
 
 import {
   Container,
@@ -30,6 +31,7 @@ function Home({ navigation }) {
   const [city, setCity] = useState('Piracicaba');
 
   const searchRef = useRef();
+  const modalRef = useRef(null);
   const tapRef = useRef();
   const nativeRef = useRef();
   const panRef = useRef();
@@ -170,7 +172,7 @@ function Home({ navigation }) {
           <HeaderButton onPress={() => navigation.navigate('CompanyUpdate')}>
             Atualize sua empresa
           </HeaderButton>
-          <HeaderLink>
+          <HeaderLink onPress={() => modalRef.current.open()}>
             <HeaderLinkText>Sobre o projeto</HeaderLinkText>
           </HeaderLink>
         </HeaderInfo>
@@ -256,6 +258,56 @@ function Home({ navigation }) {
         filter="(cities)"
         onPressItem={handlePressItem}
       />
+      <Modal
+        ref={modalRef}
+        title="Sobre o Projeto"
+        subtitle="Entenda o nosso propósito."
+        cancelText="Voltar"
+        confirmText="Participar"
+        onConfirm={() => navigation.navigate('SignUp')}
+      >
+        <Text>
+          <Text style={{ marginBottom: 10 }}>
+            Nos ajude a atualizar o status das empresas da sua cidade!
+          </Text>
+          <Text style={{ marginBottom: 10 }}>
+            O projeto Safezone, nasceu no inicio da pandemia do covid-19, com o
+            intuito de auxiliar as pessoas a saberem quais as empresas da sua
+            região estão se mobilizando em prol da campanha #FiqueEmCasa.
+          </Text>
+          <Text style={{ marginBottom: 10 }}>
+            Nosso principal objetivo é informar para a comunidade quais empresas
+            já aderiram ao modelo de trabalho home-office ou tomaram outras
+            medidas preventivas, tendo a ciência de que estamos passando por uma
+            pandemia, mostrando empatia sobre seus colaboradores e familiares.
+          </Text>
+          <Text style={{ marginBottom: 10 }}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur.
+          </Text>
+          <Text style={{ marginBottom: 10 }}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
+          </Text>
+          <Text style={{ marginBottom: 10 }}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur.
+          </Text>
+        </Text>
+      </Modal>
     </Container>
   );
 }
