@@ -10,18 +10,24 @@ export default function Button({
   type,
   theme,
   fontWeight,
+  fit,
   ...props
 }) {
+  const childrenHy = fit ? (
+    <Textfit mode="single">{children}</Textfit>
+  ) : (
+    children
+  );
   if (to) {
     return (
       <LinkStyled {...props} to={to} theme={theme} fontWeight={fontWeight}>
-        <Textfit mode="single">{children}</Textfit>
+        {childrenHy}
       </LinkStyled>
     );
   }
   return (
     <ButtonStyled {...props} type={type} theme={theme} fontWeight={fontWeight}>
-      <Textfit mode="single">{children}</Textfit>
+      {childrenHy}
     </ButtonStyled>
   );
 }
@@ -32,6 +38,7 @@ Button.propTypes = {
   type: PropTypes.string,
   theme: PropTypes.string,
   fontWeight: PropTypes.string,
+  fit: PropTypes.bool,
 };
 
 Button.defaultProps = {
@@ -39,4 +46,5 @@ Button.defaultProps = {
   type: 'button',
   theme: null,
   fontWeight: null,
+  fit: false,
 };

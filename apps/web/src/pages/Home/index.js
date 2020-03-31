@@ -232,6 +232,7 @@ function Home() {
               <div className="row">
                 <div className="col col-sm-7">
                   <Button
+                    fit
                     fontWeight="bold"
                     theme="rose"
                     onClick={() =>

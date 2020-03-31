@@ -20,13 +20,14 @@ export default function Header() {
 
             <nav>
               <li>
-                <Button to="/sobre" theme="secondary">
+                <Button fit to="/sobre" theme="secondary">
                   Sobre o projeto
                 </Button>
               </li>
 
               <li>
                 <Button
+                  fit
                   theme="primary"
                   fontWeight="bold"
                   onClick={() =>
@@ -42,11 +43,11 @@ export default function Header() {
               </li>
               <li>
                 {signed ? (
-                  <Button to="/logout" theme="secondary">
+                  <Button fit to="/logout" theme="secondary">
                     Logout
                   </Button>
                 ) : (
-                  <Button to="/entrar" theme="secondary">
+                  <Button fit to="/entrar" theme="secondary">
                     Entrar
                   </Button>
                 )}
