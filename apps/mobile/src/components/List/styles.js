@@ -8,19 +8,20 @@ export const ListContainer = styled(Animated.View)`
   height: 100%;
   z-index: 2;
   position: relative;
+  background: #f2f0f9;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
 `;
 
 export const ListContainerScroll = styled.ScrollView``;
 
 export const Content = styled.View`
-  background: #f2f0f9;
+  padding-bottom: 20px;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
-  padding-bottom: 20px;
 `;
 
 export const HeaderContainer = styled(Animated.View)`
-  background: #f2f0f9;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
   padding: 0 30px;

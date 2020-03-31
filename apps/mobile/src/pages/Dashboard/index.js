@@ -247,6 +247,8 @@ function Home({ navigation }) {
                 <Post item />
                 <Post item />
                 <Post item />
+                <Post item />
+                <Post item />
               </ListContent>
             </NativeViewGestureHandler>
           </Animated.View>
