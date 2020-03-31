@@ -36,6 +36,7 @@ export const HeaderImage = styled.ImageBackground.attrs({
   right: -50px;
   width: 255px;
   height: 235px;
+  opacity: 0.3;
 `;
 
 export const HeaderSlug = styled.Text`

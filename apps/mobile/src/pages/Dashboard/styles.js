@@ -31,10 +31,10 @@ export const HeaderImage = styled.ImageBackground.attrs({
   resizeMode: 'contain',
 })`
   position: absolute;
-  top: 30px;
-  right: -10px;
+  right: -20px;
   width: 180px;
   height: 166px;
+  opacity: 0.3;
 `;
 
 export const HeaderTitle = styled.Text`

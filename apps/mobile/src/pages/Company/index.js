@@ -143,7 +143,7 @@ function Company({ navigation }) {
         <HeaderInfo>
           <HeaderSlug>Empresa</HeaderSlug>
           <HeaderTitle>Pecege</HeaderTitle>
-          <HeaderSubtitle>Última atualização</HeaderSubtitle>
+          <HeaderSubtitle>Última atualização - 30/03/20</HeaderSubtitle>
           <LabelList>
             {labels.map(label => (
               <LabelItem
