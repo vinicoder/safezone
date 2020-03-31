@@ -1,4 +1,5 @@
 import React from 'react';
+import { TouchableOpacity } from 'react-native';
 import { Feather as Icon } from '@expo/vector-icons';
 
 import { colors } from '~/config/layout';
@@ -15,11 +16,15 @@ import {
   ButtonComplaint,
 } from './styles';
 
-export default function Post() {
+export default function Post({ item, onPress }) {
   return (
     <Container elevation={1}>
       <Info>
-        <Title>Empresa Lorem Ipsum</Title>
+        {item && (
+          <TouchableOpacity onPress={onPress}>
+            <Title>Empresa Lorem Ipsum</Title>
+          </TouchableOpacity>
+        )}
         <Labels>
           <Label>
             <LabelText>home-office</LabelText>

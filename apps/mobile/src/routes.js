@@ -8,6 +8,7 @@ import Dashboard from '~/pages/Dashboard';
 import SignIn from '~/pages/SignIn';
 import SignUp from '~/pages/SignUp';
 import Profile from '~/pages/Profile';
+import Company from '~/pages/Company';
 import CompanyUpdate from '~/pages/CompanyUpdate';
 
 const Stack = createStackNavigator();
@@ -39,6 +40,11 @@ export default () => (
         name="CompanyUpdate"
         options={{ title: 'Atualizar empresa' }}
         component={CompanyUpdate}
+      />
+      <Stack.Screen
+        name="Company"
+        options={{ title: 'Situações da Empresa' }}
+        component={Company}
       />
     </Stack.Navigator>
   </NavigationContainer>

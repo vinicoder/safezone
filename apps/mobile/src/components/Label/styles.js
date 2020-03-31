@@ -12,7 +12,7 @@ export const List = styled.View`
 
 export const Container = styled(RectButton)`
   background: ${colors.secondary};
-  border-radius: 16px;
+  border-radius: ${props => `${props.small ? 14 : 16}px`};
   padding: 5px 16px;
   flex-direction: row;
   align-items: center;
@@ -25,5 +25,5 @@ export const Icon = styled(MaterialIcons)`
 
 export const Name = styled.Text`
   color: #fff;
-  font-size: 16px;
+  font-size: ${props => `${props.small ? 14 : 16}px`};
 `;

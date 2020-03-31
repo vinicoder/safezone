@@ -83,24 +83,24 @@ List.propTypes = {
 
 ListHeader.propTypes = {
   title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string,
-  headerActions: PropTypes.element,
+  subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  headerActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
 };
 
 ListSmallHeader.propTypes = {
   title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string,
-  headerActions: PropTypes.element,
+  subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  headerActions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
 };
 
 ListHeader.defaultProps = {
-  subtitle: '',
-  headerActions: PropTypes.element,
+  subtitle: false,
+  headerActions: false,
 };
 
 ListSmallHeader.defaultProps = {
-  subtitle: '',
-  headerActions: PropTypes.element,
+  subtitle: false,
+  headerActions: false,
 };
 
 ListContent.propTypes = {

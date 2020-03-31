@@ -6,14 +6,8 @@ import {
   NativeViewGestureHandler,
   State,
 } from 'react-native-gesture-handler';
-import List, {
-  ListHeader,
-  ListSmallHeader,
-  ListContent,
-  ButtonChangeLocal,
-} from '~/components/List';
+import List, { ListSmallHeader, ListContent } from '~/components/List';
 import Post from '~/components/Post';
-import Search from '~/components/Search';
 
 import {
   Container,
@@ -21,16 +15,14 @@ import {
   HeaderInfo,
   HeaderImage,
   HeaderTitle,
-  HeaderButton,
-  HeaderLink,
-  HeaderLinkText,
+  ListHeader,
+  LabelItem,
+  LabelList,
+  HeaderSubtitle,
+  HeaderSlug,
 } from './styles';
 
-function Home({ navigation }) {
-  const [city, setCity] = useState('Piracicaba');
-
-  const searchRef = useRef();
-  const tapRef = useRef();
+function Company({ navigation }) {
   const nativeRef = useRef();
   const panRef = useRef();
   const listRef = useRef();
@@ -57,10 +49,6 @@ function Home({ navigation }) {
       useNativeDriver: true,
     }
   );
-
-  function handlePressItem({ name }) {
-    setCity(name);
-  }
 
   function onHandlerStateChanged({ nativeEvent }) {
     if (nativeEvent.oldState === State.ACTIVE) {
@@ -127,23 +115,10 @@ function Home({ navigation }) {
     }
   }
 
-  async function openSearch() {
-    if (offset < 0) {
-      await listRef.current.scrollTo({ y: 0, animated: true });
-      listRef.current.setNativeProps({
-        scrollEnabled: false,
-      });
-      panRef.current.setNativeProps({
-        enabled: true,
-      });
-      translateY.setValue(-235);
-      translateY.setOffset(0);
-      offset = 0;
-      animationOptions.toValue = 0;
-      await Animated.spring(translateY, animationOptions).start();
-    }
-    await searchRef.current.open();
-  }
+  const labels = [
+    { id: 1, name: 'Home-office' },
+    { id: 2, name: 'Fechada' },
+  ];
 
   return (
     <Container>
@@ -166,13 +141,19 @@ function Home({ navigation }) {
         }}
       >
         <HeaderInfo>
-          <HeaderTitle>Situação atual das empresas na pandemia.</HeaderTitle>
-          <HeaderButton onPress={() => navigation.navigate('CompanyUpdate')}>
-            Atualize sua empresa
-          </HeaderButton>
-          <HeaderLink>
-            <HeaderLinkText>Sobre o projeto</HeaderLinkText>
-          </HeaderLink>
+          <HeaderSlug>Empresa</HeaderSlug>
+          <HeaderTitle>Pecege</HeaderTitle>
+          <HeaderSubtitle>Última atualização</HeaderSubtitle>
+          <LabelList>
+            {labels.map(label => (
+              <LabelItem
+                name={label.name}
+                active={label.active}
+                small
+                key={label.id}
+              />
+            ))}
+          </LabelList>
         </HeaderInfo>
         <HeaderImage />
       </Header>
@@ -191,11 +172,8 @@ function Home({ navigation }) {
         }}
       >
         <ListSmallHeader
-          title={city}
-          subtitle="Empresas em"
-          headerActions={
-            <ButtonChangeLocal onPress={() => openSearch()} small />
-          }
+          title="Pecege"
+          subtitle="Empresa"
           style={{
             transform: [
               {
@@ -226,44 +204,28 @@ function Home({ navigation }) {
                 showsVerticalScrollIndicator={false}
                 onScroll={onScrollHandler}
               >
-                <PanGestureHandler
-                  onGestureEvent={animatedPanEvent}
-                  onHandlerStateChange={onHandlerStateChanged}
-                  simultaneousHandlers={[nativeRef, tapRef]}
-                  shouldCancelWhenOutside={false}
-                >
-                  <ListHeader
-                    title={city}
-                    subtitle="Empresas em"
-                    headerActions={
-                      <ButtonChangeLocal onPress={() => openSearch()} />
-                    }
-                  />
-                </PanGestureHandler>
-                <Post item onPress={() => navigation.navigate('Company')} />
-                <Post item />
-                <Post item />
-                <Post item />
-                <Post item />
+                <ListHeader>Feed de atualizações</ListHeader>
+                <Post />
+                <Post />
+                <Post />
+                <Post />
+                <Post />
+                <Post />
+                <Post />
+                <Post />
               </ListContent>
             </NativeViewGestureHandler>
           </Animated.View>
         </PanGestureHandler>
       </List>
-      <Search
-        ref={searchRef}
-        placeholder="Pesquisar cidades"
-        filter="(cities)"
-        onPressItem={handlePressItem}
-      />
     </Container>
   );
 }
 
-Home.propTypes = {
+Company.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-export default Home;
+export default Company;
