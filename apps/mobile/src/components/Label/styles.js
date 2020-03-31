@@ -23,7 +23,9 @@ export const Icon = styled(MaterialIcons)`
   margin-right: 5px;
 `;
 
-export const Name = styled.Text`
+export const Name = styled.Text.attrs({
+  numberOfLines: 1,
+})`
   color: #fff;
   font-size: ${props => `${props.small ? 14 : 16}px`};
 `;

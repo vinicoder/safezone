@@ -32,7 +32,9 @@ export const InputReadonly = styled.TouchableOpacity.attrs({
   justify-content: center;
 `;
 
-export const InputText = styled.Text`
+export const InputText = styled.Text.attrs({
+  numberOfLines: 1,
+})`
   color: #fff;
   font-size: 16px;
 `;
