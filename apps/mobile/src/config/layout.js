@@ -49,7 +49,9 @@ export const navigations = {
   stackDefaultHeader: ({ navigation }) => ({
     headerTitle: () => {},
     headerLeft: () => <Image source={Logo} />,
-    headerRight: () => <Avatar onPress={() => navigation.navigate('SignIn')} />,
+    headerRight: () => (
+      <Avatar onPress={() => navigation.navigate('Profile')} />
+    ),
     headerLeftContainerStyle: { marginLeft: 30 },
     headerRightContainerStyle: { marginRight: 30 },
   }),

@@ -146,7 +146,7 @@ function CompanyUpdate({ navigation }) {
           <Button color="success" onPress={handleSubmit} loading={loading}>
             Enviar atualização
           </Button>
-          <Button color="primary" onPress={() => {}}>
+          <Button color="primary" onPress={() => navigation.goBack()}>
             Cancelar
           </Button>
         </Content>
@@ -164,6 +164,7 @@ function CompanyUpdate({ navigation }) {
 CompanyUpdate.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
   }).isRequired,
 };
 
