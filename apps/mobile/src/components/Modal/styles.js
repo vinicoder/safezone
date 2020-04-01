@@ -60,7 +60,7 @@ export const Subtitle = styled.Text`
 
 export const Footer = styled.View`
   flex-direction: row;
-  padding: 20px;
+  padding: 10px 20px;
   border-top-width: ${`${StyleSheet.hairlineWidth}px`};
   border-top-color: #ccc;
 `;

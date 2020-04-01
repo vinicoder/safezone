@@ -89,10 +89,13 @@ export const ContentScroll = styled.ScrollView.attrs({
   centerContent: true,
   keyboardShouldPersistTaps: 'always',
   showsVerticalScrollIndicator: false,
-  contentContainerStyle: {
-    flexGrow: 1,
-    justifyContent: 'center',
-  },
+  contentContainerStyle:
+    Device.osName === 'iOS'
+      ? {}
+      : {
+          flexGrow: 1,
+          justifyContent: 'center',
+        },
 })``;
 
 export const Content = styled.View`

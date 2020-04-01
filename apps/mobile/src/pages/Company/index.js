@@ -1,5 +1,4 @@
-import React, { useRef, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useRef } from 'react';
 import { Animated } from 'react-native';
 import {
   PanGestureHandler,
@@ -22,7 +21,7 @@ import {
   HeaderSlug,
 } from './styles';
 
-function Company({ navigation }) {
+function Company() {
   const nativeRef = useRef();
   const panRef = useRef();
   const listRef = useRef();
@@ -221,11 +220,5 @@ function Company({ navigation }) {
     </Container>
   );
 }
-
-Company.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
-};
 
 export default Company;

@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
+import LabelDefault from '../Label';
 
 import { colors } from '~/config/layout';
 
@@ -32,20 +32,8 @@ export const Labels = styled.View`
   margin-bottom: 10px;
 `;
 
-export const Label = styled(RectButton)`
-  background: ${colors.secondary};
-  padding: 5px 15px;
-  border-radius: 13px;
-  border: 0;
-  height: 26px;
-  align-items: center;
-  flex-direction: row;
-`;
-
-export const LabelText = styled.Text`
-  color: #fff;
-  font-weight: bold;
-  font-size: 12px;
+export const Label = styled(LabelDefault)`
+  margin-right: 10px;
 `;
 
 export const Date = styled.Text.attrs({
@@ -61,7 +49,7 @@ export const PostActions = styled.View`
   align-items: center;
 `;
 
-export const ButtonComplaint = styled(RectButton)`
+export const ButtonComplaint = styled.TouchableOpacity`
   padding: 5px;
   border-radius: 6px;
 `;

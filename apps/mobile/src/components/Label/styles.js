@@ -12,7 +12,7 @@ export const List = styled.View`
 
 export const Container = styled(RectButton)`
   background: ${colors.secondary};
-  border-radius: ${props => `${props.small ? 14 : 16}px`};
+  border-radius: ${props => `${props.small ? 13 : 16}px`};
   padding: 5px 16px;
   flex-direction: row;
   align-items: center;
@@ -27,5 +27,6 @@ export const Name = styled.Text.attrs({
   numberOfLines: 1,
 })`
   color: #fff;
-  font-size: ${props => `${props.small ? 14 : 16}px`};
+  font-size: ${props => `${props.small ? 13 : 16}px`};
+  font-weight: bold;
 `;
