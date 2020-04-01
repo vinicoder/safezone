@@ -112,9 +112,11 @@ function CompanyUpdate({ navigation }) {
             onPress={() => searchRef.current.open()}
             error={errs.name}
           >
-            <InputText>{company.name || 'Nome da empresa'}</InputText>
+            <InputText>
+              {(company && company.name) || 'Nome da empresa'}
+            </InputText>
           </InputReadonly>
-          {errs.name && (
+          {errs && errs.name && (
             <ErrorMessage style={{ paddingLeft: 0 }}>{errs.name}</ErrorMessage>
           )}
 
@@ -130,7 +132,7 @@ function CompanyUpdate({ navigation }) {
               />
             ))}
           </LabelList>
-          {errs.labels && (
+          {errs && errs.labels && (
             <ErrorMessage style={{ paddingLeft: 0 }}>
               {errs.labels}
             </ErrorMessage>
