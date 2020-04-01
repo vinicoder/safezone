@@ -17,37 +17,45 @@ module.exports = {
         onDelete: 'SET NULL',
         allowNull: true,
       },
+      place_id: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      city_place_id: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       street: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       number: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       zipcode: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       city: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       state: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       complement: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       latitude: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       longitude: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       created_at: {
         type: Sequelize.DATE,

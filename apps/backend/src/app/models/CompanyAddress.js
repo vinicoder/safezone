@@ -4,6 +4,7 @@ class CompanyAddress extends Model {
   static init(sequelize) {
     super.init(
       {
+        place_id: Sequelize.STRING,
         street: Sequelize.STRING,
         number: Sequelize.STRING,
         zipcode: Sequelize.STRING,
