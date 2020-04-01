@@ -7,8 +7,8 @@ import bgImage from '~/assets/bg-company.png';
 export const Header = styled.View`
   flex-direction: row;
   position: relative;
-  height: 160px;
   align-items: center;
+  margin-bottom: 20px;
 `;
 
 export const HeaderTitle = styled.Text`
@@ -29,7 +29,6 @@ export const HeaderImage = styled.ImageBackground.attrs({
   resizeMode: 'contain',
 })`
   position: absolute;
-  top: 30px;
   right: -30px;
   width: 202px;
   height: 117px;
