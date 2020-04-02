@@ -4,12 +4,6 @@ import Events from '../models/Events';
 
 class EventsController {
   async index(req, res) {
-    if (!req.userAdmin) {
-      return res.status(401).json({
-        error: "You don't have permission to access this information",
-      });
-    }
-
     const events = await Events.findAll();
 
     return res.json(events);

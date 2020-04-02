@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import UsersController from './app/controllers/UsersController';
 import SessionController from './app/controllers/SessionController';
+import ForgotPasswordController from './app/controllers/ForgotPasswordController';
 import CompanyController from './app/controllers/CompanyController';
 import CompanyAdressController from './app/controllers/CompanyAddressController';
 import EventsController from './app/controllers/EventsController';
@@ -17,15 +18,22 @@ const routes = new Router();
 routes.post('/users', UsersController.store);
 routes.post('/sessions', SessionController.store);
 
+routes.post('/passwords', ForgotPasswordController.store);
+routes.put('/passwords/:token', ForgotPasswordController.update);
+
+routes.get('/labels', LabelsController.index);
+routes.get('/genders', GendersController.index);
+
+routes.get('/companies', CompanyController.index);
+routes.get('/companies/:id', CompanyAdressController.index);
+
 routes.use(authMiddleweare);
 
 routes.get('/users', UsersController.index);
 routes.put('/users', UsersController.update);
 
-routes.get('/companies', CompanyController.index);
 routes.post('/companies', CompanyController.store);
 
-routes.get('/companies/:id', CompanyAdressController.index);
 routes.post('/companies/:id', CompanyAdressController.store);
 
 routes.get('/events', EventsController.index);
@@ -35,12 +43,10 @@ routes.put('/events/:id', EventsController.update);
 routes.get('/events/:id', CompanyEventsController.show);
 routes.post('/events/associate', CompanyEventsController.store);
 
-routes.get('/labels', LabelsController.index);
 routes.post('/labels', LabelsController.store);
 routes.put('/labels/:id', LabelsController.update);
 routes.delete('/labels/:id', LabelsController.delete);
 
-routes.get('/genders', GendersController.index);
 routes.post('/genders', GendersController.store);
 routes.put('/genders/:id', GendersController.update);
 routes.delete('/genders/:id', GendersController.delete);
@@ -58,5 +64,8 @@ routes.delete(
   '/comapnies/associations/events/delete/:id',
   CompanyEventsLabelsController.delete
 );
+
+routes.get('/places', null);
+routes.get('/places/city', null);
 
 export default routes;

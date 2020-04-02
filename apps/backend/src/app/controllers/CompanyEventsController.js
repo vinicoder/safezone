@@ -22,9 +22,9 @@ class CompanyEventsController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res
-        .status(400)
-        .json({ error: 'Failed to login, check your parameters' });
+      return res.status(400).json({
+        error: "Can't associate a company to an event, check your request.",
+      });
     }
 
     const { company_id, event_id } = req.body;

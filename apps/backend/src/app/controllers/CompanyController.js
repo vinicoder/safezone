@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 
 import Companies from '../models/Companies';
+import CompanyAddress from '../models/CompanyAddress';
 
 class CompanyController {
   async index(req, res) {
@@ -13,6 +14,7 @@ class CompanyController {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
       activity: Yup.string(),
+      address: Yup.object(),
     });
 
     if (!(await schema.isValid(req.body))) {
@@ -21,9 +23,35 @@ class CompanyController {
         .json({ error: 'Failed to login, check your parameters' });
     }
 
-    const { id, name, activity } = await Companies.create(req.body);
+    const { name, activity, address } = req.body;
 
-    return res.json({ id, name, activity });
+    const { id } = await Companies.create({ name, activity });
+
+    if (!Object.keys(address).length) {
+      return res.json({ id, name, activity });
+    }
+
+    const {
+      id: address_id,
+      latitude,
+      longitude,
+      place_id,
+      city_place_id,
+    } = await CompanyAddress.create({
+      ...address,
+      id,
+    });
+
+    return res.json({
+      id,
+      name,
+      activity,
+      address_id,
+      latitude,
+      longitude,
+      place_id,
+      city_place_id,
+    });
   }
 }
 

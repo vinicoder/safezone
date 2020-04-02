@@ -34,15 +34,13 @@ class CompanyAddressController {
 
   async store(req, res) {
     const schema = Yup.object().shape({
-      street: Yup.string().required(),
-      number: Yup.string().required(),
-      zipcode: Yup.string()
-        .max(8)
-        .required(),
-      city: Yup.string().required(),
-      state: Yup.string()
-        .max(2)
-        .required(),
+      place_id: Yup.string(),
+      city_place_id: Yup.string(),
+      street: Yup.string(),
+      number: Yup.string(),
+      zipcode: Yup.string().max(8),
+      city: Yup.string(),
+      state: Yup.string().max(2),
       complement: Yup.string(),
       latitude: Yup.string(),
       longitude: Yup.string(),
@@ -60,12 +58,12 @@ class CompanyAddressController {
       return res.status(404).json({ error: 'Company not found' });
     }
 
-    const { id, latitude, longitude } = await CompanyAddress.create({
+    const { id, latitude, longitude, place_id } = await CompanyAddress.create({
       ...req.body,
       company_id,
     });
 
-    return res.json({ id, latitude, longitude, company_id });
+    return res.json({ id, latitude, longitude, place_id, company_id });
   }
 }
 
