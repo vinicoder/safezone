@@ -4,8 +4,13 @@
   "devDependencies": {
     "lerna": "^3.20.2"
   },
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ]
+  "dependencies": {
+    "metro-config": "^0.56.0"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "apps/*"
+    ]
+  }
 }
