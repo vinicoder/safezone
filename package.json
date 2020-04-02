@@ -7,10 +7,8 @@
   "dependencies": {
     "metro-config": "^0.56.0"
   },
-  "workspaces": {
-    "packages": [
-      "packages/*",
-      "apps/*"
-    ]
-  }
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ]
 }
