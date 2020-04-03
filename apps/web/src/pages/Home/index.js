@@ -288,7 +288,7 @@ function Home() {
               </>
             ) : (
               <>
-                <div className="my-5" style={{ height: 450 }}>
+                <div className="my-3" style={{ height: 450 }}>
                   <Form ref={searchPlaceFormRef} onSubmit={handleSearchSubmit}>
                     <SearchInput className="mb-5">
                       <InputUnstyled
@@ -365,6 +365,7 @@ function Home() {
                     </Button>
                   )}
                   <Button
+                    fit
                     disabled={loadingAutoPosition}
                     className=" ld-ext-left"
                     theme="rose"

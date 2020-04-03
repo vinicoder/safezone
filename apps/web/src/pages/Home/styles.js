@@ -45,8 +45,10 @@ export const MapSection = styled.section`
   .companies {
     width: 40%;
     font-family: 'Poppins';
-    padding: 30px 70px;
-
+    padding: 10px 70px;
+    img {
+      width: 100%;
+    }
     overflow-y: auto;
     .header-list {
       color: rgb(238, 66, 102);
