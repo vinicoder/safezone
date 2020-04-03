@@ -42,7 +42,7 @@ export const Form = styled(Unform)`
     border-radius: 15px;
     background: ${colors.christalle};
     color: rgba(255, 255, 255, 1);
-    height: 40px;
+    height: 44px;
     &.has-error {
       margin-bottom: 2px;
     }
@@ -80,10 +80,16 @@ export const Form = styled(Unform)`
     background: ${darken(0.1, colors.christalle)};
   }
   .react-select__value-container {
-    height: 40px;
+    height: 44px;
   }
   .react-select-container {
     background: ${colors.christalle};
     color: rgba(255, 255, 255, 1);
+  }
+  .react-select__input {
+    color: rgba(255, 255, 255, 1);
+    height: 44px;
+    display: flex !important;
+    align-items: center;
   }
 `;

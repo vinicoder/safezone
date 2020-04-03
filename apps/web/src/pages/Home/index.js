@@ -50,6 +50,15 @@ const MapMarkerIcon = ({ size = '6x', color }) => (
   />
 );
 
+const debounce = (fn, ms = 0) => {
+  let timeoutId;
+  // eslint-disable-next-line func-names
+  return function(...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn.apply(this, args), ms);
+  };
+};
+
 function Home() {
   const formRef = useRef(null);
   const searchPlaceFormRef = useRef(null);
@@ -150,14 +159,28 @@ function Home() {
     );
   }
 
+  async function getDetails(companyPlaceId) {
+    const { data } = await mapsApi.get('/place/details/json', {
+      params: {
+        place_id: companyPlaceId,
+        fields: 'name,geometry',
+      },
+    });
+
+    const { result } = data;
+    const { name, geometry } = result;
+    const { location } = geometry;
+    return { place_id: companyPlaceId, name, location };
+  }
+
   async function handleSubmit(data) {
     try {
       // Remove all previous errors
       formRef.current.setErrors({});
 
       const schema = Yup.object().shape({
-        company_name: Yup.string().required(
-          'Por favor, digite o nome da empresa'
+        company: Yup.string().required(
+          'Por favor, selecione o nome da empresa'
         ),
         name: Yup.string().required('Por favor, digite o seu nome'),
         email: Yup.string()
@@ -172,11 +195,14 @@ function Home() {
           .typeError('Por favor, informe uma data válida'),
         gender: Yup.string().required('Por favor, informe seu genero'),
       });
+
       await schema.validate(data, {
         abortEarly: false,
       });
       // Validation passed
       console.log(data);
+      const companyDetails = await getDetails(data.company);
+      console.log('companyDetails', companyDetails);
     } catch (err) {
       const validationErrors = {};
       console.log('err', err);
@@ -215,6 +241,28 @@ function Home() {
     }
 
     return <img src={searchImage} alt="Imagem ilustrativa de pesquisa" />;
+  }
+
+  async function loadOptions(inputValue, callback) {
+    const { data } = await mapsApi.get('/place/autocomplete/json', {
+      params: {
+        input: inputValue,
+        types: 'establishment',
+        origin: '-12.085643,-52.627011',
+        location: '-12.085643,-52.627011',
+        radius: 2446000,
+        strictbounds: true,
+      },
+    });
+
+    const { predictions } = data;
+    callback(
+      predictions.map(predic => ({
+        ...predic,
+        value: predic.place_id,
+        label: predic.structured_formatting.main_text,
+      }))
+    );
   }
 
   return (
@@ -471,10 +519,12 @@ function Home() {
                 </div>
                 <div className="col col-md-5">
                   <div className="form-title">Informações da empresa</div>
-                  <Input
-                    name="company_name"
-                    type="text"
+                  <ReactSelect
+                    name="company"
                     placeholder="Nome da Empresa"
+                    async
+                    cacheOptions
+                    loadOptions={debounce(loadOptions, 500)}
                   />
                   <div className="row mt-2">
                     <div className="col-12">
