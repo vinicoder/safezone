@@ -1,5 +1,6 @@
 {
   "name": "@safezone/web",
+  "private": true,
   "version": "0.1.0",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
@@ -69,7 +70,7 @@
     ]
   },
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
+    "babel-eslint": "^10.0.3",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.10.0",
@@ -84,5 +85,19 @@
   "main": ".eslintrc.js",
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "workspaces": {
+    "nohoist": [
+      "**/react",
+      "**/react/**",
+      "**/react-dom",
+      "**/react-dom/**",
+      "**/react-scripts",
+      "**/react-scripts/**",
+      "**/styled-components",
+      "**/styled-components/**",
+      "**/babel-eslint",
+      "**/babel-eslint/**"
+    ]
+  }
 }
