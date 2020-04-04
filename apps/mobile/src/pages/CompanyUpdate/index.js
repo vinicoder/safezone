@@ -47,24 +47,23 @@ function CompanyUpdate({ navigation }) {
   async function handleSubmit() {
     try {
       setLoading(true);
-      const labelsSelected = labels.filter(label => label.active);
-      const data = { ...company, labels: labelsSelected };
+      const labelsSelected = labels
+        .filter(label => label.active)
+        .map(label => label.id);
+      const data = { company, labels: labelsSelected };
 
       const schema = Yup.object().shape({
-        name: Yup.string().required('Selecione uma empresa'),
-        place_id: Yup.string().required(),
+        company: Yup.object().shape({
+          location: Yup.object().shape({
+            lat: Yup.number().required(),
+            lng: Yup.number().required(),
+          }),
+          name: Yup.string().required('Selecione uma empresa'),
+          place_id: Yup.string().required(),
+        }),
         labels: Yup.array()
           .min(1, 'Selecione pelo menos uma situação')
-          .of(
-            Yup.object().shape({
-              id: Yup.number().required(),
-              name: Yup.string().required(),
-            })
-          ),
-        location: Yup.object().shape({
-          lat: Yup.number().required(),
-          lng: Yup.number().required(),
-        }),
+          .of(Yup.number()),
       });
 
       await schema.validate(data, {
