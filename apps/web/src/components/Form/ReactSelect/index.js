@@ -40,10 +40,7 @@ const Select = ({ name, className = '', async, ...rest }) => {
         return ref.state.value.value;
       },
     });
-    // setInterval(() => {
-    //   console.log('selectRef.current', selectRef.current);
-    // }, 3000);
-  }, [fieldName, registerField, rest.isMulti]);
+  }, [fieldName, registerField, async, rest.isMulti]);
   return (
     <>
       {async && (

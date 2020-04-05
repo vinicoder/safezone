@@ -68,6 +68,8 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [selectedCity, setSelectedCity] = useState(null);
   const [loadingAutoPosition, setLoadingAutoPosition] = useState(false);
+  const auth = useSelector(state => state.auth);
+  const profile = useSelector(state => state.user.profile);
   const gendersLoading = useSelector(state => state.genders.loading);
   const genders = useSelector(state =>
     state.genders.data.map(gender => ({
@@ -76,7 +78,7 @@ function Home() {
       label: gender.description,
     }))
   );
-
+  const [labelsError, setLabelsError] = useState(null);
   const labelsLoading = useSelector(state => state.labels.loading);
   const labels = useSelector(state =>
     state.labels.data.map(label => ({
@@ -177,11 +179,15 @@ function Home() {
     try {
       // Remove all previous errors
       formRef.current.setErrors({});
+      setLabelsError(null);
 
-      const schema = Yup.object().shape({
-        company: Yup.string().required(
-          'Por favor, selecione o nome da empresa'
-        ),
+      data.labels =
+        data.situations &&
+        Object.keys(data.situations)
+          .filter(key => data.situations[key])
+          .map(numb => Number(numb));
+
+      const personSchema = {
         name: Yup.string().required('Por favor, digite o seu nome'),
         email: Yup.string()
           .email('Por favor, digite um e-mail válido')
@@ -194,7 +200,22 @@ function Home() {
           .required('Por favor, informe sua data de nasc.')
           .typeError('Por favor, informe uma data válida'),
         gender: Yup.string().required('Por favor, informe seu genero'),
-      });
+      };
+      const companySchema = {
+        company: Yup.string().required(
+          'Por favor, selecione o nome da empresa'
+        ),
+        labels: Yup.array()
+          .of(Yup.number())
+          .required('Por favor, selecione informe a situação da empresa'),
+      };
+
+      const schemaToValidate = Object.assign(
+        companySchema,
+        !auth.signed ? personSchema : null
+      );
+
+      const schema = Yup.object().shape(schemaToValidate);
 
       await schema.validate(data, {
         abortEarly: false,
@@ -204,12 +225,13 @@ function Home() {
       const companyDetails = await getDetails(data.company);
       console.log('companyDetails', companyDetails);
     } catch (err) {
-      const validationErrors = {};
       console.log('err', err);
+      const validationErrors = {};
       if (err instanceof Yup.ValidationError) {
         err.inner.forEach(error => {
           validationErrors[error.path] = error.message;
         });
+        setLabelsError(validationErrors.labels);
         formRef.current.setErrors(validationErrors);
       }
     }
@@ -493,29 +515,46 @@ function Home() {
               <div className="row justify-content-md-center mb-5">
                 <div className="col col-md-5 col-sm-12">
                   <div className="form-title">Informações do seu perfil</div>
-                  <Input name="name" type="text" placeholder="Nome completo" />
-                  <Input name="email" type="email" placeholder="E-mail" />
-                  <Input name="password" type="password" placeholder="Senha" />
-                  <div className="row">
-                    <div className="col col-sm-12 col-md-6">
-                      <Datepicker
-                        dateFormat="dd/MM/yyyy"
-                        name="birthday"
-                        locale="pt-BR"
-                        maxDate={new Date()}
-                        placeholderText="Data de nascimento"
+                  {auth.signed ? (
+                    <>
+                      <input type="text" value={profile.name} readOnly />
+                      <input type="text" value={profile.email} readOnly />
+                    </>
+                  ) : (
+                    <>
+                      <Input
+                        name="name"
+                        type="text"
+                        placeholder="Nome completo"
                       />
-                    </div>
-                    <div className="col col-sm-12 col-md-6">
-                      <ReactSelect
-                        defaultValue={null}
-                        name="gender"
-                        placeholder="Gênero"
-                        loading={gendersLoading}
-                        options={genders}
+                      <Input name="email" type="email" placeholder="E-mail" />
+                      <Input
+                        name="password"
+                        type="password"
+                        placeholder="Senha"
                       />
-                    </div>
-                  </div>
+                      <div className="row">
+                        <div className="col col-sm-12 col-md-6">
+                          <Datepicker
+                            dateFormat="dd/MM/yyyy"
+                            name="birthday"
+                            locale="pt-BR"
+                            maxDate={new Date()}
+                            placeholderText="Data de nascimento [05/04/2020]"
+                          />
+                        </div>
+                        <div className="col col-sm-12 col-md-6">
+                          <ReactSelect
+                            defaultValue={null}
+                            name="gender"
+                            placeholder="Gênero"
+                            loading={gendersLoading}
+                            options={genders}
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div className="col col-md-5">
                   <div className="form-title">Informações da empresa</div>
@@ -537,12 +576,13 @@ function Home() {
                           {labels.map(lb => (
                             <Checkbox
                               key={lb.id}
-                              name={`checkbox-${lb.id}`}
+                              name={lb.id}
                               label={lb.description}
                             />
                           ))}
                         </ul>
                       </Scope>
+                      {labelsError}
                     </div>
                   </div>
                   <div className="row">
