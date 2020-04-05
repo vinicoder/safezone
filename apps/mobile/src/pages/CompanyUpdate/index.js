@@ -109,14 +109,16 @@ function CompanyUpdate({ navigation }) {
           <InputTitle>Selecione uma empresa</InputTitle>
           <InputReadonly
             onPress={() => searchRef.current.open()}
-            error={errs.name}
+            error={errs && errs['company.name']}
           >
             <InputText>
               {(company && company.name) || 'Nome da empresa'}
             </InputText>
           </InputReadonly>
-          {errs && errs.name && (
-            <ErrorMessage style={{ paddingLeft: 0 }}>{errs.name}</ErrorMessage>
+          {errs && errs['company.name'] && (
+            <ErrorMessage style={{ paddingLeft: 0 }}>
+              {errs['company.name']}
+            </ErrorMessage>
           )}
 
           <InputTitle>Situações da empresa</InputTitle>

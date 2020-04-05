@@ -33,7 +33,10 @@ export const Container = styled(Animated.View)`
 
 export const Body = styled.ScrollView.attrs({
   showsVerticalScrollIndicator: false,
-})``;
+  bounces: false,
+})`
+  max-height: 74%;
+`;
 
 export const Content = styled.View`
   padding: 0 30px 30px 30px;
