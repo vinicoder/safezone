@@ -189,13 +189,13 @@ function Home() {
       ),
       footer: (
         <>
-          <Button
+          {/* <Button
             fontWeight="bold"
             onClick={() => SweetAle.close()}
             style={{ marginRight: 10 }}
           >
             Fechar
-          </Button>
+          </Button> */}
           <Button
             theme="rose"
             fontWeight="bold"

@@ -107,7 +107,7 @@ class CompanyRegisterLabelsController {
       /**
        * register company address step
        */
-      const addressExists = CompanyAddress.findOne({
+      const addressExists = await CompanyAddress.findOne({
         where: {
           place_id: company.place_id,
         },
@@ -115,14 +115,15 @@ class CompanyRegisterLabelsController {
 
       // if company address exist
       // if company address not exist
-      const currentAddress =
-        addressExists ||
-        (await CompanyAddress.create({
+      let currentAddress = addressExists;
+      if (!addressExists) {
+        currentAddress = await CompanyAddress.create({
           place_id: company.place_id,
           latitude: company.latitude,
           longitude: company.longitude,
           company_id: currentCompany.id,
-        }));
+        });
+      }
 
       /**
        * register company in event
@@ -140,12 +141,14 @@ class CompanyRegisterLabelsController {
         },
       });
 
-      const currentCompanyEvent =
-        companyEventExists ||
-        (await CompanyEvents.create({
+      let currentCompanyEvent = companyEventExists;
+
+      if (!companyEventExists) {
+        currentCompanyEvent = await CompanyEvents.create({
           company_id: currentCompany.id,
           event_id: currentEvent.id,
-        }));
+        });
+      }
 
       /**
        * register labels in company
@@ -161,12 +164,13 @@ class CompanyRegisterLabelsController {
             },
           });
 
-          const companyEventLabel =
-            companyEventLabelExists ||
-            (await CompanyEventsLabels.create({
+          let companyEventLabel = companyEventLabelExists;
+          if (!companyEventLabel) {
+            companyEventLabel = await CompanyEventsLabels.create({
               company_events_id: currentCompanyEvent.id,
               label_id,
-            }));
+            });
+          }
 
           return companyEventLabel;
         })
