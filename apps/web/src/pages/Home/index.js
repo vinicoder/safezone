@@ -6,6 +6,8 @@ import { Scope } from '@unform/core';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
 import { Element, scroller } from 'react-scroll';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 import InputUnstyled from 'components/Form/Input/InputUnstyled';
 import Input from 'components/Form/Input';
@@ -22,6 +24,8 @@ import heroImage from 'images/hero-image.svg';
 import aboutImage from 'images/about-image.svg';
 import formImage from 'images/form-image.svg';
 import searchImage from 'images/search-image.svg';
+
+import api from 'services/api';
 
 import mapsApi from 'services/maps';
 import Gmaps from 'components/Gmaps';
@@ -41,6 +45,8 @@ import {
   SearchResultName,
   SearchMessage,
 } from './styles';
+
+const SweetAle = withReactContent(Swal);
 
 const MapMarkerIcon = ({ size = '6x', color }) => (
   <FontAwesomeIcon
@@ -70,23 +76,17 @@ function Home() {
   const [loadingAutoPosition, setLoadingAutoPosition] = useState(false);
   const auth = useSelector(state => state.auth);
   const profile = useSelector(state => state.user.profile);
+  const [formLoading, setFormLoading] = useState(false);
   const gendersLoading = useSelector(state => state.genders.loading);
-  const genders = useSelector(state =>
-    state.genders.data.map(gender => ({
-      ...gender,
-      value: gender.id,
-      label: gender.description,
-    }))
-  );
+  const mapOptions = entity => ({
+    ...entity,
+    value: entity.id,
+    label: entity.description,
+  });
+  const genders = useSelector(state => state.genders.data.map(mapOptions));
   const [labelsError, setLabelsError] = useState(null);
   const labelsLoading = useSelector(state => state.labels.loading);
-  const labels = useSelector(state =>
-    state.labels.data.map(label => ({
-      ...label,
-      value: label.id,
-      label: label.description,
-    }))
-  );
+  const labels = useSelector(state => state.labels.data.map(mapOptions));
 
   // Map setup
   const gmapRef = useRef();
@@ -175,11 +175,54 @@ function Home() {
     return { place_id: companyPlaceId, name, location };
   }
 
+  async function afterSubmitForm(data) {
+    let accepted = false;
+
+    await SweetAle.fire({
+      width: '50%',
+      padding: '3em',
+      html: (
+        <div>
+          <h1>Deu tudo certo!</h1>
+          <p className="subtitle">Sua contribuição fez a diferença!</p>
+        </div>
+      ),
+      footer: (
+        <>
+          <Button
+            fontWeight="bold"
+            onClick={() => SweetAle.close()}
+            style={{ marginRight: 10 }}
+          >
+            Fechar
+          </Button>
+          <Button
+            theme="rose"
+            fontWeight="bold"
+            onClick={() => {
+              accepted = true;
+              SweetAle.close();
+            }}
+            style={{ marginLeft: 10 }}
+          >
+            Continuar
+          </Button>
+        </>
+      ),
+      showCloseButton: true,
+      showCancelButton: false,
+      showConfirmButton: false,
+    });
+    console.log(accepted);
+  }
+
   async function handleSubmit(data) {
     try {
       // Remove all previous errors
       formRef.current.setErrors({});
       setLabelsError(null);
+
+      setFormLoading(true);
 
       data.labels =
         data.situations &&
@@ -223,7 +266,27 @@ function Home() {
       // Validation passed
       console.log(data);
       const companyDetails = await getDetails(data.company);
-      console.log('companyDetails', companyDetails);
+
+      const dataToPost = {
+        labels: data.labels,
+        company: companyDetails,
+        user: !auth.signed && {
+          name: data.name,
+          email: data.email,
+          password: data.password,
+          birth_date: data.birthday,
+          gender_id: data.gender,
+        },
+      };
+
+      console.log('dataToPost', dataToPost);
+
+      const { data: respData } = await api.post(
+        '/companies/associations/events/labels',
+        dataToPost
+      );
+
+      afterSubmitForm(respData);
     } catch (err) {
       console.log('err', err);
       const validationErrors = {};
@@ -234,6 +297,8 @@ function Home() {
         setLabelsError(validationErrors.labels);
         formRef.current.setErrors(validationErrors);
       }
+    } finally {
+      setFormLoading(false);
     }
   }
 
@@ -604,8 +669,13 @@ function Home() {
               </div>
 
               <div className="row justify-content-md-center">
-                <Button type="submit" theme="rose" fontWeight="bold">
-                  Enviar atualização
+                <Button
+                  type="submit"
+                  theme="rose"
+                  fontWeight="bold"
+                  disabled={formLoading}
+                >
+                  {formLoading ? 'Enviando...' : 'Enviar atualização'}
                 </Button>
               </div>
             </StyledForm>
