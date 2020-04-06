@@ -32,7 +32,7 @@ class CompanyRegisterLabelsController {
 
         const userExists = await Users.findOne({
           where: {
-            email: req.body.email,
+            email: user.email,
           },
         });
 
