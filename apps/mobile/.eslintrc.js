@@ -27,6 +27,7 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-underscore-dangle': 'off',
     'import/no-extraneous-dependencies': 'off',
+    'no-console': ['error', { allow: ['tron'] }],
   },
   settings: {
     'import/resolver': {

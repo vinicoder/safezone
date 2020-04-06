@@ -1,12 +1,13 @@
-import React from 'react';
-import { Dimensions, Image } from 'react-native';
+import { Dimensions } from 'react-native';
 import { Appearance } from 'react-native-appearance';
 import Constants from 'expo-constants';
 
-import LogoSmall from '~/assets/logo-small.png';
-
-import Logo from '~/assets/logo.png';
-import Avatar from '~/components/Avatar';
+import {
+  headerLeft,
+  headerRight,
+  headerLeftDefault,
+  headerRightDefault,
+} from '~/components/Header';
 
 const { height: windowHeight } = Dimensions.get('window');
 const { statusBarHeight } = Constants;
@@ -24,7 +25,7 @@ export const colors = {
 };
 
 export const navigations = {
-  stackHeader: {
+  stackHeader: ({ navigation, route }) => ({
     headerBackTitleVisible: false,
     headerTintColor: 'white',
     headerStyle: {
@@ -44,14 +45,13 @@ export const navigations = {
       paddingRight: 30,
     },
     headerTitleAlign: 'center',
-    headerRight: () => <Image source={LogoSmall} />,
-  },
-  stackDefaultHeader: ({ navigation }) => ({
+    headerRight: () => headerRight({ navigation, route }),
+    headerLeft: () => headerLeft({ navigation, route }),
+  }),
+  stackDefaultHeader: ({ navigation, route }) => ({
     headerTitle: () => {},
-    headerLeft: () => <Image source={Logo} />,
-    headerRight: () => (
-      <Avatar onPress={() => navigation.navigate('Profile')} />
-    ),
+    headerLeft: () => headerLeftDefault({ navigation, route }),
+    headerRight: () => headerRightDefault({ navigation, route }),
     headerLeftContainerStyle: { marginLeft: 30 },
     headerRightContainerStyle: { marginRight: 30 },
   }),

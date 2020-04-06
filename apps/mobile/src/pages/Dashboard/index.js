@@ -169,7 +169,11 @@ function Home({ navigation }) {
       >
         <HeaderInfo>
           <HeaderTitle>Situação atual das empresas na pandemia.</HeaderTitle>
-          <HeaderButton onPress={() => navigation.navigate('CompanyUpdate')}>
+          <HeaderButton
+            onPress={() =>
+              navigation.navigate('App', { page: 'CompanyUpdate' })
+            }
+          >
             Atualize sua empresa
           </HeaderButton>
           <HeaderLink onPress={() => modalRef.current.open()}>
@@ -242,7 +246,12 @@ function Home({ navigation }) {
                     }
                   />
                 </PanGestureHandler>
-                <Post item onPress={() => navigation.navigate('Company')} />
+                <Post
+                  item
+                  onPress={() =>
+                    navigation.navigate('App', { page: 'Company' })
+                  }
+                />
                 <Post item />
                 <Post item />
                 <Post item />

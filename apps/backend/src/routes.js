@@ -65,7 +65,7 @@ routes.delete(
   CompanyEventsLabelsController.delete
 );
 
-routes.get('/places', null);
-routes.get('/places/city', null);
+// routes.get('/places', null);
+// routes.get('/places/city', null);
 
 export default routes;
