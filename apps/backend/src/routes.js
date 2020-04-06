@@ -10,10 +10,14 @@ import CompanyEventsController from './app/controllers/CompanyEventsController';
 import LabelsController from './app/controllers/LabelsController';
 import GendersController from './app/controllers/GendersController';
 import CompanyEventsLabelsController from './app/controllers/CompanyEventsLabelsController';
+import CompanyRegisterLabelsController from './app/controllers/CompanyRegisterLabelsController';
 
 import authMiddleweare from './app/middlewares/auth';
+import userLoggedMiddleweare from './app/middlewares/userLogged';
 
 const routes = new Router();
+
+routes.use(userLoggedMiddleweare);
 
 routes.post('/users', UsersController.store);
 routes.post('/sessions', SessionController.store);
@@ -26,6 +30,11 @@ routes.get('/genders', GendersController.index);
 
 routes.get('/companies', CompanyController.index);
 routes.get('/companies/:id', CompanyAdressController.index);
+
+routes.post(
+  '/companies/associations/events/labels',
+  CompanyRegisterLabelsController.store
+);
 
 routes.use(authMiddleweare);
 
