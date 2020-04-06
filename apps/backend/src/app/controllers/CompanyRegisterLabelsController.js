@@ -119,6 +119,7 @@ class CompanyRegisterLabelsController {
       if (!addressExists) {
         currentAddress = await CompanyAddress.create({
           place_id: company.place_id,
+          city_place_id: company.city_place_id,
           latitude: company.latitude,
           longitude: company.longitude,
           company_id: currentCompany.id,
