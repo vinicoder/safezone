@@ -11,6 +11,7 @@ import LabelsController from './app/controllers/LabelsController';
 import GendersController from './app/controllers/GendersController';
 import CompanyEventsLabelsController from './app/controllers/CompanyEventsLabelsController';
 import CompanyRegisterLabelsController from './app/controllers/CompanyRegisterLabelsController';
+import CityController from './app/controllers/CityController';
 
 import authMiddleweare from './app/middlewares/auth';
 import userLoggedMiddleweare from './app/middlewares/userLogged';
@@ -21,6 +22,7 @@ routes.use(userLoggedMiddleweare);
 
 routes.post('/users', UsersController.store);
 routes.post('/sessions', SessionController.store);
+routes.post('/cities', CityController.index);
 
 routes.post('/passwords', ForgotPasswordController.store);
 routes.put('/passwords/:token', ForgotPasswordController.update);

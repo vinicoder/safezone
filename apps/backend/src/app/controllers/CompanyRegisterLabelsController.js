@@ -54,6 +54,7 @@ class CompanyRegisterLabelsController {
           }),
           name: Yup.string().required('Selecione uma empresa'),
           place_id: Yup.string().required(),
+          city_place_id: Yup.string().required(),
         }),
       });
 
@@ -120,8 +121,8 @@ class CompanyRegisterLabelsController {
         currentAddress = await CompanyAddress.create({
           place_id: company.place_id,
           city_place_id: company.city_place_id,
-          latitude: company.latitude,
-          longitude: company.longitude,
+          latitude: company.location.lat,
+          longitude: company.location.lng,
           company_id: currentCompany.id,
         });
       }
