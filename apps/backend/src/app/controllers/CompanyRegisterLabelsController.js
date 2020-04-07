@@ -4,10 +4,56 @@ import Companies from '../models/Companies';
 import CompanyEventsLabels from '../models/CompanyEventsLabels';
 import Users from '../models/Users';
 import Events from '../models/Events';
+import Labels from '../models/Labels';
 import CompanyAddress from '../models/CompanyAddress';
 import CompanyEvents from '../models/CompanyEvents';
 
 class CompanyRegisterLabelsController {
+  async show(req, res) {
+    const { company_id } = req.params;
+
+    const currentEvent = await Events.findOne({
+      where: {
+        description: 'COVID-19',
+      },
+    });
+
+    const companyEventExists = await CompanyEvents.findOne({
+      where: {
+        company_id,
+        event_id: currentEvent.id,
+      },
+    });
+
+    const companyEventsLabels = await CompanyEventsLabels.findAll({
+      where: {
+        company_events_id: companyEventExists.id,
+      },
+      include: [
+        {
+          model: CompanyEvents,
+          as: 'company_events',
+          where: {
+            id: 1,
+          },
+          include: {
+            model: Companies,
+            as: 'company',
+            where: {
+              id: company_id,
+            },
+          },
+        },
+        {
+          model: Labels,
+          as: 'labels',
+        },
+      ],
+    });
+
+    return res.json(companyEventsLabels);
+  }
+
   async store(req, res) {
     try {
       const { user } = req.body;
