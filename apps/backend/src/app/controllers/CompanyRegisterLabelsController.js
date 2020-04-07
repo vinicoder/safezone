@@ -9,6 +9,39 @@ import CompanyAddress from '../models/CompanyAddress';
 import CompanyEvents from '../models/CompanyEvents';
 
 class CompanyRegisterLabelsController {
+  async index(req, res) {
+    try {
+      const companyEventsLabels = await CompanyEventsLabels.findAll({
+        include: [
+          {
+            model: CompanyEvents,
+            as: 'company_events',
+            where: {
+              id: 1,
+            },
+            include: {
+              model: Companies,
+              as: 'company',
+            },
+          },
+          {
+            model: Labels,
+            as: 'labels',
+          },
+        ],
+        order: [['createdAt', 'DESC']],
+        limit: 10,
+      });
+
+      return res.json(companyEventsLabels);
+    } catch (error) {
+      console.log(error);
+      return res.json({
+        error,
+      });
+    }
+  }
+
   async show(req, res) {
     const { company_id } = req.params;
 

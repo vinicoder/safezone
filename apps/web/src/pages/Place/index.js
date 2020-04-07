@@ -41,6 +41,7 @@ function Place() {
   const formRef = useRef(null);
   const { id } = useParams();
   const [tags, setTags] = useState([]);
+  const [lastCompanies, setLastCompanies] = useState([]);
   const [company, setCompany] = useState({});
   const history = useHistory();
   const [labelsError, setLabelsError] = useState(null);
@@ -160,49 +161,49 @@ function Place() {
     }
   }
 
-  async function handleClickCompanyState(company) {
-    let accepted = false;
+  // async function handleClickCompanyState(company) {
+  //   let accepted = false;
 
-    await SweetAle.fire({
-      width: '50%',
-      padding: '3em',
-      html: (
-        <DenunciationContainer>
-          <h1>Denunciar</h1>
-          <p className="subtitle">
-            Se você não concorda com essa atualização, confirme sua solicitação.
-          </p>
-        </DenunciationContainer>
-      ),
-      footer: (
-        <>
-          <Button
-            fontWeight="bold"
-            onClick={() => SweetAle.close()}
-            style={{ marginRight: 10 }}
-          >
-            Cancelar
-          </Button>
-          <Button
-            theme="rose"
-            fontWeight="bold"
-            onClick={() => {
-              accepted = true;
-              SweetAle.close();
-            }}
-            style={{ marginLeft: 10 }}
-          >
-            Denunciar
-          </Button>
-        </>
-      ),
-      showCloseButton: true,
-      showCancelButton: false,
-      showConfirmButton: false,
-    });
+  //   await SweetAle.fire({
+  //     width: '50%',
+  //     padding: '3em',
+  //     html: (
+  //       <DenunciationContainer>
+  //         <h1>Denunciar</h1>
+  //         <p className="subtitle">
+  //           Se você não concorda com essa atualização, confirme sua solicitação.
+  //         </p>
+  //       </DenunciationContainer>
+  //     ),
+  //     footer: (
+  //       <>
+  //         <Button
+  //           fontWeight="bold"
+  //           onClick={() => SweetAle.close()}
+  //           style={{ marginRight: 10 }}
+  //         >
+  //           Cancelar
+  //         </Button>
+  //         <Button
+  //           theme="rose"
+  //           fontWeight="bold"
+  //           onClick={() => {
+  //             accepted = true;
+  //             SweetAle.close();
+  //           }}
+  //           style={{ marginLeft: 10 }}
+  //         >
+  //           Denunciar
+  //         </Button>
+  //       </>
+  //     ),
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     showConfirmButton: false,
+  //   });
 
-    console.log('accepted', accepted);
-  }
+  //   console.log('accepted', accepted);
+  // }
 
   async function loadOptions(inputValue, callback) {
     const { data } = await mapsApi.get('/place/autocomplete/json', {
@@ -236,8 +237,23 @@ function Place() {
       );
     });
     api.get(`/companies/${id}`).then(({ data }) => {
-      console.log('data', data);
       setCompany(data.company);
+    });
+    api.get(`/companies/associations/events/labels`).then(({ data }) => {
+      setLastCompanies(
+        data
+          .map(label => label.company_events.company)
+          .map(currentCompany => ({
+            id: currentCompany.id,
+            name: currentCompany.name,
+            updatedAt: currentCompany.updatedAt,
+          }))
+          // temporary filter unique
+          .filter(
+            (value, index, self) =>
+              self.map(x => x.id).indexOf(value.id) === index
+          )
+      );
     });
   }, [id]);
 
@@ -313,17 +329,27 @@ function Place() {
                 <h4>Últimas atualizações</h4>
 
                 {/* List */}
-                <CompanyBox
+                {/* <CompanyBox
                   key={`company-${1}`}
                   onClick={() =>
                     handleClickCompanyState({ id: 1, name: 'company' })
                   }
-                />
-                <CompanyBox key={`company-${2}`} />
-                <CompanyBox key={`company-${3}`} />
-                <CompanyBox key={`company-${4}`} />
-                <CompanyBox key={`company-${5}`} />
-                <CompanyBox key={`company-${6}`} />
+                /> */}
+                {lastCompanies.map(item => (
+                  <CompanyBox
+                    key={`${item.id}`}
+                    requestURL={`/companies/associations/events/labels/${item.id}`}
+                    name={item.name}
+                    funcToFormatTags={label => ({
+                      id: label.id,
+                      description: label.labels.description,
+                    })}
+                    updatedAt={item.updatedAt}
+                    onClick={() => {
+                      history.push(`/empresa/${item.id}`);
+                    }}
+                  />
+                ))}
               </div>
             </div>
           </div>

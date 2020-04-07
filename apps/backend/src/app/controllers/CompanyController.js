@@ -10,6 +10,12 @@ class CompanyController {
     return res.json(companies);
   }
 
+  async show(req, res) {
+    const company = await Companies.findByPk(req.params.id);
+
+    return res.json(company);
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),

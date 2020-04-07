@@ -11,7 +11,7 @@ export const Container = styled.div`
   min-height: 150px;
   margin: 9px 0px;
   border-radius: 10px;
-  cursor: pointer;
+  cursor: ${props => (props.onClick ? 'pointer' : 'default')};
 
   .title {
     font-family: 'Poppins';

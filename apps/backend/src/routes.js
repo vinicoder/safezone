@@ -43,6 +43,11 @@ routes.get(
   CompanyRegisterLabelsController.show
 );
 
+routes.get(
+  '/companies/associations/events/labels',
+  CompanyRegisterLabelsController.index
+);
+
 routes.use(authMiddleweare);
 
 routes.get('/users', UsersController.index);
