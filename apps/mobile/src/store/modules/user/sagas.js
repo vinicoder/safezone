@@ -6,35 +6,22 @@ import { updateProfileSuccess, updateProfileFailure } from './actions';
 
 export function* updateProfile({ payload }) {
   try {
-    // const { name, email, gender, cpf, phone, avatar } = payload.data;
+    const data = ({
+      name,
+      email,
+      gender_id,
+      birth_date,
+      password,
+    } = payload.data);
 
-    // const formData = new FormData();
-    // formData.append('_method', 'put');
+    const formData = Object.entries(data).reduce(
+      (a, [k, v]) => (v ? { ...a, [k]: v } : a),
+      {}
+    );
 
-    // formData.append('name', name);
-    // formData.append('email', email);
-    // formData.append('gender', gender);
-    // formData.append('cpf', cpf);
-    // formData.append('phone', phone);
-
-    // if (avatar) {
-    //   if (typeof avatar === 'string') {
-    //     formData.append('avatar', avatar);
-    //   } else if (typeof avatar === 'object' && avatar.type === 'image') {
-    //     const filename = avatar.uri.split('/').pop();
-    //     const match = /\.(\w+)$/.exec(filename);
-    //     const type = match ? `image/${match[1]}` : `image`;
-    //     formData.append('avatar', { uri: avatar.uri, name: filename, type });
-    //   }
-    // }
-
-    // const response = yield call(api.post, 'api/user/me', formData, {
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'multipart/form-data',
-    //   },
-    //   timeout: 10000,
-    // });
+    const response = yield call(api.put, '/users', formData, {
+      timeout: 10000,
+    });
 
     yield put(updateProfileSuccess(response.data));
   } catch (error) {
@@ -44,7 +31,7 @@ export function* updateProfile({ payload }) {
 
 export function* getCurrentProfile() {
   try {
-    const response = yield call(api.get, 'api/user/me');
+    const response = yield call(api.get, '/users/me');
     yield put(updateProfileSuccess(response.data));
   } catch (error) {
     yield put(updateProfileFailure());

@@ -1,7 +1,10 @@
 import React, { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
+
+import { signInRequest } from '~/store/modules/auth/actions';
 
 import Input from '~/components/Form/Input';
 
@@ -15,6 +18,7 @@ import {
 } from '~/components/Form/styles';
 
 function SignIn({ navigation }) {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
   const formRef = useRef(null);
@@ -33,6 +37,10 @@ function SignIn({ navigation }) {
       });
 
       formRef.current.setErrors({});
+
+      const { email, password } = data;
+
+      dispatch(signInRequest(email, password));
 
       setLoading(true);
     } catch (err) {

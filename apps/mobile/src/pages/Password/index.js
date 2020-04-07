@@ -24,10 +24,10 @@ import {
   updateProfileRequest,
 } from '~/store/modules/user/actions';
 
-function Profile({ navigation }) {
+function Password({ navigation }) {
   const dispatch = useDispatch();
-  const profile = useSelector((state) => state.user.profile);
-  const loading = useSelector((state) => state.user.loading);
+  const profile = useSelector(state => state.user.profile);
+  const loading = useSelector(state => state.user.loading);
 
   const formRef = useRef(null);
 
@@ -38,10 +38,15 @@ function Profile({ navigation }) {
   async function handleSubmit(data) {
     try {
       const schema = Yup.object().shape({
-        name: Yup.string().required('Nome é obrigatório'),
-        email: Yup.string().email('Digite um e-mail válido'),
-        birth_date: Yup.date().typeError('Data de nascimento obrigatória'),
-        gender_id: Yup.number().typeError('Selecione um gênero'),
+        oldPassword: Yup.string().required('Senha antiga é obrigatório'),
+        password: Yup.string()
+          .min(6, 'Mínimo de 6 caracteres')
+          .required('Senha é obrigatório'),
+        confirmPassword: Yup.string()
+          .when('password', (password, field) =>
+            password ? field.oneOf([Yup.ref('password')]) : field
+          )
+          .required('Confirmação de senha é obrigatório'),
       });
 
       await schema.validate(data, {
@@ -59,7 +64,7 @@ function Profile({ navigation }) {
       if (err instanceof Yup.ValidationError) {
         const errorMessages = {};
 
-        err.inner.forEach((error) => {
+        err.inner.forEach(error => {
           errorMessages[error.path] = error.message;
           formRef.current.clearField(error.path);
         });
@@ -73,55 +78,47 @@ function Profile({ navigation }) {
     <Container pointerEvents={loading ? 'none' : 'auto'}>
       <ContentScroll>
         <Content>
-          <Title>Atualizar conta</Title>
-          <Desc>Mantenha seus dados sempre atualizados.</Desc>
+          <Title>Atualizar senha</Title>
+          <Desc>Atenção para os dados cadastrados.</Desc>
           <Form ref={formRef} onSubmit={handleSubmit} initialData={profile}>
             <Input
-              name="name"
-              placeholder="Nome completo"
+              name="oldPassword"
               autoCorrect={false}
-              autoCompleteType="name"
-              returnKeyType="next"
-              onSubmitEditing={() =>
-                formRef.current.getFieldRef('birth_date').focus()
-              }
-            />
-            <DatePicker
-              name="birth_date"
-              placeholder="Data de nascimento"
-              display="spinner"
-              minimumDate={subYears(new Date(), 100)}
-              maximumDate={subYears(new Date(), 16)}
-              onSubmitEditing={() =>
-                formRef.current.getFieldRef('gender_id').focus()
-              }
-            />
-
-            <Select
-              name="gender_id"
-              placeholder={{ label: 'Gênero', value: 0 }}
-              items={[
-                { label: 'Masculino', value: 1 },
-                { label: 'Feminino', value: 2 },
-                { label: 'Outros', value: 3 },
-              ]}
-              onSubmitEditing={() =>
-                formRef.current.getFieldRef('email').focus()
-              }
-            />
-
-            <Input
-              name="email"
-              autoCorrect={false}
-              autoCompleteType="email"
-              keyboardType="email-address"
-              textContentType="username"
+              autoCompleteType="password"
+              textContentType="password"
+              secureTextEntry
               autoCapitalize="none"
-              placeholder="E-mail"
-              returnKeyType="next"
+              placeholder="Senha antiga"
+              returnKeyType="send"
               onSubmitEditing={() =>
                 formRef.current.getFieldRef('password').focus()
               }
+            />
+
+            <Input
+              name="password"
+              autoCorrect={false}
+              autoCompleteType="password"
+              textContentType="password"
+              secureTextEntry
+              autoCapitalize="none"
+              placeholder="Nova senha"
+              returnKeyType="send"
+              onSubmitEditing={() =>
+                formRef.current.getFieldRef('confirmPassword').focus()
+              }
+            />
+
+            <Input
+              name="confirmPassword"
+              autoCorrect={false}
+              autoCompleteType="password"
+              textContentType="password"
+              secureTextEntry
+              autoCapitalize="none"
+              placeholder="Confirmar senha"
+              returnKeyType="send"
+              onSubmitEditing={() => formRef.current.submitForm()}
             />
 
             <Button
@@ -131,15 +128,8 @@ function Profile({ navigation }) {
             >
               Salvar informações
             </Button>
-            <Button
-              color="info"
-              textColor="primary"
-              onPress={() => navigation.navigate('App', { page: 'Password' })}
-            >
-              Alterar senha
-            </Button>
-            <Button color="primary" onPress={() => dispatch(signOut())}>
-              Sair da conta
+            <Button color="primary" onPress={() => navigation.goBack()}>
+              Cancelar
             </Button>
           </Form>
         </Content>
@@ -148,10 +138,10 @@ function Profile({ navigation }) {
   );
 }
 
-Profile.propTypes = {
+Password.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-export default Profile;
+export default Password;

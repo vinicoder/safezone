@@ -1,6 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
+import ContentLoader from 'react-native-easy-content-loader';
+
+import { ActivityIndicator } from 'react-native';
+import api from '~/services/api';
 
 import Search from '~/components/Search';
 
@@ -29,16 +33,11 @@ import {
 function CompanyUpdate({ navigation }) {
   const searchRef = useRef();
   const [loading, setLoading] = useState(false);
+  const [loadingLabels, setLoadingLabels] = useState(true);
 
   const [errs, setErrs] = useState([]);
   const [company, setCompany] = useState({});
-  const [labels, setLabels] = useState([
-    { id: 1, name: 'Home-office', active: false },
-    { id: 2, name: 'Fechada', active: false },
-    { id: 3, name: 'Menos colaboradores', active: false },
-    { id: 4, name: 'Horas reduzidas', active: false },
-    { id: 5, name: 'Colaboradores em "férias"', active: false },
-  ]);
+  const [labels, setLabels] = useState([]);
 
   async function handlePressItem(item) {
     setCompany(item);
@@ -48,8 +47,8 @@ function CompanyUpdate({ navigation }) {
     try {
       setLoading(true);
       const labelsSelected = labels
-        .filter(label => label.active)
-        .map(label => label.id);
+        .filter((label) => label.active)
+        .map((label) => label.id);
       const data = { company, labels: labelsSelected };
 
       const schema = Yup.object().shape({
@@ -72,28 +71,43 @@ function CompanyUpdate({ navigation }) {
 
       setErrs([]);
 
-      setLoading(false);
+      api.post('/companies/associations/events/labels').then(({ data }) => {
+        navigation.navigate('App', { page: 'Company' });
+      });
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errorMessages = {};
 
-        err.inner.forEach(error => {
+        err.inner.forEach((error) => {
           errorMessages[error.path] = error.message;
         });
 
         setErrs(errorMessages);
-
-        setLoading(false);
       }
     }
+    setLoading(false);
   }
 
   function handleLabel(id) {
-    const labelsChanged = labels.map(label =>
+    const labelsChanged = labels.map((label) =>
       label.id === id ? { ...label, active: !label.active } : label
     );
     setLabels(labelsChanged);
   }
+
+  useEffect(() => {
+    async function loadLabels() {
+      await api.get('/labels').then(({ data }) => {
+        const labelsChanged = data.map((label) => {
+          return { ...label, active: false };
+        });
+        setLabels(labelsChanged);
+      });
+      setLoadingLabels(false);
+    }
+
+    loadLabels();
+  }, []);
 
   return (
     <Container pointerEvents={loading ? 'none' : 'auto'}>
@@ -106,37 +120,62 @@ function CompanyUpdate({ navigation }) {
             <HeaderImage />
           </Header>
 
-          <InputTitle>Selecione uma empresa</InputTitle>
-          <InputReadonly
-            onPress={() => searchRef.current.open()}
-            error={errs && errs['company.name']}
-          >
-            <InputText>
-              {(company && company.name) || 'Nome da empresa'}
-            </InputText>
-          </InputReadonly>
-          {errs && errs['company.name'] && (
-            <ErrorMessage style={{ paddingLeft: 0 }}>
-              {errs['company.name']}
-            </ErrorMessage>
-          )}
+          {labels.length > 0 ? (
+            <>
+              <InputTitle>Selecione uma empresa</InputTitle>
+              <InputReadonly
+                onPress={() => searchRef.current.open()}
+                error={errs && errs['company.name']}
+              >
+                <InputText>
+                  {(company && company.name) || 'Nome da empresa'}
+                </InputText>
+              </InputReadonly>
+              {errs && errs['company.name'] && (
+                <ErrorMessage style={{ paddingLeft: 0 }}>
+                  {errs['company.name']}
+                </ErrorMessage>
+              )}
 
-          <InputTitle>Situações da empresa</InputTitle>
-          <LabelList>
-            {labels.map(label => (
-              <LabelItem
-                name={label.name}
-                hasIcon
-                active={label.active}
-                key={label.id}
-                onPress={() => handleLabel(label.id)}
-              />
-            ))}
-          </LabelList>
-          {errs && errs.labels && (
-            <ErrorMessage style={{ paddingLeft: 0 }}>
-              {errs.labels}
-            </ErrorMessage>
+              <InputTitle>Situações da empresa</InputTitle>
+              <LabelList>
+                {labels.map((label) => (
+                  <LabelItem
+                    name={label.description}
+                    hasIcon
+                    active={label.active}
+                    key={label.id}
+                    onPress={() => handleLabel(label.id)}
+                  />
+                ))}
+              </LabelList>
+              {errs && errs.labels && (
+                <ErrorMessage style={{ paddingLeft: 0 }}>
+                  {errs.labels}
+                </ErrorMessage>
+              )}
+            </>
+          ) : (
+            <ContentLoader
+              loading={loadingLabels}
+              active
+              primaryColor={'rgba(220, 220, 220, 1)'}
+              secondaryColor={'rgba(220, 220, 220, .8)'}
+              tHeight={35}
+              pHeight={20}
+              pWidth={'100%'}
+              tWidth={'100%'}
+              containerStyles={{
+                opacity: 0.3,
+                paddingHorizontal: 0,
+              }}
+              titleStyles={{
+                borderRadius: 17,
+              }}
+              paragraphStyles={{
+                borderRadius: 10,
+              }}
+            />
           )}
 
           <Info>

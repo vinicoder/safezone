@@ -21,11 +21,14 @@
     "expo": "~36.0.0",
     "expo-constants": "~8.0.0",
     "expo-device": "~2.0.0",
+    "immer": "^6.0.3",
     "prop-types": "^15.7.2",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.1.tar.gz",
     "react-native-appearance": "^0.3.3",
+    "react-native-content-loader": "^0.1.6",
+    "react-native-easy-content-loader": "^0.3.1",
     "react-native-gesture-handler": "~1.5.0",
     "react-native-reanimated": "~1.4.0",
     "react-native-safe-area-context": "0.6.0",
@@ -59,29 +62,6 @@
     "expo-yarn-workspaces": "^1.2.1",
     "prettier": "^1.19.1"
   },
-  "private": true,
   "version": "1.0.0",
-  "license": "MIT",
-  "workspaces": {
-    "nohoist": [
-      "**/react-native",
-      "**/react-native/**",
-      "**/react-native-appearance",
-      "**/react-native-appearance/**",
-      "**/react-native-gesture-handler",
-      "**/react-native-gesture-handler/**",
-      "**/expo",
-      "**/expo/**",
-      "**/expo-device",
-      "**/expo-device/**",
-      "**/@expo",
-      "**/@expo/**",
-      "**/@react-navigation",
-      "**/@react-navigation/**",
-      "**/@react-native-community",
-      "**/@react-native-community/**",
-      "**/redux-persist",
-      "**/redux-persist/**"
-    ]
-  }
+  "license": "MIT"
 }

@@ -10,10 +10,11 @@ import Dashboard from '~/pages/Dashboard';
 import SignIn from '~/pages/SignIn';
 import SignUp from '~/pages/SignUp';
 import Profile from '~/pages/Profile';
+import Password from '~/pages/Password';
 import Company from '~/pages/Company';
 import CompanyUpdate from '~/pages/CompanyUpdate';
 
-const authScreens = ['Profile', 'CompanyUpdate'];
+const authScreens = ['Profile', 'Password', 'CompanyUpdate'];
 
 const Stack = createStackNavigator();
 
@@ -52,6 +53,11 @@ const AppRoutes = ({ navigation, route }) => {
         name="Profile"
         options={{ title: 'Atualizar conta' }}
         component={Profile}
+      />
+      <Stack.Screen
+        name="Password"
+        options={{ title: 'Atualizar senha' }}
+        component={Password}
       />
       <Stack.Screen
         name="CompanyUpdate"
