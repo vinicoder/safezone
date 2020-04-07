@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Form } from '@unform/web';
@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { Element, scroller } from 'react-scroll';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { useHistory } from 'react-router-dom';
 
 import InputUnstyled from 'components/Form/Input/InputUnstyled';
 import Input from 'components/Form/Input';
@@ -77,6 +78,8 @@ function Home() {
   const auth = useSelector(state => state.auth);
   const profile = useSelector(state => state.user.profile);
   const [formLoading, setFormLoading] = useState(false);
+  const [companies, setCompanies] = useState([]);
+  const [points, setPoints] = useState([]);
   const gendersLoading = useSelector(state => state.genders.loading);
   const mapOptions = entity => ({
     ...entity,
@@ -87,6 +90,7 @@ function Home() {
   const [labelsError, setLabelsError] = useState(null);
   const labelsLoading = useSelector(state => state.labels.loading);
   const labels = useSelector(state => state.labels.data.map(mapOptions));
+  const history = useHistory();
 
   // Map setup
   const gmapRef = useRef();
@@ -97,6 +101,41 @@ function Home() {
     setCities([]);
     setWasSearched(false);
     setLoading(false);
+  }
+
+  function promisefyGetCityByGeoCoordinates(lat, lng) {
+    return new Promise((resolve, reject) => {
+      const mapsRef = gmapRef.current.getInstanceMaps();
+      const geocoder = new mapsRef.Geocoder();
+
+      const latlng = new mapsRef.LatLng(lat, lng);
+
+      geocoder.geocode({ latLng: latlng }, (results, status) => {
+        if (status === mapsRef.GeocoderStatus.OK) {
+          if (results[1]) {
+            // find city type
+            const foundCity = results.find(result =>
+              result.types.includes('locality')
+            );
+
+            resolve({
+              ...foundCity,
+              description: foundCity.address_components[0].long_name,
+              name: foundCity.address_components[0].short_name,
+              place_id: foundCity.place_id,
+              reference: foundCity.place_id,
+              types: foundCity.types,
+            });
+          } else {
+            console.warn('No results found');
+            reject(new Error('No results found'));
+          }
+        } else {
+          console.error(`Geocoder failed due to: ${status}`);
+          reject(new Error(`Geocoder failed due to: ${status}`));
+        }
+      });
+    });
   }
 
   function getCityByGeoCoordinates(lat, lng) {
@@ -265,11 +304,19 @@ function Home() {
       });
       // Validation passed
       console.log(data);
+
       const companyDetails = await getDetails(data.company);
 
+      const cityDetails = await promisefyGetCityByGeoCoordinates(
+        companyDetails.location.lat,
+        companyDetails.location.lng
+      );
       const dataToPost = {
         labels: data.labels,
-        company: companyDetails,
+        company: {
+          ...companyDetails,
+          city_place_id: cityDetails.place_id,
+        },
         user: !auth.signed && {
           name: data.name,
           email: data.email,
@@ -352,6 +399,37 @@ function Home() {
     );
   }
 
+  useEffect(() => {
+    if (selectedCity && selectedCity.place_id) {
+      api
+        .post('/cities', {
+          city_place_id: selectedCity && selectedCity.place_id,
+        })
+        .then(({ data: companiesAddress }) => {
+          setCompanies(companiesAddress);
+          const pointss = companiesAddress.map(address => ({
+            type: 'Feature',
+            properties: {
+              id: address.id,
+              cluster: false,
+              companyId: address.id,
+              category: address.category,
+              description: address.company.name,
+              place_id: address.place_id,
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [
+                parseFloat(address.longitude),
+                parseFloat(address.latitude),
+              ],
+            },
+          }));
+          setPoints(pointss);
+        });
+    }
+  }, [selectedCity]);
+
   return (
     <Container>
       <Header />
@@ -414,11 +492,21 @@ function Home() {
                   </div>
                 </div>
                 <CompanyList>
-                  {Array(10)
-                    .fill(null)
-                    .map((item, index) => (
-                      <CompanyBox key={`company-${index}`} />
-                    ))}
+                  {companies.map(item => (
+                    <CompanyBox
+                      key={`${item.id}`}
+                      requestURL={`/companies/associations/events/labels/${item.company.id}`}
+                      name={item.company.name}
+                      funcToFormatTags={label => ({
+                        id: label.id,
+                        description: label.labels.description,
+                      })}
+                      updatedAt={item.company.updatedAt}
+                      onClick={() => {
+                        history.push(`/empresa/${item.company.id}`);
+                      }}
+                    />
+                  ))}
                 </CompanyList>
               </>
             ) : (
@@ -517,7 +605,7 @@ function Home() {
           </div>
 
           <div className="map">
-            <Gmaps ref={gmapRef} city={selectedCity} />
+            <Gmaps ref={gmapRef} points={points} />
           </div>
         </MapSection>
       </Element>

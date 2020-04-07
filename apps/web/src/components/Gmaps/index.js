@@ -7,12 +7,10 @@ import React, {
 import GoogleMapReact from 'google-map-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
-// import useSWR from 'swr';
 import useSupercluster from 'use-supercluster';
 
 import mapsConfig from 'config/maps';
-// import mapsApi from 'services/maps';
-import api from 'services/api';
+
 import BRAZIL_COORDINATES from 'consts/BRAZIL_COORDINATES.json';
 
 import { ClusterMarker, CompanyMarker } from './styles';
@@ -27,12 +25,18 @@ const MapMarkerIcon = ({ size = '6x', color }) => (
 
 const Marker = ({ children }) => children;
 
-const Gmaps = forwardRef(({ city }, ref) => {
+const Gmaps = forwardRef(({ points = [] }, ref) => {
   // Map setup
   const mapRef = useRef();
   const mapsRef = useRef();
   const [bounds, setBounds] = useState(null);
   const [zoom, setZoom] = useState(4);
+  const { clusters, supercluster } = useSupercluster({
+    points,
+    bounds,
+    zoom,
+    options: { radius: 75, maxZoom: 20 },
+  });
 
   useImperativeHandle(ref, () => ({
     getInstanceMap: () => {
@@ -42,44 +46,6 @@ const Gmaps = forwardRef(({ city }, ref) => {
       return mapsRef.current;
     },
   }));
-
-  // const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=PIRACICABA&key=AIzaSyCmWArZHnZJjWjJGgBNNQLwgklP0Z81fg4&types=(cities)&language=pt-BR`;
-  // const fetcher = fetchUrl => fetch(fetchUrl).then(response => response.json());
-  const url = 'companies';
-  const fetcher = swrUrl =>
-    api.get(swrUrl, {
-      params: {
-        place_id: city && city.place_id,
-      },
-    });
-  // const { data, error } = useSWR(url, fetcher);
-  // const companies = data && !error ? data.predictions : [];
-
-  const points = [].map(company => ({
-    type: 'Feature',
-    properties: {
-      id: company.id,
-      cluster: false,
-      companyId: company.id,
-      category: company.category,
-      description: company.description,
-      place_id: company.place_id,
-    },
-    geometry: {
-      type: 'Point',
-      coordinates: [
-        parseFloat(company.location.longitude),
-        parseFloat(company.location.latitude),
-      ],
-    },
-  }));
-
-  const { clusters, supercluster } = useSupercluster({
-    points,
-    bounds,
-    zoom,
-    options: { radius: 75, maxZoom: 20 },
-  });
 
   return (
     <GoogleMapReact
