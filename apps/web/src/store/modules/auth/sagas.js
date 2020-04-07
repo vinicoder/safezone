@@ -35,14 +35,14 @@ export function* signIn({ payload }) {
 
 export function* signUp({ payload }) {
   try {
-    const { name, email, password, birthday, gender } = payload;
+    const { name, email, password, birth_date, gender_id } = payload;
 
     yield call(api.post, '/users', {
       name,
       email,
       password,
-      birthday,
-      gender,
+      birth_date,
+      gender_id,
     });
 
     yield put(signInRequest(email, password));

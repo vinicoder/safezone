@@ -303,7 +303,7 @@ function Home() {
         abortEarly: false,
       });
       // Validation passed
-      console.log(data);
+      // console.log(data);
 
       const companyDetails = await getDetails(data.company);
 
@@ -326,7 +326,7 @@ function Home() {
         },
       };
 
-      console.log('dataToPost', dataToPost);
+      // console.log('dataToPost', dataToPost);
 
       const { data: respData } = await api.post(
         '/companies/associations/events/labels',
@@ -548,7 +548,7 @@ function Home() {
                                 },
                               })
                               .then(({ data }) => {
-                                console.log('data.result', data.result);
+                                // console.log('data.result', data.result);
 
                                 setPositionMap(
                                   data.result.geometry.location.lat,

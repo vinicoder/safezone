@@ -18,10 +18,10 @@ export function signFailure() {
   };
 }
 
-export function signUpRequest(name, email, password, birthday, gender) {
+export function signUpRequest(name, email, password, birth_date, gender_id) {
   return {
     type: '@auth/SIGN_UP_REQUEST',
-    payload: { name, email, password, birthday, gender },
+    payload: { name, email, password, birth_date, gender_id },
   };
 }
 
