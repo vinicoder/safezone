@@ -69,6 +69,23 @@ class UsersController {
     return res.json(users);
   }
 
+  async show(req, res) {
+    const userMe = await Users.findByPk(req.userId, {
+      include: {
+        model: Genders,
+        as: 'gender',
+      },
+    });
+
+    if (!userMe) {
+      return res.status(401).json({
+        error: "You don't have permission to access this information",
+      });
+    }
+
+    return res.json(userMe);
+  }
+
   async update(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string(),

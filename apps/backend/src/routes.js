@@ -47,6 +47,7 @@ routes.use(authMiddleweare);
 
 routes.get('/users', UsersController.index);
 routes.put('/users', UsersController.update);
+routes.get('/users/me', UsersController.show);
 
 routes.post('/companies', CompanyController.store);
 
