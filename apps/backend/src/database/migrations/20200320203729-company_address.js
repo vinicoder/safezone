@@ -50,11 +50,11 @@ module.exports = {
         allowNull: true,
       },
       latitude: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DOUBLE,
         allowNull: true,
       },
       longitude: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DOUBLE,
         allowNull: true,
       },
       created_at: {

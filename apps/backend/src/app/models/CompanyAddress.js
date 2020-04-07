@@ -5,14 +5,15 @@ class CompanyAddress extends Model {
     super.init(
       {
         place_id: Sequelize.STRING,
+        city_place_id: Sequelize.STRING,
         street: Sequelize.STRING,
         number: Sequelize.STRING,
         zipcode: Sequelize.STRING,
         city: Sequelize.STRING,
         state: Sequelize.STRING,
         complement: Sequelize.STRING,
-        latitude: Sequelize.INTEGER,
-        longitude: Sequelize.INTEGER,
+        latitude: Sequelize.DOUBLE,
+        longitude: Sequelize.DOUBLE,
       },
       {
         sequelize,

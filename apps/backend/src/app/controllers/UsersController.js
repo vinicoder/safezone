@@ -13,6 +13,8 @@ class UsersController {
       password: Yup.string()
         .required()
         .min(6),
+      gender_id: Yup.string().required(),
+      birth_date: Yup.date().required(),
     });
 
     if (!(await schema.isValid(req.body))) {
@@ -31,10 +33,22 @@ class UsersController {
 
     const { id, name, email } = await Users.create(req.body);
 
+    if (req.body.gender_id) {
+      const gender = await Genders.findOne({
+        where: {
+          id: req.body.gender_id,
+        },
+      });
+
+      if (!gender) return res.status(400).json({ error: 'Gender not found' });
+    }
+
     return res.json({
       id,
       name,
       email,
+      birth_date: req.body.birth_date,
+      gender_id: req.body.gender_id,
     });
   }
 
