@@ -619,16 +619,18 @@ function Home() {
             <div className="col-sm-12 col-lg-5">
               <h3>Sobre o projeto</h3>
               <p className="sub-title">
-                Por que atualizar o estado atual das empresas é tão importante?
+                Nos ajude a atualizar o status das empresas da sua cidade!
               </p>
               <p className="description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                O projeto Safezone, nasceu no inicio da pandemia do COVID-19,
+                com o intuito de auxiliar as pessoas a saberem quais as empresas
+                da sua região estão se mobilizando em prol da campanha
+                #FiqueEmCasa.
+                <br />
+                Nosso principal objetivo é informar para a comunidade quais
+                empresas já aderiram ao modelo de trabalho home-office, tendo a
+                ciência de que estamos passando por uma pandemia, mostrando
+                empatia sobre seus colaboradores e familiares.
               </p>
 
               <div className="row">
