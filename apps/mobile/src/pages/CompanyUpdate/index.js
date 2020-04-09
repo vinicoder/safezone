@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import ContentLoader from 'react-native-easy-content-loader';
 
-import { ActivityIndicator } from 'react-native';
 import api from '~/services/api';
 
 import Search from '~/components/Search';
@@ -47,8 +46,8 @@ function CompanyUpdate({ navigation }) {
     try {
       setLoading(true);
       const labelsSelected = labels
-        .filter((label) => label.active)
-        .map((label) => label.id);
+        .filter(label => label.active)
+        .map(label => label.id);
       const data = { company, labels: labelsSelected };
 
       const schema = Yup.object().shape({
@@ -71,14 +70,16 @@ function CompanyUpdate({ navigation }) {
 
       setErrs([]);
 
-      api.post('/companies/associations/events/labels').then(({ data }) => {
-        navigation.navigate('App', { page: 'Company' });
-      });
+      api
+        .post('/companies/associations/events/labels', data)
+        .then(({ data: { address: place_id } }) => {
+          navigation.navigate('App', { page: 'Company', place_id });
+        });
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errorMessages = {};
 
-        err.inner.forEach((error) => {
+        err.inner.forEach(error => {
           errorMessages[error.path] = error.message;
         });
 
@@ -89,7 +90,7 @@ function CompanyUpdate({ navigation }) {
   }
 
   function handleLabel(id) {
-    const labelsChanged = labels.map((label) =>
+    const labelsChanged = labels.map(label =>
       label.id === id ? { ...label, active: !label.active } : label
     );
     setLabels(labelsChanged);
@@ -98,7 +99,7 @@ function CompanyUpdate({ navigation }) {
   useEffect(() => {
     async function loadLabels() {
       await api.get('/labels').then(({ data }) => {
-        const labelsChanged = data.map((label) => {
+        const labelsChanged = data.map(label => {
           return { ...label, active: false };
         });
         setLabels(labelsChanged);
@@ -139,7 +140,7 @@ function CompanyUpdate({ navigation }) {
 
               <InputTitle>Situações da empresa</InputTitle>
               <LabelList>
-                {labels.map((label) => (
+                {labels.map(label => (
                   <LabelItem
                     name={label.description}
                     hasIcon
@@ -159,12 +160,12 @@ function CompanyUpdate({ navigation }) {
             <ContentLoader
               loading={loadingLabels}
               active
-              primaryColor={'rgba(220, 220, 220, 1)'}
-              secondaryColor={'rgba(220, 220, 220, .8)'}
+              primaryColor="rgba(220, 220, 220, 1)"
+              secondaryColor="rgba(220, 220, 220, .8)"
               tHeight={35}
               pHeight={20}
-              pWidth={'100%'}
-              tWidth={'100%'}
+              pWidth="100%"
+              tWidth="100%"
               containerStyles={{
                 opacity: 0.3,
                 paddingHorizontal: 0,

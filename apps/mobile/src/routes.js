@@ -18,13 +18,13 @@ const authScreens = ['Profile', 'Password', 'CompanyUpdate'];
 
 const Stack = createStackNavigator();
 
-const AppRoutes = ({ navigation, route }) => {
+const AppRoutes = ({ navigation, route: { params } }) => {
   const signed = useSelector(state => state.auth.signed);
-  const page = route.params ? route.params.page : '';
+  const page = params ? params.page : '';
   const screen = authScreens.includes(page) && !signed ? 'SignIn' : page;
 
   if (screen) {
-    navigation.push('App', { screen });
+    navigation.push('App', { screen, params });
   }
 
   return (

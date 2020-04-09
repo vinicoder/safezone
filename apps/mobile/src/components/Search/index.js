@@ -86,19 +86,65 @@ function City({ placeholder, filter, onPressItem }, ref) {
   }
 
   async function handleItem({ place_id }) {
+    let company = {};
+    let latlng;
+
     await maps
       .get('/place/details/json', {
         params: {
           place_id,
-          fields: 'name,geometry',
+          fields: 'name,geometry,address_components',
         },
       })
-      .then(({ data }) => {
-        const { result } = data;
-        const { name, geometry } = result;
-        const { location } = geometry;
-        onPressItem({ place_id, name, location });
+      .then(
+        ({
+          data: {
+            result: {
+              name,
+              geometry: { location },
+              address_components,
+            },
+          },
+        }) => {
+          const { long_name: street } = address_components.find(result =>
+            result.types.includes('route')
+          );
+          const { long_name: number } = address_components.find(result =>
+            result.types.includes('street_number')
+          );
+          const { long_name: zipcode } = address_components.find(result =>
+            result.types.includes('postal_code')
+          );
+
+          const { lat, lng } = location;
+          latlng = `${lat},${lng}`;
+
+          company = {
+            name,
+            location,
+            place_id,
+            street,
+            number,
+            zipcode,
+          };
+        }
+      );
+
+    await maps
+      .get('/geocode/json', {
+        params: {
+          latlng,
+        },
+      })
+      .then(({ data: { results } }) => {
+        const { place_id: city_place_id } = results.find(result =>
+          result.types.includes('locality')
+        );
+
+        company.city_place_id = city_place_id;
       });
+
+    await onPressItem(company);
 
     await close();
   }
